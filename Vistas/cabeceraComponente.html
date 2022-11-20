@@ -1,4 +1,6 @@
 {% from 'contenedorUsuario.html' import contenedorUsuario with context %}
+{% from 'subMenuFlotante.html' import subMenuFlotante with context %}
+
 {% macro cabecera(text) %}
 
  <div  class="contenedor-header gradient-custom2">
@@ -85,7 +87,8 @@
                             <li class="nav-item dropdown" id="myDropdown">
                                 <a class="nav-link dropdown-toggle  letra-opciones-nav" href="#" data-bs-toggle="dropdown" data-bs-auto-closed="outside" aria-expanded="false">Departamentos</a>
                                 <ul class="dropdown-menu div-depart shadow" aria-labelledby="navbarDropdown">
-                                   @(await Component.InvokeAsync("SubMenuFlotante",@departamentos))
+                                  {# @(await Component.InvokeAsync("SubMenuFlotante",@departamentos))#}
+                                    {{subMenuFlotante()}}
 
                                 </ul>
                             </li>

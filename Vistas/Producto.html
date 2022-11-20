@@ -1,5 +1,6 @@
 {% from 'cabeceraComponente.html' import cabecera with context %}
 {% from 'pieInformacion.html' import pieInformacion with context %}
+{% from 'carouselProductos.html' import carouselProductos with context %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +13,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloSubMenuFlotante.css' ) }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosCarouselProductos.css' ) }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosProducto.css' ) }}">
+
+     <script src="https://kit.fontawesome.com/1e636cb0f6.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
 
 </head>
 <body>
@@ -45,7 +50,7 @@
         <!-- NOMBRE PRODUCTO-->
         <div class="div-nombre-producto">
 <!--            <h1 class="txt-nombre-producto">@ObjetoProducto.productoSeleccionado.nombreProducto<small> </small></h1>-->
-            <h1 class="txt-nombre-producto">Producto seleccionado<small> </small></h1>
+            <h1 class="txt-nombre-producto">MICRODYN 500 ML<small> </small></h1>
         </div>
 
         <!-- INFORMACION PRODUCTO -->
@@ -56,17 +61,17 @@
 <!--                    @for(int i=0;i<ObjetoProducto.productoSeleccionado.urlsImagenes.Count;i++)-->
 <!--                    {-->
                     <div class="contenedor-item-seleccion">
-                        <div class="btn-imagen-seleccion d-flex flex-wrap align-items-center"  value="@i" onclick="CambiarImagenPrincipal('../static/wwwroot/Resources/Productos/1.png')">
+                        <div class="btn-imagen-seleccion d-flex flex-wrap align-items-center"  value="1" onclick="CambiarImagenPrincipal('../static/wwwroot/Resources/Productos/1.png')">
                             <img class="img-fluid mx-auto d-block"  src="../static/wwwroot/Resources/Productos/1.png"/>
                         </div>
                     </div>
                     <div class="contenedor-item-seleccion">
-                        <div class="btn-imagen-seleccion d-flex flex-wrap align-items-center"  value="@i" onclick="CambiarImagenPrincipal('../static/wwwroot/Resources/Productos/1.png')">
+                        <div class="btn-imagen-seleccion d-flex flex-wrap align-items-center"  value="2" onclick="CambiarImagenPrincipal('../static/wwwroot/Resources/Productos/1.png')">
                             <img class="img-fluid mx-auto d-block"  src="../static/wwwroot/Resources/Productos/103.png"/>
                         </div>
                     </div>
                     <div class="contenedor-item-seleccion">
-                        <div class="btn-imagen-seleccion d-flex flex-wrap align-items-center"  value="@i" onclick="CambiarImagenPrincipal('../static/wwwroot/Resources/Productos/1.png')">
+                        <div class="btn-imagen-seleccion d-flex flex-wrap align-items-center"  value="3" onclick="CambiarImagenPrincipal('../static/wwwroot/Resources/Productos/1.png')">
                             <img class="img-fluid mx-auto d-block"  src="../static/wwwroot/Resources/Productos/113.png"/>
                         </div>
                     </div>
@@ -91,7 +96,7 @@
 
                     <div class="contenedor-solo-descripcion">
 <!--                        <p class="txt-solo-decripcion">@ObjetoProducto.productoSeleccionado.descripcion</p>-->
-                        <p class="txt-solo-decripcion">Solo descripcion del producto</p>
+                        <p class="txt-solo-decripcion">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
                     </div>
 
                 </div>
@@ -101,20 +106,23 @@
                         <div class="position-relative">
 <!--                            @if(ObjetoProducto.productoSeleccionado.precioOriginal<=0)-->
 <!--                            {-->
-                            <h3 class="item-lista">Sin precio</h3>
-<!--                            }-->
-<!--                            else-->
-<!--                            {-->
-<!--                            @if (ObjetoProducto.productoSeleccionado.precioOriginal != ObjetoProducto.productoSeleccionado.precioDescuento)-->
-<!--                            {-->
-<!--                            <p><strike class="strike-text precio-descuento"> @ObjetoProducto.productoSeleccionado.precioOriginal.ToString("C")</strike></p>-->
-<!--                            <h4 class="mr-1">@ObjetoProducto.productoSeleccionado.precioDescuento.ToString("C")</h4>-->
-<!--                            }-->
-<!--                            else-->
-<!--                            {-->
-<!--                            <h4 class="mr-1">@ObjetoProducto.productoSeleccionado.precioDescuento.ToString("C")</h4>-->
-<!--                            }-->
-<!--                            }-->
+                                {%if(true==false)%}
+                                    <h3 class="item-lista">Sin precio</h3>
+                                {%else%}
+    <!--                            @if (ObjetoProducto.productoSeleccionado.precioOriginal != ObjetoProducto.productoSeleccionado.precioDescuento)-->
+    <!--                            {-->
+    <!--                            <p><strike class="strike-text precio-descuento"> @ObjetoProducto.productoSeleccionado.precioOriginal.ToString("C")</strike></p>-->
+    <!--                            <h4 class="mr-1">@ObjetoProducto.productoSeleccionado.precioDescuento.ToString("C")</h4>-->
+    <!--                            }-->
+    <!--                            else-->
+    <!--                            {-->
+    <!--                            <h4 class="mr-1">@ObjetoProducto.productoSeleccionado.precioDescuento.ToString("C")</h4>-->
+    <!--                            }-->
+
+                            <p><strike class="strike-text precio-descuento"> $340</strike></p>
+                            <h4 class="mr-1">$230 </h4>
+
+                                {% endif %}
 
                         </div>
                     </div>
@@ -168,13 +176,17 @@
 <!--            {-->
 <!--            @(await Component.InvokeAsync("CarouselProductos",@ObjetoProducto.informacionCarousel))-->
 <!--            }-->
+            {{carouselProductos('Relacionados')}}
         </div>
     </div>
 
 
 </aside>
 
-<script src="../static/wwwroot/js/ScriptProducto.js"></script>
+<script src="{{ url_for('static', filename='wwwroot/js/ScriptProducto.js' ) }}"></script>
+
+<script src="{{ url_for('static', filename='wwwroot/lib/jquery/dist/jquery.min.js' ) }}"></script>
+ <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
 
 </body>
 <footer>
