@@ -1,4 +1,4 @@
-{% macro carouselProductos() %}
+{% macro carouselProductos(titulo) %}
 <div class="contenedor-principal-carousel">
 	<div class="contenedor-leyenda-carousel">
 		{#@if(@informacionCarousel!=null && @informacionCarousel.productosCarousel.Count>0)#}
@@ -6,7 +6,7 @@
 			{#@foreach(getsetProducto producto in informacionCarousel.productosCarousel)#}
 			{% if(true)%}
 				{#<h2 class="leyenda-carousel">Productos <b>@producto.tituloProductos</b></h2>#}
-			<h2 class="leyenda-carousel">Productos <b>nuevos</b></h2>
+			<h2 class="leyenda-carousel">Productos <b>{{titulo}}</b></h2>
 
 			{% endif %}
 
