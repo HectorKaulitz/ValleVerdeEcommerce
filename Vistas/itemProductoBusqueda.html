@@ -1,0 +1,121 @@
+
+{% macro itemProductoBusqueda(index, nombreProducto, descripcion,precioOriginal,precioDescuento) %}
+
+
+<div class="row p-2 bg-white border rounded contenedor-producto-item">
+    <a class="enlace-producto col-md-9" asp-controller="Inicio" asp-action="Producto" asp-route-idProducto="@producto.idProductoEncriptado">
+        <div class="col-md-3 col-4 mt-1 div-imagen-producto d-flex flex-wrap align-items-center"><img class="img-fluid mx-auto d-block rounded product-image" src="../static/wwwroot/Resources/LOGO.png"></div>
+
+
+        <div class="col-md-9 col mt-1 div-informacion-prod">
+            <div class="div-nombre-producto">
+                    <h5 class="texto-h5">{{nombreProducto}}</h5>
+            </div>
+
+            <div class="d-flex flex-row div-principal-estrellas">
+
+                <div class="star-rating div-estrellas">
+                    <ul class="list-inline ul-estrellas">
+                        {# @for(int i=0;i<@producto.puntuacion;i++) #}
+                        {% for i in range(4) %}
+                            <li class="list-inline-item il-estrellas"><i class="fa fa-star estrella-color"></i></li>
+                        {% endfor %}
+                        {# @for(int e=0;e<(5-@producto.puntuacion);e++) #}
+                        {% for i in range(1) %}
+
+                        <li class="list-inline-item il-estrellas"><i class="fa fa-star"></i></li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="div-descripcion-producto">
+                <p class="text-justify mb-0 descripcion-prod">{{descripcion}}<br><br></p>
+            </div>
+        </div>
+    </a>
+        <div class="align-items-center align-content-center col-md-3 border-left mt-1 div-informacion-compra">
+            <div class="d-flex flex-row align-items-center div-precios-prod">
+                {# @if(@producto.precioOriginal==@producto.precioDescuento) #}
+                {% if(precioOriginal==precioDescuento) %}
+
+                    {# if(producto.precioOriginal<=0) #}
+                    {% if(precioOriginal<=0) %}
+
+                          <h4 class="mr-1 txt-precio">Sin precio</h4>
+                    {% else %}
+                          <h4 class="mr-1 txt-precio">Precio: {{ "${:,.2f}".format(precioOriginal) }}</h4>
+                    {% endif %}
+
+
+                {% else %}
+
+                    <div class="position-relative">
+
+                        <span class="strike-text  precio-descuento">{{"${:,.2f}".format(precioOriginal) }}</span>
+                        <h4 class="mr-1 txt-precio ">{{"${:,.2f}".format(precioDescuento) }}</h4>
+                     </div>
+                {% endif %}
+            </div>
+            <div class="div-envio-producto">
+                {# @if (@producto.tieneEnvio) #}
+                 {% set tieneEnvio = true %}
+                 {% set costoEnvio = 50 %}
+                {% if (tieneEnvio) %}
+
+                    {% if (costoEnvio > 0) %}
+
+                        <h6 class="text-success txt-envio text-center">Costo envio: {{"${:,.2f}".format(costoEnvio) }} </h6>
+                    {%else %}
+                        <h6 class="text-success txt-envio text-center">Envio gratis</h6>
+                    {%endif%}
+                {%else %}
+                        <h6 class="text-success txt-envio">Entrega en sucursal</h6>
+                {%endif%}
+            </div>
+
+            <div class="d-flex flex-column div-btn-compra">
+                {# @if(@usuario!=null) #}
+                {% set mostrarInteraccion = true %}
+                {% set estaEnProductoFavorito = true %}
+                {% if(true) %}
+
+                    {# if(producto.mostrarInteraccion) #}
+                    {% if(mostrarInteraccion) %}
+
+                        <button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito('@producto.idProducto','@usuario.IDUsuarioRegistrado', '@producto.urlsImagenes[0]','@producto.nombreProducto')"><i  class="fa-solid fa-plus"></i> Añadir al carrito</button>
+                    {% endif %}
+                    {# @if(@producto.estaEnProductoFavorito) #}
+                    {% if(estaEnProductoFavorito) %}
+
+                        <button class="btn btn-outline-primary btn-sm mt-2 " type="button" onclick="AgregarFavoritos('@producto.idProducto','@usuario.IDUsuarioRegistrado','@producto.urlsImagenes[0]','@producto.nombreProducto' )"><i  id="'@cad@producto.idProducto'" name="'@cad@producto.idProducto'" class="fa-solid fa-heart estaFavorito"></i> Favoritos</button>
+
+                    {% else %}
+
+                        <button class="btn btn-outline-primary btn-sm mt-2 " type="button" onclick="AgregarFavoritos('@producto.idProducto','@usuario.IDUsuarioRegistrado','@producto.urlsImagenes[0]','@producto.nombreProducto')"><i   id="'@cad@producto.idProducto'" name="'@cad@producto.idProducto'" class="fa-regular fa-heart"></i> Favoritos</button>
+
+                    {% endif %}
+
+                {% else %}
+
+                    {# if(producto.mostrarInteraccion) #}
+                    {% if(mostrarInteraccion) %}
+
+                        <button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito('@producto.idProducto',null, '@producto.urlsImagenes[0]','@producto.nombreProducto')"><i class="fa-solid fa-plus" ></i> Añadir al carrito</button>
+                     {% endif %}
+                    {# @if(@producto.estaEnProductoFavorito) #}
+                    {% if(estaEnProductoFavorito) %}
+
+                        <button class="btn btn-outline-primary btn-sm mt-2 " type="button" onclick="AgregarFavoritos('@producto.idProducto',null,'@producto.urlsImagenes[0]','@producto.nombreProducto')"><i id="'@cad@producto.idProducto'" name="'@cad@producto.idProducto'" class="fa-solid fa-heart estaFavorito"></i> Favoritos</button>
+                    {% else %}
+                        <button class="btn btn-outline-primary btn-sm mt-2 " type="button" onclick="AgregarFavoritos('@producto.idProducto',null,'@producto.urlsImagenes[0]','@producto.nombreProducto')"><i id="'@cad@producto.idProducto'" name="'@cad@producto.idProducto'" class="fa-solid fa-heart"></i> Favoritos</button>
+
+                     {% endif %}
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endmacro %}

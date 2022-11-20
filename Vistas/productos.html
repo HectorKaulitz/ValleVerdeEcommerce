@@ -2,6 +2,7 @@
 {% from 'carouselProductos.html' import carouselProductos with context %}
 {% from 'pieInformacion.html' import pieInformacion with context %}
 {% from 'filtrosAcordeon.html' import filtrosAcordeon with context %}
+{% from 'productosBusqueda.html' import productosBusqueda with context %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,7 +56,7 @@
               <ol class="breadcrumb">
                   {# @for(int i=0;i<@patch.Length;i++) #}
                   {% set breadcrums = ["Casa", "Limpieza", "Cocina"] %}
-                       {%    for i in breadcrums %}
+                  {%    for i in breadcrums %}
 
                         {# if (i == @patch.Length - 1) #}
                         {% if (i == "Cocina") %}
@@ -78,7 +79,7 @@
             {% endif %}
         </div>
         <div class="contenedor-productosBus-pag">
-            @(await Component.InvokeAsync("ProductosBusqueda",@Objeto))
+            {{productosBusqueda('')}}
         </div>
     </div>
 </div>
