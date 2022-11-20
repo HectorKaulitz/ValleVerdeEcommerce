@@ -1,0 +1,228 @@
+{% macro carouselProductos() %}
+<div class="contenedor-principal-carousel">
+	<div class="contenedor-leyenda-carousel">
+		{#@if(@informacionCarousel!=null && @informacionCarousel.productosCarousel.Count>0)#}
+		{% if(true) %}
+			{#@foreach(getsetProducto producto in informacionCarousel.productosCarousel)#}
+			{% if(true)%}
+				{#<h2 class="leyenda-carousel">Productos <b>@producto.tituloProductos</b></h2>#}
+			<h2 class="leyenda-carousel">Productos <b>nuevos</b></h2>
+
+			{% endif %}
+
+		{% else %}
+
+			<h2 class="leyenda-carousel">Productos <b>Destacados</b></h2>
+		{% endif %}
+	</div>
+
+	{#@if(!esMovil)#}
+	{% if(true) %}
+		//Version de escritorio
+		<div class="contenedor-productos-carousel">
+
+			<!-- Carousel controls -->
+			<div class="contenedor-botones">
+				<button class=" btn-prev-carousel" data-bs-target="#myCarousel" data-bs-slide="prev">
+					<i class="fa fa-angle-left"></i>
+				</button>
+			</div>
+
+			<div id="myCarousel" class="carousel contenedor-carousel slide" data-bs-interval="false">
+				<div class="carousel-inner">
+					{#@if(informacionCarousel!=null)#}
+					{%if(true)%}
+					{% set contador=0 %}
+					{% set itemAbierto= false%}
+						{#@foreach(getsetProducto producto in informacionCarousel.productosCarousel)#}
+						{% for x in range(4) %}
+
+							{#if(contador==0)#}
+							{%if(contador==0) %}
+
+							<div class="item carousel-item active">
+
+								<div class="row" style="padding:5px; justify-content: center;">
+
+							{% set itemAbierto = true%}
+
+							{%else%}
+								{#if(contador%@numeroTarjetasPorPagina==0)#}
+								{%if(contador%4==0)%}
+
+
+								<div class="item carousel-item">
+								<div class="row">
+
+									{% set itemAbierto = true%}
+								{% endif %}
+							{% endif %}
+
+								<div class="col-sm-4">
+									<div class="thumb-wrapper card">
+
+										<a asp-controller="Inicio" asp-action="Producto" asp-route-idProducto="oben.Encrypt( @producto.idProducto )">
+											<div class="img-box">
+												<img src="../static/wwwroot/Resources/Productos/1264.png" class="img-fluid img "  alt="producto.nombreProducto">
+											</div>
+										</a>
+										<div class="thumb-content">
+											<a asp-controller="Inicio" asp-action="Producto" asp-route-idProducto="oben.Encrypt( @producto.idProducto )">
+
+												<h4 class="descripcion">
+													<span class="wish-icon">
+													<i class="fa-solid fa-circle-info"></i>
+													<h5 class="nombre_flotante shadow border border-secondary"> Descripcion</h5>
+													</span>
+													nombre producto
+												</h4>
+											</a>
+											<div class="star-rating">
+												<ul class="list-inline">
+													{#@for(int i=0;i<@producto.puntuacion;i++)#}
+													{%if(true)%}
+													<li class="list-inline-item"><i class="fa fa-star estrella-color"></i></li>
+													<li class="list-inline-item"><i class="fa fa-star estrella-color"></i></li>
+													<li class="list-inline-item"><i class="fa fa-star estrella-color"></i></li>
+													{% endif %}
+													{#@for(int e=0;e<(5-@producto.puntuacion);e++)#}
+													{%if(true)%}
+													<li class="list-inline-item"><i class="fa fa-star"></i></li>
+													<li class="list-inline-item"><i class="fa fa-star"></i></li>
+													{% endif %}
+
+												</ul>
+											</div>
+											{#@if(@producto.precioOriginal!=@producto.precioDescuento)#}
+											{% if(true) %}
+												<div class="position-relative">
+													<p class=""><strike>$500</strike></p>
+													<p class="item-price"> <b>$450</b></p>
+												</div>
+											{%else%}
+												<p class="item-price"><b>$500</b></p>
+											{% endif %}
+											{#@if(@usuario!=null)#}
+											{% if(true) %}
+												<button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito(@producto.idProducto,@usuario.IDUsuarioRegistrado, '@producto.urlsImagenes[0]','@producto.nombreProducto')">Añadir al carrito</button>
+
+											{% else %}
+
+												<button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito(@producto.idProducto,null, '@producto.urlsImagenes[0]','@producto.nombreProducto')">Añadir al carrito</button>
+											{% endif %}
+										</div>
+									</div>
+							</div>
+
+							{% set contador=contador+1 %}
+							{% if (contador % 4 == 0)%}
+
+								 </div>
+								</div>
+								{% set itemAbierto = false %}
+
+							{% endif %}
+						{% endfor %}
+
+
+
+						{%if(itemAbierto)%}
+
+							 </div>
+							</div>
+							{% set itemAbierto = false %}
+						{% endif %}
+					{% endif %}
+				</div>
+
+
+			</div>
+
+			<!-- Carousel controls -->
+			<div class="contenedor-botones">
+				<button class=" btn-next-carousel" data-bs-target="#myCarousel" data-bs-slide="next">
+					<i class="fa fa-angle-right"></i>
+				</button>
+			</div>
+
+		</div>
+
+
+	{% else %}
+
+		//Version movil del carousel
+		<div class="container contenedor-sin-margenes"> @*contenedor*@
+			<div class="carousel-inner-movil">
+				@if(informacionCarousel!=null)
+					@foreach(getsetProducto producto in informacionCarousel.productosCarousel)
+				{
+
+					<div class="card tarjeta-producto"> @*producto/tarjeta*@
+						<div class="thumb-wrapper">
+
+
+							<a asp-controller="Inicio" asp-action="Producto" asp-route-idProducto="@oben.Encrypt( @producto.idProducto )">
+
+								<div class="img-box">
+									@if (producto.urlsImagenes.Count > 0)
+									{
+										<img src="@producto.urlsImagenes[0]" class="img-fluid img "  alt="@producto.nombreProducto">
+									}
+									else
+									{
+										<img  src="~/Resources/imgDefault.png" class="img-fluid img"  alt="@producto.nombreProducto">
+									}
+
+
+								</div>
+							</a>
+							<div class="thumb-content">
+								<a asp-controller="Inicio" asp-action="Producto" asp-route-idProducto="@oben.Encrypt( @producto.idProducto )">
+
+									<h4 class="descripcion">
+										<span class="wish-icon">
+										<i class="fa-solid fa-circle-info"></i>
+										<h5 class="nombre_flotante shadow border border-secondary"> @producto.descripcion</h5>
+										</span>
+										@producto.nombreProducto
+									</h4>
+								</a>
+								<div class="star-rating">
+									<ul class="list-inline">
+										@for(int i=0;i<@producto.puntuacion;i++)
+										{
+										<li class="list-inline-item"><i class="fa fa-star estrella-color"></i></li>
+										}
+										@for(int e=0;e<(5-@producto.puntuacion);e++)
+										{
+										<li class="list-inline-item"><i class="fa fa-star"></i></li>
+										}
+										@*<li class="list-inline-item"><i class="fa fa-star"></i></li>
+										<li class="list-inline-item"><i class="fa fa-star"></i></li>
+										<li class="list-inline-item"><i class="fa fa-star"></i></li>*@
+									</ul>
+								</div>
+								<p class="item-price"><strike>$@producto.precioOriginal</strike> <b>$@producto.precioDescuento</b></p>
+
+								@if(@usuario!=null)
+                                {
+                                    <button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito(@producto.idProducto,@usuario.IDUsuarioRegistrado, '@producto.urlsImagenes[0]','@producto.nombreProducto')">Añadir al carrito</button>
+
+                                }
+                                else
+                                {
+                                    <button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito(@producto.idProducto,null, '@producto.urlsImagenes[0]','@producto.nombreProducto')">Añadir al carrito</button>
+                                }
+							</div>
+						</div>
+					</div>
+
+
+				}
+
+			</div>
+		</div>
+	{% endif %}
+</div>
+
+{% endmacro %}
