@@ -36,6 +36,11 @@ def productos():
 def producto():
     return render_template('Producto.html')
 
+@app.route('/comentarios')
+def comentarios():
+    return render_template('comentarios.html')
+
+
 
 if __name__ == '__main__':
     print(__name__)
