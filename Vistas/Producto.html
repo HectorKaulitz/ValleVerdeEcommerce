@@ -1,0 +1,184 @@
+{% from 'cabeceraComponente.html' import cabecera with context %}
+{% from 'pieInformacion.html' import pieInformacion with context %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/site.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosBarraSuperior.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloCartaCarrito.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloSubMenuFlotante.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosCarouselProductos.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosProducto.css' ) }}">
+
+</head>
+<body>
+{{cabecera('bdbhdbd')}}
+<aside class="contenedor-principal-producto">
+    <!-- breadcrumb -->
+    <div class="contenedor-breadcrumb">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+<!--                @for (int i = 0; i < @patch.Length; i++)-->
+<!--                {-->
+
+<!--                if (i == @patch.Length - 1)-->
+<!--                {-->
+<!--                <li class="breadcrumb-item active" aria-current="page">@patch[i]</li>-->
+                <li class="breadcrumb-item active" aria-current="page">Inicio</li>
+                <li class="breadcrumb-item active" aria-current="page">Productos</li>
+<!--                }-->
+<!--                else-->
+<!--                {-->
+                <li class="breadcrumb-item"><a href="#">Producto</a></li>
+<!--                }-->
+<!--                }-->
+            </ol>
+        </nav>
+    </div>
+
+
+    <!-- CONTENEDOR DATOS -->
+    <div class="container contenedor-sub-principal-producto">
+        <!-- NOMBRE PRODUCTO-->
+        <div class="div-nombre-producto">
+<!--            <h1 class="txt-nombre-producto">@ObjetoProducto.productoSeleccionado.nombreProducto<small> </small></h1>-->
+            <h1 class="txt-nombre-producto">Producto seleccionado<small> </small></h1>
+        </div>
+
+        <!-- INFORMACION PRODUCTO -->
+        <div class="row renglon-item-producto">
+            <!--IMAGENES PRODUCTO-->
+            <div class="col-md-4 contenedor-imagenes-producto" >
+                <div class="contenedor-columna-seleccion-imagen col-md-2 col-sm-2 col-2">
+<!--                    @for(int i=0;i<ObjetoProducto.productoSeleccionado.urlsImagenes.Count;i++)-->
+<!--                    {-->
+                    <div class="contenedor-item-seleccion">
+                        <div class="btn-imagen-seleccion d-flex flex-wrap align-items-center"  value="@i" onclick="CambiarImagenPrincipal('../static/wwwroot/Resources/Productos/1.png')">
+                            <img class="img-fluid mx-auto d-block"  src="../static/wwwroot/Resources/Productos/1.png"/>
+                        </div>
+                    </div>
+                    <div class="contenedor-item-seleccion">
+                        <div class="btn-imagen-seleccion d-flex flex-wrap align-items-center"  value="@i" onclick="CambiarImagenPrincipal('../static/wwwroot/Resources/Productos/1.png')">
+                            <img class="img-fluid mx-auto d-block"  src="../static/wwwroot/Resources/Productos/103.png"/>
+                        </div>
+                    </div>
+                    <div class="contenedor-item-seleccion">
+                        <div class="btn-imagen-seleccion d-flex flex-wrap align-items-center"  value="@i" onclick="CambiarImagenPrincipal('../static/wwwroot/Resources/Productos/1.png')">
+                            <img class="img-fluid mx-auto d-block"  src="../static/wwwroot/Resources/Productos/113.png"/>
+                        </div>
+                    </div>
+<!--                    }-->
+                </div>
+
+                <div id="idContenedorImagenProducto" class="contenedor-imagen-producto border border-secondary d-flex flex-wrap align-items-center">
+
+                    <div class="img-zoom-container mx-auto d-block">
+                        <div id="divLente" class="img-zoom-lens"></div>
+                        <img id="imgProductoSeleccionado" class="img-fluid imagen-producto mx-auto d-block" src="../static/wwwroot/Resources/Productos/00112.png" alt="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 contenedor-informacion-prod-comp">
+                <div id="imgExpandida" class="img-zoom-result" style="visibility: hidden"></div>
+                <div class="contenedor-descripcion-producto">
+                    <div class="contenedor-titulo-descripcion">
+                        <h3 class="my-3 txt-titulo-descripcion">Descripción</h3>
+                    </div>
+
+                    <div class="contenedor-solo-descripcion">
+<!--                        <p class="txt-solo-decripcion">@ObjetoProducto.productoSeleccionado.descripcion</p>-->
+                        <p class="txt-solo-decripcion">Solo descripcion del producto</p>
+                    </div>
+
+                </div>
+                <div class="contenedor-precio-existencia-producto">
+                    <div class="contenedor-precio-producto">
+                        <h3 class="my-3 txt-precio">Precio</h3>
+                        <div class="position-relative">
+<!--                            @if(ObjetoProducto.productoSeleccionado.precioOriginal<=0)-->
+<!--                            {-->
+                            <h3 class="item-lista">Sin precio</h3>
+<!--                            }-->
+<!--                            else-->
+<!--                            {-->
+<!--                            @if (ObjetoProducto.productoSeleccionado.precioOriginal != ObjetoProducto.productoSeleccionado.precioDescuento)-->
+<!--                            {-->
+<!--                            <p><strike class="strike-text precio-descuento"> @ObjetoProducto.productoSeleccionado.precioOriginal.ToString("C")</strike></p>-->
+<!--                            <h4 class="mr-1">@ObjetoProducto.productoSeleccionado.precioDescuento.ToString("C")</h4>-->
+<!--                            }-->
+<!--                            else-->
+<!--                            {-->
+<!--                            <h4 class="mr-1">@ObjetoProducto.productoSeleccionado.precioDescuento.ToString("C")</h4>-->
+<!--                            }-->
+<!--                            }-->
+
+                        </div>
+                    </div>
+                    <div class="contenedor-existencia-producto">
+                        <h3 class="my-3 txt-existencia">Existencia</h3>
+                        <ul class="lista-ul">
+<!--                            @if (ObjetoProducto.productoSeleccionado.existencia>0)-->
+<!--                            {-->
+<!--                            <li class="muted item-lista">Disponibles: @ObjetoProducto.productoSeleccionado.existencia</li>-->
+<!--                            }-->
+<!--                            else-->
+<!--                            {-->
+                            <li class="muted item-lista">Sin existencia</li>
+<!--                            }-->
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="contenedor-btn-producto">
+                    <form action='procesarCambioCarrito.php' method='POST' class="formulario-btn-producto">
+<!--                        @if(ObjetoProducto.productoSeleccionado.mostrarInteraccion)-->
+<!--                        {-->
+                        <div>
+
+<!--                            @if(@usuario!=null)-->
+<!--                            {-->
+                            <button class="btn btn-primary btn-ac" type="button" onclick="AgregarAcarrito('1122','2','../static/wwwroot/Resources/Productos/1.png','Sin descripcion')">Añadir al carrito</button>
+<!--                            }-->
+<!--                            else-->
+<!--                            {-->
+<!--                            <button class="btn btn-primary btn-ac" type="button" onclick="AgregarAcarrito(@ObjetoProducto.productoSeleccionado.idProducto,null,'@ObjetoProducto.productoSeleccionado.urlsImagenes[0]','@ObjetoProducto.productoSeleccionado.nombreProducto')">Añadir al carrito</button>-->
+<!--                            }-->
+                        </div>
+                        <div>
+                            <button   type='submit' class='btn btn-primary btn-ac'>Comprar ahora</button>
+                        </div>
+<!--                        }-->
+                        <div>
+                            <button   type='submit' class='btn btn-primary btn-ac'> <i class="fa-regular fa-heart"></i> </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+    <div class="contenedor-carousel-en-productos">
+        <div class="contenedor-carousel-pag">
+<!--            @if (@ObjetoProducto.informacionCarousel.productosCarousel.Count > 0)-->
+<!--            {-->
+<!--            @(await Component.InvokeAsync("CarouselProductos",@ObjetoProducto.informacionCarousel))-->
+<!--            }-->
+        </div>
+    </div>
+
+
+</aside>
+
+<script src="../static/wwwroot/js/ScriptProducto.js"></script>
+
+</body>
+<footer>
+    {#@(await Component.InvokeAsync("PieInformacion"))#}
+{{pieInformacion()}}
+</footer>
+</html>
