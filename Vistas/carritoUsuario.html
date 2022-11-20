@@ -1,0 +1,117 @@
+{% from 'cabeceraComponente.html' import cabecera with context %}
+{% from 'pieInformacion.html' import pieInformacion with context %}
+
+{% from 'carritoCompleto.html' import carritoCompleto with context %}
+{% from 'carouselProductos.html' import carouselProductos with context %}
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Carrito</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/site.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosBarraSuperior.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloSubMenuFlotante.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosCarouselProductos.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosProductoFavorito.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloCartaCarrito.css' ) }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloCarritoUsuario.css' ) }}">
+
+     <script src="https://kit.fontawesome.com/1e636cb0f6.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <style>
+
+        :root {
+            --colorOscuro: rgb(116,196,102);
+            --colorMasOscuro: rgb(35, 61, 31);
+            --colorClaro: rgb(206,234,201);
+            --colorExtraClaro: rgb(243,250,242));
+            --colorBlanco: white;
+        }
+   </style>
+
+</head>
+<header>
+    {{cabecera('')}}
+</header>
+<body>
+
+<div class="contenedor-principal-carritoC">
+
+    {#@if (!@objetoCarrito.EsParaFavoritos)#}
+    {% if(true) %}
+        <ul class="nav nav-tabs ul-tab-carrito-usuario" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="carrito-tab" data-bs-toggle="tab" data-bs-target="#carrito" type="button" role="tab" aria-controls="carrito" aria-selected="true">Carrito</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="favoritos-tab" data-bs-toggle="tab" data-bs-target="#favoritos" type="button" role="tab" aria-controls="favoritos" aria-selected="false">Favoritos</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+
+            <div class="tab-pane fade show active" id="carrito" name="carrito" role="tabpanel" aria-labelledby="carrito-tab">
+               {# @(await Component.InvokeAsync("CarritoCompleto",@objetoCarritoUsuario))#}
+                {{carritoCompleto()}}
+            </div>
+
+
+            <div class="tab-pane fade" id="favoritos" name="favoritos" role="tabpanel" aria-labelledby="favoritos-tab">
+                @(await Component.InvokeAsync("ProductosFavoritos",@objFavoritos))
+            </div>
+
+            </div>
+    {%else%}
+
+        <ul class="nav nav-tabs ul-tab-carrito-usuario" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="favoritos-tab" data-bs-toggle="tab" data-bs-target="#favoritos" type="button" role="tab" aria-controls="favoritos" aria-selected="false">Favoritos</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="carrito-tab" data-bs-toggle="tab" data-bs-target="#carrito" type="button" role="tab" aria-controls="carrito" aria-selected="true">Carrito</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+
+            <div class="tab-pane fade" id="carrito" name="carrito" role="tabpanel" aria-labelledby="carrito-tab">
+               {# @(await Component.InvokeAsync("CarritoCompleto",@objetoCarritoUsuario))#}
+                {{carritoCompleto()}}
+            </div>
+
+
+            <div class="tab-pane fade show active" id="favoritos" name="favoritos" role="tabpanel" aria-labelledby="favoritos-tab">
+                @(await Component.InvokeAsync("ProductosFavoritos",@objFavoritos))
+            </div>
+
+            </div>
+    {%endif%}
+
+
+
+    <div class="contenedor-carousel-en-productos">
+        <div class="contenedor-carousel-pag">
+            {#@if (@objetoCarritoUsuario.informacionCarousel.productosCarousel.Count > 0)#}
+            {% if(true==false) %}
+                {#@(await Component.InvokeAsync("CarouselProductos",@objetoCarritoUsuario.informacionCarousel))#}
+                {{carouselProductos('Destacados')}}
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='wwwroot/lib/jquery/dist/jquery.min.js' ) }}"></script>
+ <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
+
+</body>
+
+<footer>
+    {#@(await Component.InvokeAsync("PieInformacion"))#}
+{{pieInformacion()}}
+</footer>
+</html>
