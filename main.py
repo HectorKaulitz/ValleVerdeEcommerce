@@ -2,6 +2,7 @@ from flask import Flask, render_template, Blueprint;
 from flask_cors import CORS;
 
 index = Blueprint('index', __name__, url_prefix='/index', template_folder='Vistas')
+# producto = Blueprint('producto', __name__, url_prefix='/producto', template_folder='Vistas')
 
 
 def create_app():
@@ -12,6 +13,7 @@ def create_app():
     app.config.from_object('configuracion.DevConfig')
     # registrar blueprints
     app.register_blueprint(index)
+    # app.register_blueprint(producto)
     # from .Productos import producto
     # app.register_blueprint(producto)
     return app
@@ -23,7 +25,16 @@ app = create_app()
 # ruta principal
 @app.route('/')
 def index():
-    return render_template('Index.html')
+    return render_template('Index.html')\
+
+
+@app.route('/productos')
+def productos():
+    return render_template('productos.html')
+
+@app.route('/producto')
+def producto():
+    return render_template('Producto.html')
 
 
 if __name__ == '__main__':
