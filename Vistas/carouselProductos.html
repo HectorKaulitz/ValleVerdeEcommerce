@@ -18,7 +18,7 @@
 
 	{#@if(!esMovil)#}
 	{% if(true) %}
-		//Version de escritorio
+		{#//Version de escritorio#}
 		<div class="contenedor-productos-carousel">
 
 			<!-- Carousel controls -->
@@ -32,107 +32,103 @@
 				<div class="carousel-inner">
 					{#@if(informacionCarousel!=null)#}
 					{%if(true)%}
-					{% set contador=0 %}
-					{% set itemAbierto= false%}
+						{% set itemAbierto= false%}
 						{#@foreach(getsetProducto producto in informacionCarousel.productosCarousel)#}
-						{% for x in range(4) %}
+						{% for x in range(12) %}
 
 							{#if(contador==0)#}
-							{%if(contador==0) %}
+							{% if(loop.index-1==0) %}
 
-							<div class="item carousel-item active">
+								<div class="item carousel-item active">
 
-								<div class="row" style="padding:5px; justify-content: center;">
-
-							{% set itemAbierto = true%}
-
-							{%else%}
-								{#if(contador%@numeroTarjetasPorPagina==0)#}
-								{%if(contador%4==0)%}
-
-
-								<div class="item carousel-item">
-								<div class="row">
+									<div class="row" style="padding:5px; justify-content: center;">
 
 									{% set itemAbierto = true%}
+							{%else%}
+								{#if(contador%@numeroTarjetasPorPagina==0)#}
+
+								{%if((loop.index-1)%3==0)%}
+									<div class="item carousel-item">
+										<div class="row">
+
+								{% set itemAbierto = true%}
 								{% endif %}
 							{% endif %}
 
-								<div class="col-sm-4">
-									<div class="thumb-wrapper card">
+							<div class="col-sm-4">
+								<div class="thumb-wrapper card">
 
-										<a asp-controller="Inicio" asp-action="Producto" asp-route-idProducto="oben.Encrypt( @producto.idProducto )">
-											<div class="img-box">
-												<img src="../static/wwwroot/Resources/Productos/1264.png" class="img-fluid img "  alt="producto.nombreProducto">
-											</div>
-										</a>
-										<div class="thumb-content">
-											<a asp-controller="Inicio" asp-action="Producto" asp-route-idProducto="oben.Encrypt( @producto.idProducto )">
-
-												<h4 class="descripcion">
-													<span class="wish-icon">
-													<i class="fa-solid fa-circle-info"></i>
-													<h5 class="nombre_flotante shadow border border-secondary"> Descripcion</h5>
-													</span>
-													nombre producto
-												</h4>
-											</a>
-											<div class="star-rating">
-												<ul class="list-inline">
-													{#@for(int i=0;i<@producto.puntuacion;i++)#}
-													{%if(true)%}
-													<li class="list-inline-item"><i class="fa fa-star estrella-color"></i></li>
-													<li class="list-inline-item"><i class="fa fa-star estrella-color"></i></li>
-													<li class="list-inline-item"><i class="fa fa-star estrella-color"></i></li>
-													{% endif %}
-													{#@for(int e=0;e<(5-@producto.puntuacion);e++)#}
-													{%if(true)%}
-													<li class="list-inline-item"><i class="fa fa-star"></i></li>
-													<li class="list-inline-item"><i class="fa fa-star"></i></li>
-													{% endif %}
-
-												</ul>
-											</div>
-											{#@if(@producto.precioOriginal!=@producto.precioDescuento)#}
-											{% if(true) %}
-												<div class="position-relative">
-													<p class=""><strike>$500</strike></p>
-													<p class="item-price"> <b>$450</b></p>
-												</div>
-											{%else%}
-												<p class="item-price"><b>$500</b></p>
-											{% endif %}
-											{#@if(@usuario!=null)#}
-											{% if(true) %}
-												<button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito(@producto.idProducto,@usuario.IDUsuarioRegistrado, '@producto.urlsImagenes[0]','@producto.nombreProducto')">Añadir al carrito</button>
-
-											{% else %}
-
-												<button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito(@producto.idProducto,null, '@producto.urlsImagenes[0]','@producto.nombreProducto')">Añadir al carrito</button>
-											{% endif %}
+									<a asp-controller="Inicio" asp-action="Producto" asp-route-idProducto="oben.Encrypt( @producto.idProducto )">
+										<div class="img-box">
+											<img src="../static/wwwroot/Resources/Productos/1264.png" class="img-fluid img "  alt="producto.nombreProducto">
 										</div>
+									</a>
+									<div class="thumb-content">
+										<a asp-controller="Inicio" asp-action="Producto" asp-route-idProducto="oben.Encrypt( @producto.idProducto )">
+
+											<h4 class="descripcion">
+												<span class="wish-icon">
+												<i class="fa-solid fa-circle-info"></i>
+												<h5 class="nombre_flotante shadow border border-secondary"> Descripcion</h5>
+												</span>
+												Nombre producto
+											</h4>
+										</a>
+										<div class="star-rating">
+											<ul class="list-inline">
+												{#@for(int i=0;i<@producto.puntuacion;i++)#}
+												{%if(true)%}
+													<li class="list-inline-item"><i class="fa fa-star estrella-color"></i></li>
+													<li class="list-inline-item"><i class="fa fa-star estrella-color"></i></li>
+													<li class="list-inline-item"><i class="fa fa-star estrella-color"></i></li>
+												{% endif %}
+												{#@for(int e=0;e<(5-@producto.puntuacion);e++)#}
+												{%if(true)%}
+													<li class="list-inline-item"><i class="fa fa-star"></i></li>
+													<li class="list-inline-item"><i class="fa fa-star"></i></li>
+												{% endif %}
+
+											</ul>
+										</div>
+										{#@if(@producto.precioOriginal!=@producto.precioDescuento)#}
+										{% if(true) %}
+											<div class="position-relative">
+												<p class=""><strike>$500</strike></p>
+												<p class="item-price"> <b>$450</b></p>
+											</div>
+										{%else%}
+											<p class="item-price"><b>$500</b></p>
+										{% endif %}
+										{#@if(@usuario!=null)#}
+										{% if(true) %}
+											<button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito(@producto.idProducto,@usuario.IDUsuarioRegistrado, '@producto.urlsImagenes[0]','@producto.nombreProducto')">Añadir al carrito</button>
+
+										{% else %}
+
+											<button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito(@producto.idProducto,null, '@producto.urlsImagenes[0]','@producto.nombreProducto')">Añadir al carrito</button>
+										{% endif %}
 									</div>
+								</div>
 							</div>
 
-							{% set contador=contador+1 %}
-							{% if (contador % 4 == 0)%}
+							{% if (loop.index % 3 == 0)%}
 
 								 </div>
 								</div>
 								{% set itemAbierto = false %}
-
 							{% endif %}
+
 						{% endfor %}
-
-
-
-						{%if(itemAbierto)%}
-
-							 </div>
-							</div>
-							{% set itemAbierto = false %}
 						{% endif %}
+
+					{%if(itemAbierto)%}
+
+						 </div>
+						</div>
+						{% set itemAbierto = false %}
 					{% endif %}
+
+
 				</div>
 
 
