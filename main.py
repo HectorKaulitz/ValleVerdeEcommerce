@@ -44,6 +44,10 @@ def producto():
 def comentarios():
     return render_template('comentarios.html')
 
+@app.route('/carritoUsuario')
+def carrito():
+    return render_template('carritoUsuario.html')
+
 
 
 if __name__ == '__main__':

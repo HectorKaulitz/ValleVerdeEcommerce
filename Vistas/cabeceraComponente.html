@@ -1,5 +1,6 @@
 {% from 'contenedorUsuario.html' import contenedorUsuario with context %}
 {% from 'subMenuFlotante.html' import subMenuFlotante with context %}
+{% from 'carrito.html' import carrito with context %}
 
 {% macro cabecera(text) %}
 
@@ -57,7 +58,7 @@
                         <div class="dropdown-menu dropdown-menu-right drop-div-carrito gradient-custom-carrito " >
 
                             {#@(await Component.InvokeAsync("Carrito",new {prod=@productosCarrito,totales=@totalCarrito,datosUsuario=@usuario}))#}
-
+                            {{carrito()}}
                         </div>
                     </div>
                 {% endif %}
