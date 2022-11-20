@@ -1,4 +1,5 @@
 {% from 'cabeceraComponente.html' import cabecera with context %}
+{% from 'pieInformacion.html' import pieInformacion with context %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,4 +16,9 @@
 <body>
 {{cabecera('bdbhdbd')}}
 </body>
+
+<footer>
+    {#@(await Component.InvokeAsync("PieInformacion"))#}
+{{pieInformacion()}}
+</footer>
 </html>

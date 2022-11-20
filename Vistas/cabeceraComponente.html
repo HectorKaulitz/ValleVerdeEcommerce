@@ -1,3 +1,4 @@
+{% from 'contenedorUsuario.html' import contenedorUsuario with context %}
 {% macro cabecera(text) %}
 
  <div  class="contenedor-header gradient-custom2">
@@ -12,57 +13,60 @@
 
 
                 <form class="contenedor-busqueda col" id="formularioBarraBusqueda" autocomplete="off" >
-                     @if(informacion.mostrarTodoCabecera)
-                     {
+                    {# @if(informacion.mostrarTodoCabecera) #}
+                     {% if(true) %}
                           <div class="contenedor-lupa">
-                              <input class="barra-busqueda rounded-pill " type="text" placeholder="Busqueda" name="inputBarraBusqueda" id="inputBarraBusqueda" value="@informacion.busqueda">
+                              {#<input class="barra-busqueda rounded-pill " type="text" placeholder="Busqueda" name="inputBarraBusqueda" id="inputBarraBusqueda" value="@informacion.busqueda">#}
+                              <input class="barra-busqueda rounded-pill " type="text" placeholder="Busqueda" name="inputBarraBusqueda" id="inputBarraBusqueda" value="Producto busqueda">
                               <button type="submit" class="boton-buscar" name="btnBusqueda" id="btnBusqueda"><i class="fa-solid fa-magnifying-glass icono-lupa"></i></button>
                           </div>
-                     }
+                     {% endif %}
                 </form>
 
 
                 <div id="contenedorSesionCarrito" class="contenedor-derecho col-md-auto">
 
-                @if (informacion.mostrarTodoCabecera)
-                {
+              {# @if(informacion.mostrarTodoCabecera) #}
+                 {% if(true) %}
                     <div class="contenedor-login" id="contenedor-login" name="contenedor-login">
 
-                       @Html.Partial("~/Views/Sesion/ContenedorUsuario.cshtml",@contenedorUsuario)
+                       {#@Html.Partial("~/Views/Sesion/ContenedorUsuario.cshtml",@contenedorUsuario)#}
+                        {{contenedorUsuario()}}
 
                     </div>
-                @if (informacion.mostrarCarrito)
-                {
+                    {# @if (informacion.mostrarCarrito) #}
+                 {% if(true) %}
+
                     <div class="btn-group contenedor-carrito" id="contenedor-carrito-flotante" name="contenedor-carrito-flotante">
-                        @if (productosCarrito.Count < 100)
-                        {
+                        {# @if (productosCarrito.Count < 100) #}
+                        {% if(100<100) %}
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">@productosCarrito.Count</span>
-                        }
-                        else
-                        {
+
+                        {% else %}
+
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">+99</span>
-                        }
+                        {% endif %}
                         <a  data-bs-toggle="dropdown" class="dropdown-toggle contenedor-icono-letra" data-bs-auto-close="outside" aria-expanded="false">
 
-                            <img src="~/Resources/carrito.png"/>
+                            <img src="./static/wwwroot/Resources/carrito.png"/>
                         </a>
 
 
                         <div class="dropdown-menu dropdown-menu-right drop-div-carrito gradient-custom-carrito " >
 
-                            @(await Component.InvokeAsync("Carrito",new {prod=@productosCarrito,totales=@totalCarrito,datosUsuario=@usuario}))
+                            {#@(await Component.InvokeAsync("Carrito",new {prod=@productosCarrito,totales=@totalCarrito,datosUsuario=@usuario}))#}
 
                         </div>
                     </div>
-                }
-            }
+                {% endif %}
+            {% endif %}
 
                  </div>
 
 
             </div>
-    @if (informacion.mostrarTodoCabecera)
-    {
+    {# @if(informacion.mostrarTodoCabecera) #}
+     {% if(true) %}
         <div class="contenedor-principal-3">
 
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light  box-shadow mb-3 contenedor-nav">
@@ -86,14 +90,19 @@
                                 </ul>
                             </li>
 
-                            @foreach (getsetCategoria categoria in categorias)
-                            {
+                            {# @foreach (getsetCategoria categoria in categorias) #}
+                            <li class="nav-item">
+                                 <!-- <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" asp-action="Productos" asp-route-tipo="@categoria.tipEncriptado" asp-route-numeroPagina="$1" asp-route-productosPag="@sNum" asp-route-busqueda="" >@categoria.nombre</a>-->
+                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" asp-action="Productos" asp-route-tipo="@categoria.tipEncriptado" asp-route-numeroPagina="$1" asp-route-productosPag="@sNum" asp-route-busqueda="" >Linea</a>
 
+                            </li>
+                            <li class="nav-item">
+                                     <!-- <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" asp-action="Productos" asp-route-tipo="@categoria.tipEncriptado" asp-route-numeroPagina="$1" asp-route-productosPag="@sNum" asp-route-busqueda="" >@categoria.nombre</a>-->
+                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" asp-action="Productos" asp-route-tipo="@categoria.tipEncriptado" asp-route-numeroPagina="$1" asp-route-productosPag="@sNum" asp-route-busqueda="" >Marca</a>
 
-                                <li class="nav-item">
-                                    <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" asp-action="Productos" asp-route-tipo="@categoria.tipEncriptado" asp-route-numeroPagina="$1" asp-route-productosPag="@sNum" asp-route-busqueda="" >@categoria.nombre</a>
-                                </li>
-                            }
+                            </li>
+
+                            {# } #}
                             <li class="nav-item li-opciones-nav">
                                 <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" asp-action="Promociones" asp-route-numeroPagina="$1" asp-route-productosPag="'@sNum'" >Promociones</a>
                             </li>
@@ -102,25 +111,20 @@
                                 <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Home" asp-action="Ayuda">Ayuda</a>
                             </li>
 
-                             <li class="nav-item li-opciones-nav">
-                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Prueba" asp-action="VistaPrueba">Prueba</a>
-                            </li>
 
-                            <li class="nav-item li-opciones-nav">
-                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Prueba" asp-action="VistaPrueba2">Prueba2</a>
-                            </li>
                             <li>
                                  <div id="contenedorSesionCarritoH" class="contenedor-derecho col-md-auto">
 
-                                        @if (informacion.mostrarTodoCabecera)
-                                        {
+                                     {# @if (informacion.mostrarTodoCabecera)#}
+                                        {% if(true) %}
                                             <div class="contenedor-login" id="contenedor-loginF" name="contenedor-loginF">
 
-                                              @Html.Partial("~/Views/Sesion/ContenedorUsuario.cshtml",@contenedorUsuario)
+                                              {# @Html.Partial("~/Views/Sesion/ContenedorUsuario.cshtml",@contenedorUsuario) #}
+                                                {{contenedorUsuario()}}
 
                                             </div>
-                                        @if (informacion.mostrarCarrito)
-                                        {
+                                     {# @if (informacion.mostrarCarrito) #}
+                                        {% if(true) %}
                                             <div class="btn-group contenedor-carrito">
                                                 @if (productosCarrito.Count < 100)
                                                 {
@@ -132,12 +136,12 @@
                                                 }
                                                 <a asp-controller="Venta" asp-action="CarritoUsuario"  class="contenedor-icono-letra" aria-expanded="false">
 
-                                                    <img src="~/Resources/carrito.png"/>
+                                                    <img src="../static/wwwroot/Resources/carrito.png"/>
                                                 </a>
 
                                             </div>
-                                        }
-                                    }
+                                        {% endif %}
+                                    {% endif %}
 
                                          </div>
                             </li>
@@ -148,7 +152,7 @@
         </nav>
 
         </div>
-        }
+     {% endif %}
 
     </div>
 
