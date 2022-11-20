@@ -25,11 +25,29 @@ app = create_app()
 # ruta principal
 @app.route('/')
 def index():
-    return render_template('Index.html')
+    return render_template('Index.html')\
+
+
+@app.route('/productos')
+def productos():
+    return render_template('productos.html')\
+
+@app.route('/historialCompras')
+def historialCompras():
+    return render_template('historialCompras.html')
 
 @app.route('/producto')
 def producto():
     return render_template('Producto.html')
+
+@app.route('/comentarios')
+def comentarios():
+    return render_template('comentarios.html')
+
+@app.route('/carritoUsuario')
+def carrito():
+    return render_template('carritoUsuario.html')
+
 
 
 if __name__ == '__main__':

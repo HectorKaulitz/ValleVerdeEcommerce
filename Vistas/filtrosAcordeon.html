@@ -1,0 +1,66 @@
+
+{% macro filtrosAcordeon(text) %}
+
+<aside class="aside-filtro col vh-100">
+    <div class="Contenedor-titulo-filtro">{#@*AQUI VA EL TITULO*@#}
+        {# @if(filtros.Count>0) #}
+        {% if(true) %}
+
+            <h5>Categoria</h5>
+
+        {% else %}
+
+          <h5>Desconocido</h5>
+        {% endif %}
+    </div>
+    <div class="accordion accordion-flush contenedor-todos-items">
+    {# @for (var i = 0; i < filtros.Count; i++) #}
+    {% for i in range(11) %}
+          {#@*  subFiltros.Clear();*@ #}
+          {#@*subFiltros = new SP_Generales().ObtenerSubFiltros(filtros[i].tipoCategoria,filtros[i].id);*@ #}
+          {#string id="flush-collapse"+i; #}
+         <div class="accordion-item contenedor-item">
+                <div class="accordion-header categoria-principal">
+                    {# @if (!filtros[i].tieneSubFiltros)//filtros #}
+                    {% if (false) %}
+
+                        <div class="boton-categoria" type="button" data-bs-target="#@id" aria-expanded="false" >
+                            <a class="leyenda-categoria-principal" href="@ruta@filtros[i].id">
+                                Casa
+                            </a>
+                        </div>
+
+                    {% else %} {#//filtros con subfiltros#}
+
+                      <div class="div-boton-enlace-colapsable">
+                        <div class="boton-categoria btn-tam-leyenda">
+                            <a class="leyenda-categoria-principal" href="@ruta@filtros[i].id" > Jardin </a>
+                        </div>
+                        <div class="div-tam-colapse">
+                            <button class="boton-categoria accordion-button collapsed btn-tam-colapse" type="button" data-bs-toggle="collapse" data-bs-target="#idFiltro{{loop.index}}" aria-expanded="false" aria-controls="flush-collapseOne" onclick="ObtenerSubFiltros('@filtros[i].tipoCategoria','@filtros[i].id','@id','@rutaEncriptada')"></button>
+                        </div>
+                      </div>
+                    {% endif %}
+
+                </div>
+                {# @if (filtros[i].tieneSubFiltros) #}
+                {% if (true) %}
+
+                    <div id="idFiltro{{loop.index}}" class="accordion-collapse collapse contenedor-subcategoria-item" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                        <div id="cargando" class="text-center">
+                            <div class="spinner-border text-success" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <h4>Cargando...</h4>
+                        </div>
+
+                    </div>
+                {% endif %}
+         </div>
+    {% endfor %}
+    </div>
+
+</aside>
+
+
+{% endmacro %}

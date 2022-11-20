@@ -1,10 +1,11 @@
 {% from 'cabeceraComponente.html' import cabecera with context %}
 {% from 'pieInformacion.html' import pieInformacion with context %}
+{% from 'carouselProductos.html' import carouselProductos with context %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>index</title>
+    <title>Index</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
      <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/site.css' ) }}">
@@ -12,9 +13,96 @@
      <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloCartaCarrito.css' ) }}">
      <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloSubMenuFlotante.css' ) }}">
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosCarouselProductos.css' ) }}">
+    <script src="https://kit.fontawesome.com/1e636cb0f6.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+     <style>
+
+        :root {
+            --colorOscuro: rgb(116,196,102);
+            --colorMasOscuro: rgb(35, 61, 31);
+            --colorClaro: rgb(206,234,201);
+            --colorExtraClaro: rgb(243,250,242));
+            --colorBlanco: white;
+        }
+   </style>
+
 </head>
 <body>
 {{cabecera('bdbhdbd')}}
+
+<div class="color-extra-claro" >
+
+ <div id="carouselExampleIndicators" class="carousel vertical slide " data-bs-ride="carousel" data-wrap="false">
+  <ol class="carousel-indicators">
+    <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
+    <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
+    <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img class="d-block w-100" src="../static/wwwroot/Resources/Productos/9090.png" alt="First slide">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>el h5</h5>
+        <p>parrafo</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="../static/wwwroot/Resources/Productos/202020.png" alt="Second slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="../static/wwwroot/Resources/Productos/082184000519.png" alt="Third slide">
+    </div>
+  </div>
+  <button class="carousel-control-prev" data-bs-target="#carouselExampleIndicators" role="button" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </button>
+  <button class="carousel-control-next" data-bs-target="#carouselExampleIndicators" role="button" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </button>
+</div>
+
+
+
+</div>
+
+ <!-- /.NUEVOS -->
+    <div class="contenedor-carousel-en-productos">
+        <div class="contenedor-carousel-pag">
+           {# @if (@objetoInicio.productosNuevosCarousel.productosCarousel.Count> 0)#}
+            {% if(true) %}
+                {#@(await Component.InvokeAsync("CarouselProductos",@objetoInicio.productosNuevosCarousel))#}
+            {{carouselProductos('Nuevos')}}
+            {% endif %}
+        </div>
+    </div>
+     <!-- /.OFERTA -->
+    <div class="contenedor-carousel-en-productos">
+        <div class="contenedor-carousel-pag">
+            {#@if (@objetoInicio.productosOfertaCarousel.productosCarousel.Count > 0)#}
+             {% if(true) %}
+                {#@(await Component.InvokeAsync("CarouselProductos",@objetoInicio.productosOfertaCarousel))#}
+                {{carouselProductos('Oferta')}}
+            {% endif %}
+        </div>
+    </div>
+     <!-- /.DESTACADOS -->
+    <div class="contenedor-carousel-en-productos">
+        <div class="contenedor-carousel-pag">
+           {# @if (@objetoInicio.productosDestacadosCarousel.productosCarousel.Count > 0)#}
+             {% if(true) %}
+               {# @(await Component.InvokeAsync("CarouselProductos",@objetoInicio.productosDestacadosCarousel))#}
+                {{carouselProductos('Destacados')}}
+            {% endif %}
+        </div>
+    </div>
+
+<script src="{{ url_for('static', filename='wwwroot/lib/jquery/dist/jquery.min.js' ) }}"></script>
+ <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
+
 </body>
 
 <footer>

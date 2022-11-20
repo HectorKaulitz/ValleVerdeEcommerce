@@ -1,4 +1,7 @@
 {% from 'contenedorUsuario.html' import contenedorUsuario with context %}
+{% from 'subMenuFlotante.html' import subMenuFlotante with context %}
+{% from 'carrito.html' import carrito with context %}
+
 {% macro cabecera(text) %}
 
  <div  class="contenedor-header gradient-custom2">
@@ -6,7 +9,7 @@
 
 
                 <div class="contenedor-logo col-md-2">
-                   <a asp-controller="Home"  asp-action="Index" tabindex="">
+                   <a asp-controller="Home"  href="/" tabindex="">
                        <img id="logo" class="img-fluid mx-auto d-block" src="../static/wwwroot/Resources/LOGO.png" alt="Abarrotes Valle Verde" />
                    </a>
                 </div>
@@ -55,7 +58,7 @@
                         <div class="dropdown-menu dropdown-menu-right drop-div-carrito gradient-custom-carrito " >
 
                             {#@(await Component.InvokeAsync("Carrito",new {prod=@productosCarrito,totales=@totalCarrito,datosUsuario=@usuario}))#}
-
+                            {{carrito()}}
                         </div>
                     </div>
                 {% endif %}
@@ -85,7 +88,8 @@
                             <li class="nav-item dropdown" id="myDropdown">
                                 <a class="nav-link dropdown-toggle  letra-opciones-nav" href="#" data-bs-toggle="dropdown" data-bs-auto-closed="outside" aria-expanded="false">Departamentos</a>
                                 <ul class="dropdown-menu div-depart shadow" aria-labelledby="navbarDropdown">
-                                   @(await Component.InvokeAsync("SubMenuFlotante",@departamentos))
+                                  {# @(await Component.InvokeAsync("SubMenuFlotante",@departamentos))#}
+                                    {{subMenuFlotante()}}
 
                                 </ul>
                             </li>

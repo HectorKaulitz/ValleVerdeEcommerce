@@ -1,0 +1,85 @@
+{% from 'itemProductoBusqueda.html' import itemProductoBusqueda with context %}
+{% macro productosBusqueda(text) %}
+
+
+<div class="contenedor-principal-productos-busqueda">
+<div class="contenedor-subprincipal-productos-busqueda">
+    <div class="d-flex justify-content-center row">
+        <div class="contenedor-producto">
+
+            {# @foreach (getsetProducto producto in objetoProductos.productosResultado) #}
+            {% for i in range(5) %}
+
+                {{itemProductoBusqueda(loop.index, 'Nombre producto', 'Descripcion producto',100,80)}}
+
+           {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+
+<ul class="pagination row">
+
+        {# @if(numeDiaAct>1) #}
+        {% set numeDiaAct = 5 %}
+        {% if(numeDiaAct>1) %}
+
+            <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+{{numeDiaAct}},"$"+({{numeDiaAct}}-1))">Anterior</a></li>
+            <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+{{numeDiaAct}},"$1")">1</a></li>
+        {% endif %}
+
+        {# @for(int ant=@numeDiaAct-@numCuadros;ant<@numeDiaAct ;ant++) #}
+        {% set numCuadros = 4 %}
+        {% set ant = (numeDiaAct-numCuadros) %}
+        {% set cont = 0 %}
+        {%  for i  in range(numeDiaAct) if i < numeDiaAct %}
+            {% if (i > 1) %}
+
+                {% if(numeDiaAct-numCuadros==ant and ant>2) %}
+
+                     <li class="page-item col-auto"><a class="page-link paginacion" href="">...</a></li>
+                {% endif %}
+                <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+{{numeDiaAct}},"$"+{{ant}})">{{i}}</a></li>
+            {% endif %}
+            {% set cont = (cont+1) %}
+        {% endfor %}
+
+         <li class="page-item col-auto active"><a class="page-link paginacion" href="@urlDireccion"> {{numeDiaAct}}</a></li>
+
+        {# @for(int ant=@numeDiaAct+1;ant<=@numeDiaAct+@numCuadros;ant++) #}
+
+        {% set numCuadros = 4 %}
+        {% set ant = (numeDiaAct+1) %}
+        {%  for i  in range((numeDiaAct+numCuadros)) if i+ant-1 < (numeDiaAct+numCuadros) %}
+
+            {# if (@ant < @objetoProductos.Informacion.NumeroTotalProductos) #}
+            {% if (i+ant < 1200) %}
+
+                 <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+@numeDiaAct,"$"+ant)">{{i+ant}}</a></li>
+
+                {# if(@numeDiaAct+@numCuadros==@ant && ant<@objetoProductos.Informacion.NumeroTotalProductos-1) #}
+                {% if((numeDiaAct+numCuadros)==i+ant and i+ant<(1200-1)) %}
+
+                     <li class="page-item col-auto"><a class="page-link paginacion" href="">...</a></li>
+                {% endif %}
+
+            {% endif %}
+        {% endfor %}
+
+        {# @if (numeDiaAct < objetoProductos.Informacion.NumeroTotalProductos) #}
+        {% if (numeDiaAct < 1200) %}
+
+            <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+@numeDiaAct,"$"+@objetoProductos.Informacion.NumeroTotalProductos)">1200</a></li>
+            <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+@numeDiaAct,"$"+(@numeDiaAct+1))" >Siguiente</a></li>
+        {% endif %}
+
+</ul>
+
+</div>
+
+
+
+
+
+{% endmacro %}
