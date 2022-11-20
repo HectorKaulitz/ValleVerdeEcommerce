@@ -23,7 +23,12 @@ app = create_app()
 # ruta principal
 @app.route('/')
 def index():
-    return render_template('Index.html')
+    return render_template('Index.html')\
+
+
+@app.route('/productos')
+def productos():
+    return render_template('productos.html')
 
 
 if __name__ == '__main__':
