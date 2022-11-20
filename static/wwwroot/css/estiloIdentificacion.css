@@ -1,0 +1,6 @@
+﻿.div-alerta-identificacion {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    text-align: center;
+}

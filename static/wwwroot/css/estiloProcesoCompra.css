@@ -1,0 +1,296 @@
+﻿.section-proceso-compra
+{
+    width:100%;
+    height:100%;
+    /*position:fixed;*/
+    display:flex;
+    justify-content:center;
+    align-items:center;
+       
+}
+
+.div-contenedor-principal-proceso-compra
+{
+    display:flex;
+    justify-content: center;
+    /*align-items: center;*/
+    height:100%;
+    width:100%;
+}
+
+.subcontenedor-proceso-compra{
+    height:100%;
+    margin:3px;
+}
+
+.jumbotron1 {
+    display: block;
+    width: 45%;
+}
+
+.contenedor-envio
+{
+    height:25%;
+    width:100%;
+}
+
+.contenedor-leyenda-envio
+{
+    display:flex;
+    justify-content:center;
+    align-content:center;
+}
+
+.leyenda-envio
+{
+    margin:0;
+    width:100%;
+    text-align:center;
+}
+
+.contenedor-informacion-direccion-envio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.contenedor-icono-envio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10%;
+    height: 100%;
+}
+.span-icono
+{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100%;
+    width:100%;
+}
+.icono-ubicacion
+{
+    height:50%;
+    width:50%;
+}
+
+.contenedor-informacion-seleccionada {
+    width: 62%;
+    height: 100%;
+}
+.contenedor-informacion-seleccionada-sin-envio {
+    width: 90%;
+    height: 100%;
+}
+.contenedor-destinatario-informacion {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.contenedor-datos-direccion {
+    width: 100%;
+    height: 50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.textos{
+    height:100%;
+    width:100%;
+    margin:1px;
+}
+
+.contenedor-elegir-opcion-envio 
+{
+ width: 28%;
+ height:100%;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+}
+.btn-elejir-opcion
+{
+    margin:0 !important;
+    height:100%;
+    width:100%;
+}
+
+.contenedor-productos {
+    height: 74%;
+    width: 100%;
+    max-height: 500px;
+    overflow-y: scroll;
+}
+
+.contenedor-leyenda-productos {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.leyenda-productos {
+    margin: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.jumbotron2 {
+    width: 55%;
+}
+.contenedor-leyenda-Resumen {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.leyenda-Resumen {
+    margin: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.div-radio-entrega {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    /*height: 100%;*/
+}
+
+.div-radio-pago {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    /*height: 100%;*/
+}
+
+.margen-derecha-5 {
+    margin-right: 5px !important;
+}
+
+
+/*//-------------------ESTILO RECICLADO PRODUCTO ITEMS---------------------*/
+.seccion-PC {
+    /*  min-height: 380px;
+    max-height: 380px;
+    min-width: 450px;
+    max-width: 440px;*/
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.subdiv-PC {
+    height: 100%;
+    width: 98%;
+}
+
+.div-carta-itemsPC {
+    max-height: 100%;
+    /*overflow-y: scroll;*/
+    overflow-x: hidden;
+    min-width: 100%;
+    max-width: 100%;
+    margin-top: 8px;
+}
+
+.contenedor-venta-vacia
+{
+
+}
+
+.div-carta-proceso-compra-itemPC {
+    display: flex;
+    /*  background-color:red;*/
+    overflow: hidden;
+}
+
+.contenedor-1-itemPC {
+    /*  background-color: blue;*/
+    width: 20%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+.contenedor-imagen-itemPC {
+    height: 100%;
+    width: 20%
+}
+
+.item-imagen-productoPC {
+    /*width: 100%;
+    height: 100%;
+    background-position: center;
+    object-fit: contain;*/
+    max-height:100px;
+}
+
+.contenedor-2-itemPC {
+    /*   background-color: darkviolet;*/
+    overflow: hidden;
+    width: 80%;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+.contenedor-3-itemPC
+{
+    width:12%;
+   
+}
+.item-informacion-parrafosPC {
+    width: 100%;
+    /* height:auto;*/
+    /*max-height: 42px;*/
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    margin-bottom: 0;
+}
+.div-cantidad-producto {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.parrafo-cantidad-producto{
+    margin:0;
+}
+.texto-tablaPC {
+    font-size: 18px;
+}
+.texto-tablaPCP {
+    font-size: 14px;
+}
+.contenedor-resumen-productos {
+    max-height: 350px;
+    overflow-y: scroll;
+}
+.td-opciones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn-continuar-compra
+{
+    margin:0 !important;
+}
+
+.texto-radio
+{
+    text-align:start;
+    font-size:17px;
+}
+/*--------------------------------------------------------------------------------*/

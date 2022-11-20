@@ -1,0 +1,8 @@
+﻿
+.aside-filtro-esp {
+    /*   background-color:red;*/
+    width: 250px;
+    margin: 0;
+    height: 600px;
+    overflow-y: scroll;
+}

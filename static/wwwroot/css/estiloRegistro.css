@@ -1,0 +1,335 @@
+﻿.section-principal-registro
+{
+    display:flex;
+    justify-content:center;
+  /*  position:absolute;*/
+  /*  right:0;
+    left:0;*/
+    height:100%;
+    /*margin-top:90px;*/
+    background-color:#f7f7f7;
+
+}
+.formulario-registro 
+{
+display:block;
+border-radius:18px;
+height:fit-content;
+background-color:#ffffff;
+box-shadow: 0px 0px 5px 1px lightgrey;
+/*background-color:black;*/
+}
+.div-logo-registro {
+    /*background-color: aqua;*/
+    width: 100%;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    height: 86%;
+}
+
+.logo-registro {
+    background-image: url('../Resources/LOGO.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    overflow: hidden;
+    text-indent: -999px;
+    height: 100%;
+    width: 95%;
+    object-fit: contain;
+    display: inline-block;
+}
+.div-titulo-registro {
+    /*background-color: chocolate;*/
+    height: 8%;
+    display: flex;
+    justify-content: center;
+    margin:8px;
+}
+.titulo-registro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+}
+
+
+.div-interno-registro {
+    /*background-color: blueviolet;*/
+    margin: 15px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:90%;
+}
+.div-registro {
+    /*background-color: yellowgreen;*/
+    border-radius: 18px;
+    width: 60%;
+    height: 95%;
+    margin-left: 2px;
+    display:block;
+    justify-content:center;
+    align-content:center;
+    overflow:hidden;
+}
+.div-registro-ie {
+    /*background-color: yellowgreen;*/
+    border-radius: 18px;
+   /* width: 29%;*/
+    height: 100%;
+    margin-left: 2px;
+    display: block;
+    justify-content: center;
+    align-content: center;
+    overflow: hidden;
+}
+
+.div-inputs-registro {
+    /*background-color: darkgoldenrod;*/
+    height: 100%;
+    display:block;
+}
+.div-inputs-registro-ie {
+    /*background-color: darkgoldenrod;*/
+    height: 100%;
+    display: block;
+}
+.div-input-item {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+}
+.div-icono-item {
+    width:10%;
+    /*background-color:wheat;*/
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.div-leyenda-input-item
+{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:90%;
+    /*background-color:cornflowerblue;*/
+}
+.div-leyenda-item-vert {
+    width: 100%;
+  /*  height:44%;*/
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    /*background-color:orangered;*/
+}
+.div-leyenda-item-horiz {
+    width: 95px;
+    /*  height:44%;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*background-color: orangered;*/
+}
+
+.label-item-horiz
+{
+    font-size:16px;
+
+}
+.label-item-vert {
+    font-size: 16px;
+    margin-left:35px;
+}
+.div-contenido-input-item {
+    /*background-color: darksalmon;*/
+    width: 100%;
+   /* height:55%;*/
+    display: flex;
+    justify-content: center;
+    margin-top:3px;
+    margin-bottom:3px;
+}
+.input-txt-item
+{
+    border-radius:10px;
+    width:90%;
+}
+
+
+
+
+.div-politica-registro {
+    /*background-color: deeppink;*/
+  /*  height: 10%;*/
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+    margin:10px;
+}
+/*-----------------------------------------------------------------------*/
+.div-informacion-extra {
+    /*background-color: brown;*/
+    width: 29%;
+    height: 200px;
+    margin-right: 2px;
+    margin-left: 5px;
+    border-radius: 18px;
+    overflow: hidden;
+}
+.div-inputs-opc-ie
+{
+  /*  height:88%;*/
+    width:65%%;
+    /*background-color:black;*/
+}
+
+.div-button-registrar {
+    height: 8%;
+   /* width: 65%;*/
+    /*background-color: white;*/
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+.btn-registrar
+{
+    width:70%;
+    height:90%;
+    margin:2px;
+}
+
+.div-x {
+   
+
+    display:flex;
+    justify-content:center;
+    align-content:center;
+}
+.div-y{
+    width:100%;
+}
+
+.div-input-item-ie {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+   
+}
+
+
+
+/*@media(min-width: 576px) {
+    .formulario-registro {
+        max-width: 540px;
+        min-width: 530px;
+    }
+}
+
+
+
+@media(min-width: 768px) {
+    .formulario-registro {
+        max-width: 720px;
+        min-width:710px;
+    }
+}
+
+
+@media(min-width: 992px) {
+    .formulario-registro {
+        max-width: 960px;
+        min-width: 950px;
+    }
+}
+
+@media(min-width: 1200px) {
+    .formulario-registro {
+        max-width: 1140px;
+        min-width: 1130px;
+    }
+}
+
+@media(min-height:300px) {
+    .formulario-registro {
+        max-height: 290px;
+        min-height: 290px;
+    }
+
+    .titulo-registro {
+        font-size: 18px;
+    }
+}
+
+@media(min-height:450px) {
+    .formulario-registro {
+        max-height: 440px;
+        min-height: 440px;
+    }
+    .titulo-registro {
+       font-size:24px;
+    }
+}
+
+@media(min-height:580px) {
+    .formulario-registro {
+        max-height: 570px;
+        min-height: 570px;
+    }
+
+    .titulo-registro {
+        font-size: 32px;
+    }
+}*/
+
+::-webkit-input-placeholder {
+    text-align: center;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    text-align: center;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+    text-align: center;
+}
+
+:-ms-input-placeholder {
+    text-align: center;
+}
+
+input {
+    text-align: center;
+}
+
+.div-alert-input {
+    margin-left:180px;
+    margin-right:30px;
+    margin-bottom:10px !important;
+    padding:0;
+}
+
+.label-alert-input
+{
+    height:100%;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    font-size:12px;
+    /*background-color:aqua;*/
+}
+.div-ir-iniciar-sesion {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin: 4px;
+}

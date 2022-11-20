@@ -1,0 +1,57 @@
+﻿.Contenedor-principal-pag
+{
+    display:flex;
+    height:100%;
+    width:100%;
+    flex-wrap:wrap
+}
+.contenedor-1-pag{
+    height:100%;
+    /*width:20%;*/
+    position:sticky;
+    top:0px;
+    display:flex;
+}
+.contenedor-2-pag{
+    display:block;
+    height:100%;
+    /*width:78%;*/
+}
+
+.contenedor-carousel-pag
+{
+    height:30% !important;
+    margin-bottom:10px;
+}
+.contenedor-productosBus-pag
+{
+    height:70% !important;
+}
+
+#botonFiltros {
+    display: none;
+}
+
+
+@media(max-width:768px){
+    .contenedor-1-pag {
+        /*height: 100%;*/
+        /*width:20%;*/
+        position: initial;
+        top: 0px;
+    }
+
+    #botonFiltros {
+        margin-bottom: 15px;
+        display: inherit;
+    }
+
+}
+
+@media (min-width: 768px) {
+    .collapse.dont-collapse-sm {
+        display: flex!important;
+        height: auto !important;
+        visibility: visible;
+    }
+}

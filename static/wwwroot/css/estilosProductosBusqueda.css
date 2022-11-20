@@ -1,0 +1,164 @@
+﻿.contenedor-principal-productos-busqueda {
+    display:block;
+
+   
+}
+.contenedor-subprincipal-productos-busqueda
+{
+    width:100%;
+    height:100%;
+  /*  background-color:red;*/
+}
+.contenedor-producto
+{
+  
+}
+.contenedor-producto-item {
+    margin:5px;
+}
+.pagination {
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.ratings i {
+    font-size: 16px;
+    color: red
+}
+
+.strike-text {
+    color: red;
+    text-decoration: line-through
+}
+
+.dot {
+    height: 7px;
+    width: 7px;
+    margin-left: 6px;
+    margin-right: 6px;
+    margin-top: 3px;
+    background-color: blue;
+    border-radius: 50%;
+    display: inline-block
+}
+
+.spec-1 {
+    color: #938787;
+    font-size: 15px
+}
+
+.texto-h5 {
+    font-weight: 400
+}
+
+.para {
+    font-size: 16px
+}
+.div-imagen-producto {
+    /*width: 25%;*/
+    padding-right: 10px;
+}
+
+.product-image {
+    max-height: 200px;
+}
+
+.div-informacion-prod {
+    /*width:70%*/
+}
+
+.div-informacion-compra {
+    padding: 1px;
+    margin-bottom: 10px;
+}
+.div-principal-estrellas
+{
+    height:13%;
+}
+
+.div-nombre-producto
+{
+    /*height:15%;*/
+}
+
+.div-descripcion-producto{
+   /* height:70%;
+    max-height:120px;*/
+}
+
+.descripcion-prod {
+    /*height: 100%;*/
+    /*white-space: break-spaces;*/
+    text-align: justify;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5; /* number of lines to show */
+    line-clamp: 5;
+    -webkit-box-orient: vertical;
+}
+
+.div-estrellas {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    /*background-color: aqua;*/
+}
+.ul-estrellas
+{
+    display:flex;
+    /*background-color:red;*/
+    width:100%;
+    height:100%;
+    align-items:center;
+    margin:0;
+}
+.il-estrellas{
+    /*background-color:black;*/
+    height:100%;
+}
+
+.div-precios-prod
+{
+    width:100%;
+    height:40%;
+    justify-content:center;
+}
+
+.div-envio-producto 
+{
+    height:15%;
+    width:100%;
+}
+
+.div-btn-compra
+{
+    height:40%;
+    width:100%;
+
+}
+
+.txt-precio
+{
+
+}
+
+.txt-envio
+{
+
+}
+
+.enlace-producto{
+    /*width:75%;*/
+    display:flex;
+}
+
+.page-item{
+    padding-left:0;
+    padding-right:0;
+}
+
+.estaFavorito {
+    color: red;
+}

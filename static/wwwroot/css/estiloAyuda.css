@@ -1,0 +1,25 @@
+﻿.contenedor-principal-temas {
+    margin-top: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.seccion-temas {
+    overflow: hidden;
+   /* display: flex;
+    justify-content: center;
+    align-items: center;*/
+}
+
+.txt-ayuda{
+    color:black;
+}
+.div-card-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.div-btn-collapse {
+    display: flex;
+    justify-content: flex-end;
+}

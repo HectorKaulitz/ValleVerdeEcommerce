@@ -1,0 +1,73 @@
+﻿.contenedor-princ-bot {
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+    z-index: 10;
+    background-color: red;
+}
+
+.div-superior-bot {
+    display: flex;
+    justify-content: right;
+    align-items: end;
+    background-color:yellow;
+}
+
+.div-inferior-bot {
+    background-color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.div-informacion-bot {
+    background-color: blue;
+    height: 100%;
+    /*width: 73%;*/
+    /*height: 250px;*/ /* Specify a height */
+    width: 0; /* 0 width - change this with JavaScript */
+    /*position: fixed;*/ /* Stay in place */
+    z-index: 1; /* Stay on top */
+    /*bottom: 0;*/
+    /*left: 0;*/
+   /*display:none;*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    /*padding-top: 60px;*/ /* Place content 60px from the top */
+    transition: width 0.5s; /* 0.5 second transition effect to slide in the sidepanel */
+}
+
+    .div-informacion-bot a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+.div-inferior-bot .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.div-logo-bot {
+    background-color: coral;
+    /*width: 25%;*/
+    border-radius: 30px 30px 30px 30px;
+}
+.txt-nombre-bot {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin: 0;
+}
+.logo-bot {
+    width: 70px;
+    /*height: 100%;*/
+    background-color: chartreuse;
+    border-radius: 70px 70px 70px 70px;
+    cursor: pointer;
+}

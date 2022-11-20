@@ -1,0 +1,121 @@
+﻿.div-flotante-dep {
+    display: none;
+    height: 50px;
+    background-color:white;
+    height:auto;
+    top:-1px;
+}
+.div-nombre-departamento {
+    width: 100%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    background-color: white;
+}
+.txt-nombre-departamento
+{
+    font-size:16px;
+    color:black;
+    width:85%;
+    text-align:center;
+     background-color: white;
+}
+.icon-arrow-right {
+    width: 15px;
+    height: 15px;
+    margin: 10px;
+    color: rgb(116,196,102);
+}
+.section-principal {
+    display: block;
+    background-color: white;
+    width: 600px;
+}
+.section-inter {
+    display: block;
+    background-color: white;
+    width: 100%;
+}
+
+.div-categoria{
+display:block;
+}
+
+.div-nombre-categoria {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.div-dep {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    background-color: white;
+    width: 100%;
+}
+.div-texto{
+    width:200px;
+    
+}
+.icon-punto {
+    width: 6px;
+    height: 6px;
+    margin: 2px;
+    color: rgb(116,196,102);
+}
+
+.letra-opciones-item {
+    font-size: 14px;
+    text-decoration: none;
+    /*color: black;*/
+    display: flex;
+    align-items: center;
+    padding-bottom:0;
+    padding-top:0;
+   /* background-color: forestgreen;*/
+}
+
+
+
+
+
+
+/* ============ desktop view ============ */
+@media all and (min-width: 992px) {
+    .dropdown-menu li {
+        position: relative;
+    }
+
+    .nav-item .submenu {
+        display: none;
+        position: absolute;
+        left: 100%;
+        top: -7px;
+    }
+
+    .nav-item .submenu-left {
+        right: 100%;
+        left: auto;
+    }
+
+    .dropdown-menu > li:hover {
+        background-color: #f1f1f1
+    }
+
+        .dropdown-menu > li:hover > .submenu {
+            display: block;
+        }
+}
+/* ============ desktop view .end// ============ */
+
+/* ============ small devices ============ */
+@media (max-width: 991px) {
+    .dropdown-menu .dropdown-menu {
+        margin-left: 0.7rem;
+        margin-right: 0.7rem;
+        margin-bottom: .5rem;
+    }
+}
+/* ============ small devices .end// ============ */

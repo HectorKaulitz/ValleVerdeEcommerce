@@ -1,0 +1,155 @@
+{% macro cabecera(text) %}
+
+ <div  class="contenedor-header gradient-custom2">
+            <div class="contenedor-principal-2 row">
+
+
+                <div class="contenedor-logo col-md-2">
+                   <a asp-controller="Home"  asp-action="Index" tabindex="">
+                       <img id="logo" class="img-fluid mx-auto d-block" src="../static/wwwroot/Resources/LOGO.png" alt="Abarrotes Valle Verde" />
+                   </a>
+                </div>
+
+
+                <form class="contenedor-busqueda col" id="formularioBarraBusqueda" autocomplete="off" >
+                     @if(informacion.mostrarTodoCabecera)
+                     {
+                          <div class="contenedor-lupa">
+                              <input class="barra-busqueda rounded-pill " type="text" placeholder="Busqueda" name="inputBarraBusqueda" id="inputBarraBusqueda" value="@informacion.busqueda">
+                              <button type="submit" class="boton-buscar" name="btnBusqueda" id="btnBusqueda"><i class="fa-solid fa-magnifying-glass icono-lupa"></i></button>
+                          </div>
+                     }
+                </form>
+
+
+                <div id="contenedorSesionCarrito" class="contenedor-derecho col-md-auto">
+
+                @if (informacion.mostrarTodoCabecera)
+                {
+                    <div class="contenedor-login" id="contenedor-login" name="contenedor-login">
+
+                       @Html.Partial("~/Views/Sesion/ContenedorUsuario.cshtml",@contenedorUsuario)
+
+                    </div>
+                @if (informacion.mostrarCarrito)
+                {
+                    <div class="btn-group contenedor-carrito" id="contenedor-carrito-flotante" name="contenedor-carrito-flotante">
+                        @if (productosCarrito.Count < 100)
+                        {
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">@productosCarrito.Count</span>
+                        }
+                        else
+                        {
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">+99</span>
+                        }
+                        <a  data-bs-toggle="dropdown" class="dropdown-toggle contenedor-icono-letra" data-bs-auto-close="outside" aria-expanded="false">
+
+                            <img src="~/Resources/carrito.png"/>
+                        </a>
+
+
+                        <div class="dropdown-menu dropdown-menu-right drop-div-carrito gradient-custom-carrito " >
+
+                            @(await Component.InvokeAsync("Carrito",new {prod=@productosCarrito,totales=@totalCarrito,datosUsuario=@usuario}))
+
+                        </div>
+                    </div>
+                }
+            }
+
+                 </div>
+
+
+            </div>
+    @if (informacion.mostrarTodoCabecera)
+    {
+        <div class="contenedor-principal-3">
+
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light  box-shadow mb-3 contenedor-nav">
+                <div class="container-fluid flex-row-reverse">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div id="navbarToggleExternalContent" class="navbar-collapse collapse d-sm-inline-flex justify-content-between color-blanco contenedor-opciones-nav">
+                        <ul class="navbar-nav flex-grow-1 ul-opciones-nav">
+
+                            <li class="nav-item li-opciones-nav">
+                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
+                            </li>
+
+                            <li class="nav-item dropdown" id="myDropdown">
+                                <a class="nav-link dropdown-toggle  letra-opciones-nav" href="#" data-bs-toggle="dropdown" data-bs-auto-closed="outside" aria-expanded="false">Departamentos</a>
+                                <ul class="dropdown-menu div-depart shadow" aria-labelledby="navbarDropdown">
+                                   @(await Component.InvokeAsync("SubMenuFlotante",@departamentos))
+
+                                </ul>
+                            </li>
+
+                            @foreach (getsetCategoria categoria in categorias)
+                            {
+
+
+                                <li class="nav-item">
+                                    <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" asp-action="Productos" asp-route-tipo="@categoria.tipEncriptado" asp-route-numeroPagina="$1" asp-route-productosPag="@sNum" asp-route-busqueda="" >@categoria.nombre</a>
+                                </li>
+                            }
+                            <li class="nav-item li-opciones-nav">
+                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" asp-action="Promociones" asp-route-numeroPagina="$1" asp-route-productosPag="'@sNum'" >Promociones</a>
+                            </li>
+
+                              <li class="nav-item li-opciones-nav">
+                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Home" asp-action="Ayuda">Ayuda</a>
+                            </li>
+
+                             <li class="nav-item li-opciones-nav">
+                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Prueba" asp-action="VistaPrueba">Prueba</a>
+                            </li>
+
+                            <li class="nav-item li-opciones-nav">
+                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Prueba" asp-action="VistaPrueba2">Prueba2</a>
+                            </li>
+                            <li>
+                                 <div id="contenedorSesionCarritoH" class="contenedor-derecho col-md-auto">
+
+                                        @if (informacion.mostrarTodoCabecera)
+                                        {
+                                            <div class="contenedor-login" id="contenedor-loginF" name="contenedor-loginF">
+
+                                              @Html.Partial("~/Views/Sesion/ContenedorUsuario.cshtml",@contenedorUsuario)
+
+                                            </div>
+                                        @if (informacion.mostrarCarrito)
+                                        {
+                                            <div class="btn-group contenedor-carrito">
+                                                @if (productosCarrito.Count < 100)
+                                                {
+                                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">@productosCarrito.Count</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">+99</span>
+                                                }
+                                                <a asp-controller="Venta" asp-action="CarritoUsuario"  class="contenedor-icono-letra" aria-expanded="false">
+
+                                                    <img src="~/Resources/carrito.png"/>
+                                                </a>
+
+                                            </div>
+                                        }
+                                    }
+
+                                         </div>
+                            </li>
+
+                     </ul>
+                </div>
+            </div>
+        </nav>
+
+        </div>
+        }
+
+    </div>
+
+{% endmacro %}

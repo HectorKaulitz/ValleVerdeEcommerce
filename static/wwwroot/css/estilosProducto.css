@@ -1,0 +1,230 @@
+﻿.contenedor-principal-producto {
+    background-color: #f7f7f7;
+    /*display:flex;
+    justify-content:center;
+    align-items:center;*/
+}
+
+.contenedor-breadcrumb
+{
+    width:100%;
+    height:10%;
+}
+.contenedor-sub-principal-producto {
+    display: block;
+    background-color: white;
+    width: 100%;
+    height: auto;
+}
+
+.div-nombre-producto {
+    width: 100%;
+    height:15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*background-color: aqua;*/
+}
+
+.txt-nombre-producto{
+    /*background-color:blue;*/
+    height:auto;
+    width:100%;
+    text-align:center;
+    margin:0;
+}
+
+.renglon-item-producto
+{
+    /*background-color:bisque;*/
+    height:auto;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    margin:0;
+}
+.contenedor-imagenes-producto {
+    /*background-color:darksalmon;*/
+    display:flex;
+    justify-content:center;
+    height:auto;
+}
+.contenedor-columna-seleccion-imagen{
+    /*width:10%;*/
+    /*background-color: red;*/
+    /*border-radius: 7px;*/
+    display: block;
+    overflow: scroll;
+}
+
+    .contenedor-columna-seleccion-imagen::-webkit-scrollbar {
+        display: none;
+    }
+
+.contenedor-item-seleccion
+{
+    display:flex;
+    justify-content:center;
+    /*width:80px;
+    height:80px;*/
+
+}
+
+.btn-imagen-seleccion {
+    /*display:none;*/
+    background-color: white;
+    /*box-shadow: 0px 3px 3px rgba(0,0,0,0.8);*/
+    /*border-radius: 10px;*/
+    margin-right: 10px;
+    border: 1px solid gray;
+    width:100%;
+    height:100%;
+}
+
+.btn-imagen-seleccion img{
+    max-height:100%;
+    max-width:100%;
+    padding:3px;
+}
+
+    .contenedor-imagen-producto {
+        width: 100%;
+        padding: 20px;
+        /*max-width: 500px;
+    max-height: 500px;*/
+        /*background-color: yellow;*/
+    }
+.imagen-producto {
+    object-fit: contain;
+    display: inline-block;
+    
+}
+.contenedor-informacion-prod-comp
+{
+    /*background-color:aliceblue;*/
+    height:100%;
+}
+
+.contenedor-descripcion-producto
+{
+    /*background-color:yellow;*/
+    height:65%;
+}
+.contenedor-titulo-descripcion{
+    /*background-color:aqua;*/
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:10%;
+}
+
+.txt-titulo-descripcion {
+    /*background-color: palevioletred;*/
+    width:100%;
+    height:100%;
+    margin:1px !important;
+    text-align:initial;
+}
+
+.contenedor-solo-descripcion {
+    /*background-color: chocolate;*/
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:85%;
+}
+.txt-solo-decripcion {
+    /*background-color: indigo;*/
+}
+.contenedor-precio-existencia-producto {
+    /*background-color: orangered;*/
+    height: 18%;
+    text-align: justify;
+    white-space: normal;
+    word-break: break-word;
+}
+.contenedor-precio-producto{
+    height:50%;
+    /*background-color:gray;*/
+   
+}
+.txt-precio{
+    text-align:initial;
+    /*background-color:blue;*/
+    margin:1px !important;
+}
+.contenedor-existencia-producto {
+    height: 50%;
+    /*background-color: white;*/
+}
+.txt-existencia {
+    text-align: initial;
+    /*background-color: blue;*/
+    margin: 1px !important;
+}
+.lista-ul
+{
+    margin:0 !important;
+    padding:0 !important;
+    padding-left:20px !important;
+}
+.item-lista
+{
+
+}
+.contenedor-btn-producto {
+    /*background-color: yellowgreen;*/
+    
+}
+.formulario-btn-producto
+{
+    display:flex;
+    /*background-color:blueviolet;*/
+    height:8%;
+}
+
+.btn-ac
+{
+    margin:2px;
+}
+.contenedor-carousel-en-productos {
+    width: 100%;
+    height: 40%;
+}
+
+/* Zoom image */
+
+.img-zoom-container {
+    position: relative;
+    box-sizing: border-box;
+}
+
+.img-zoom-lens {
+    cursor: -moz-zoom-in;
+    cursor: -webkit-zoom-in;
+    cursor: zoom-in;
+    position: absolute;
+    background: rgba(0,0,0,0.5);/*
+    width: 50%;
+    height: 50%;*/
+}
+
+.img-zoom-result {
+    border: 1px solid gray;
+    width: 40%;
+    height: 70vh;
+    z-index: 1024;
+    position: absolute;
+    /*background-color: red;*/
+    background-repeat: no-repeat;
+}
+
+@media(max-width:768px){
+    .img-zoom-result {
+        width:20%;
+    }
+}
+
+.contenedor-carousel-en-productos{
+    margin-bottom:10px;
+}

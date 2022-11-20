@@ -1,0 +1,117 @@
+﻿
+.aside-filtro {
+    /*   background-color:red;*/
+   /* width: 250px;*/
+    margin: 0;
+    /*height:600px;*/
+    overflow-y:scroll;
+
+   
+}
+
+@media(max-width:768px){
+    .aside-filtro {
+        max-height: 600px;
+        /*overflow-y: initial;*/
+        padding-bottom:15px;
+    }
+}
+
+.Contenedor-titulo-filtro {
+   /* background-color: blue;*/
+   display:flex;
+   justify-content:center;
+    /*height:10%;*/
+    width:100%;
+}
+.contenedor-todos-items 
+{
+  /*  background-color:yellowgreen;*/
+    width:100%;
+      
+}
+.contenedor-item
+{
+  /*  background-color:lawngreen;*/
+    width:100%;
+}
+    .accordion-button:not(.collapsed) {
+        color: #7ac400 !important;
+        background-color: rgb(243,250,242) !important;
+    }
+    .categoria-principla {
+       /* background-color: red;*/
+    }
+
+.leyenda-categoria-principal {
+  /*  background-color: hotpink;*/
+    width:99%;
+    font-size:14px;
+    word-break:break-all;
+    text-align:justify;
+    margin:2.5px;
+    color:black;
+    text-decoration:none;
+}
+   
+
+    .boton-categoria {
+        /* background-color: yellow;*/
+        background-color: transparent;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        padding: 0.5px;
+        border-style: hidden;
+        margin-top: 1px;
+        margin-bottom: 1px;
+    }
+.contenedor-icono-expandir
+{
+   /* background-color:darkgoldenrod;*/
+    width:15%;
+    display:flex;
+    justify-content:center;
+}
+.icono-expandir-contraer
+{
+    height :15px;
+}
+.contenedor-subcategoria-item {
+  
+}
+.contenedor-leyenda-subcategoria
+{
+   /* background-color:aqua;*/
+    padding:1px;
+}
+.leyenda-subcategoria {
+   /* background-color: hotpink;*/
+    margin:0.5px;
+    font-size:14px;
+    text-align:justify;
+    word-break:break-all;
+    width:98%;
+    margin-left:15px;
+    text-decoration:none;
+    color:black;
+}
+.div-boton-enlace-colapsable
+{
+    display:flex;
+}
+.btn-tam-leyenda{
+    width:89%;
+}
+.div-tam-colapse {
+    width: 10%;
+}
+.btn-tam-colapse {
+     height:100%;
+    width: 100%;
+    background-color: white;
+}
+.btn-tam-colapse:hover{
+    /* height:10px; 20556*/
+    background-color:#7AC400;
+}

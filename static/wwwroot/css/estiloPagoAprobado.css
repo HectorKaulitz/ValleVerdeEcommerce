@@ -1,0 +1,25 @@
+﻿.icono-estatus-pago {
+    
+    height: 100px;
+
+}
+
+#comprobante-pago{
+    width:75%;
+}
+
+@media(max-width:768px){
+    #comprobante-pago {
+        width: 95%;
+    }
+}
+
+#logoC{
+    max-width:400px;
+}
+
+@media(max-width:768px){
+    #logoC {
+        max-width: 100%;
+    }
+}
