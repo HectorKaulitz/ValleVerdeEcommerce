@@ -30,7 +30,11 @@ def index():
 
 @app.route('/productos')
 def productos():
-    return render_template('productos.html')
+    return render_template('productos.html')\
+
+@app.route('/historialCompras')
+def historialCompras():
+    return render_template('historialCompras.html')
 
 @app.route('/producto')
 def producto():

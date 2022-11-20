@@ -37,16 +37,16 @@
                             <a class="leyenda-categoria-principal" href="@ruta@filtros[i].id" > Jardin </a>
                         </div>
                         <div class="div-tam-colapse">
-                            <button class="boton-categoria accordion-button collapsed btn-tam-colapse" type="button" data-bs-toggle="collapse" data-bs-target="#idFiltro" aria-expanded="false" aria-controls="flush-collapseOne" onclick="ObtenerSubFiltros('@filtros[i].tipoCategoria','@filtros[i].id','@id','@rutaEncriptada')"></button>
+                            <button class="boton-categoria accordion-button collapsed btn-tam-colapse" type="button" data-bs-toggle="collapse" data-bs-target="#idFiltro{{loop.index}}" aria-expanded="false" aria-controls="flush-collapseOne" onclick="ObtenerSubFiltros('@filtros[i].tipoCategoria','@filtros[i].id','@id','@rutaEncriptada')"></button>
                         </div>
                       </div>
                     {% endif %}
 
                 </div>
                 {# @if (filtros[i].tieneSubFiltros) #}
-                {% if (false) %}
+                {% if (true) %}
 
-                    <div id="idFiltro" class="accordion-collapse collapse contenedor-subcategoria-item" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                    <div id="idFiltro{{loop.index}}" class="accordion-collapse collapse contenedor-subcategoria-item" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                         <div id="cargando" class="text-center">
                             <div class="spinner-border text-success" role="status">
                                 <span class="sr-only">Loading...</span>

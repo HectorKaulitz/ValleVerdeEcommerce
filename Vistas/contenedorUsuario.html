@@ -23,22 +23,22 @@
             {#@if (totalesBadgeFlotantes.totalFavoritos < 100)#}
             {% if(100<100) %}
 
-                <a class="dropdown-item letra-opciones-nav" asp-controller="Venta" asp-action="CarritoUsuario" asp-route-Favoritos="true"><i class="fa-regular fa-heart"></i> Favoritos <span class="badge color-oscuro" style="color: white;border-radius: 15px; margin-left:5px;" >@totalesBadgeFlotantes.totalFavoritos</span></a>
+                <a class="dropdown-item letra-opciones-nav" asp-controller="Venta" href="carrito" asp-route-Favoritos="true"><i class="fa-regular fa-heart"></i> Favoritos <span class="badge color-oscuro" style="color: white;border-radius: 15px; margin-left:5px;" >@totalesBadgeFlotantes.totalFavoritos</span></a>
 
             {%else%}
 
-                <a class="dropdown-item letra-opciones-nav" asp-controller="Venta" asp-action="CarritoUsuario" asp-route-Favoritos="true"><i class="fa-regular fa-heart"></i> Favoritos <span class="badge color-oscuro" style="color: white;border-radius: 15px; margin-left:5px;" >99+</span></a>
+                <a class="dropdown-item letra-opciones-nav" asp-controller="Venta" href="carrito" asp-route-Favoritos="true"><i class="fa-regular fa-heart"></i> Favoritos <span class="badge color-oscuro" style="color: white;border-radius: 15px; margin-left:5px;" >99+</span></a>
 
             {% endif %}
 
             {#@if(totalesBadgeFlotantes.totalComentarios<100)#}
             {% if(100<100) %}
-            {#<a  class="dropdown-item letra-opciones-nav" asp-controller="Inicio" asp-action="Comentarios"><i class="fa-regular fa-comment-dots"></i> Comentarios <span class="badge color-oscuro" style="color: white;border-radius: 15px;margin-left:5px;" >@totalesBadgeFlotantes.totalComentarios</span></a>#}
-                <a  class="dropdown-item letra-opciones-nav" asp-controller="Inicio" asp-action="Comentarios"><i class="fa-regular fa-comment-dots"></i> Comentarios <span class="badge color-oscuro" style="color: white;border-radius: 15px;margin-left:5px;" >50</span></a>
+            {#<a  class="dropdown-item letra-opciones-nav" asp-controller="Inicio" href="comentarios"><i class="fa-regular fa-comment-dots"></i> Comentarios <span class="badge color-oscuro" style="color: white;border-radius: 15px;margin-left:5px;" >@totalesBadgeFlotantes.totalComentarios</span></a>#}
+                <a  class="dropdown-item letra-opciones-nav" asp-controller="Inicio" href="comentarios"><i class="fa-regular fa-comment-dots"></i> Comentarios <span class="badge color-oscuro" style="color: white;border-radius: 15px;margin-left:5px;" >50</span></a>
             {% else %}
-                <a  class="dropdown-item letra-opciones-nav" asp-controller="Inicio" asp-action="Comentarios"><i class="fa-regular fa-comment-dots"></i> Comentarios <span class="badge color-oscuro" style="color: white;border-radius: 15px;margin-left:5px;" >99+</span></a>
+                <a  class="dropdown-item letra-opciones-nav" asp-controller="Inicio" href="comentarios"><i class="fa-regular fa-comment-dots"></i> Comentarios <span class="badge color-oscuro" style="color: white;border-radius: 15px;margin-left:5px;" >99+</span></a>
             {% endif %}
-            <a  class="dropdown-item letra-opciones-nav" asp-controller="Venta" asp-action="HistorialCompras"><i class="fa-solid fa-clock-rotate-left"></i> Historial compras</a>
+            <a  class="dropdown-item letra-opciones-nav" asp-controller="Venta" href="historialCompras"><i class="fa-solid fa-clock-rotate-left"></i> Historial compras</a>
             <div class="dropdown-divider"></div>
                 <a class="dropdown-item item-user-exit" name="idInputCerrarSesion" id="idInputCerrarSesion"  onclick="cerrarSesion()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Salir</a>
             </div>
