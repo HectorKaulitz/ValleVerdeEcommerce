@@ -40,6 +40,14 @@ def historialCompras():
 def promociones():
     return render_template('promociones.html')
 
+@app.route('/iniciarSesion')
+def iniciarSesion():
+    return render_template('iniciarSesion.html')
+
+@app.route('/registrar')
+def registrar():
+    return render_template('registrar.html')
+
 @app.route('/producto')
 def producto():
     return render_template('Producto.html')
