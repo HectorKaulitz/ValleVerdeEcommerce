@@ -1,3 +1,5 @@
+{% from 'cabeceraComponente.html' import cabecera with context %}
+{% from 'pieInformacion.html' import pieInformacion with context %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,8 +28,968 @@
         }
    </style>
 </head>
+<header>
+    {{cabecera('bdbhdbd',true,true,true)}}
+</header>
 <body>
 
+
+ <div class="container">
+    <div class="main-body">
+
+
+          <div class="row gutters-sm">
+
+            <div class="col-md-3 mb-3 col-12">
+
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center text-center">
+
+                  <div class="row color-oscuro col-sm-12">
+
+                    <div class="col-sm-3 div-titulo-apartado">
+                      <h6 class="mb-0">Identificación</h6>
+                    </div>
+
+                  </div>
+
+                  <hr>
+
+                  {#@if(identificacion==null)#}
+                  {% if(true)%}
+                    <div class="row" style="display:block">
+                        <div class="col-sm-12 text-secondary">
+                            <h6>sin identificacion  <i class="fa-solid fa-person-circle-question"></i> </h6>
+                        </div>
+                     </div>
+
+                  {% else%}
+                            if (identificacion.AprobadoFrontal && identificacion.AprobadoPosterior)
+                            { @*si estan aprobados ambos lados de la identificacion*@
+                                <div class="row" style="display:block">
+
+                                   @* <div class="col-sm-12">
+                                        <h6 class="mb-0">Identificacion</h6>
+                                    </div>*@
+                                    <div class="col-sm-12 text-secondary">
+                                        <h6>Aprobada <i class="fa-regular fa-circle-check" style="color: lawngreen;"></i>@*aprobado*@</h6>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            { @*no se han aprobado ,entonces checamos si alguno o ninguno esta aprobado*@
+                                if (identificacion.AprobadoFrontal)
+                                { @*el lado frontal si esta aprobado,y el posterior no*@
+
+                                    @*FRONTAL*@
+                                    <div class="row" style="display:block">
+
+                                        <div class="col-sm-12">
+                                            <h6 class="mb-0">Identificacion frontal</h6>
+                                        </div>
+                                        <div class="col-sm-12 text-secondary">
+                                            <h6>Aprobada <i class="fa-regular fa-circle-check" style="color: lawngreen;"></i>@*aprobado*@</h6>
+                                        </div>
+                                     </div>
+
+                                     @*POSTERIOR*@
+                                      <div class="row" style="display:block">
+
+                                        <div class="col-sm-12">
+                                            <h6 class="mb-0">Identificacion posterior</h6>
+                                        </div>
+                                        <div class="col-sm-12 text-secondary">
+                                            <h6>Sin aprobar  <i class="fa-regular fa-circle-xmark" style="color: red;"></i> </h6>
+                                        </div>
+                                     </div>
+                                }
+                                else
+                                {
+                                    if (identificacion.AprobadoPosterior)
+                                    { @*el lado posterior es el aprobado ,y el frontal no*@
+                                        @*FRONTAL*@
+                                    <div class="row" style="display:block">
+
+                                        <div class="col-sm-12">
+                                            <h6 class="mb-0">Identificacion frontal</h6>
+                                        </div>
+                                        <div class="col-sm-12 text-secondary">
+                                            <h6>Sin aprobar  <i class="fa-regular fa-circle-xmark" style="color: red;"></i> </h6>
+                                        </div>
+                                     </div>
+
+                                     @*POSTERIOR*@
+                                      <div class="row" style="display:block">
+
+                                        <div class="col-sm-12">
+                                            <h6 class="mb-0">Identificacion posterior</h6>
+                                        </div>
+                                        <div class="col-sm-12 text-secondary">
+                                             <h6>Aprobada <i class="fa-regular fa-circle-check" style="color: lawngreen;"></i>@*aprobado*@</h6>
+
+                                        </div>
+                                     </div>
+                                    }
+                                    else
+                                    {
+                                        @*si existe un registro pero ambos lados no se han aprobado*@
+                                        <div class="row" style="display:block">
+
+
+                                            <div class="col-sm-12 text-secondary">
+                                                <h6>Sin aprobar <i class="fa-regular fa-circle-xmark" style="color: red;"></i> @*desaprobado*@</h6>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        }
+                         @if(identificacion==null)
+                         {
+                             <div class="row col-sm-12">
+                                <div class="col-sm-12 div-opcion-editar" style="display:flex;justify-content:end;">
+                                  <a class="btn color-oscuro"  asp-controller="Sesion" asp-action="Identidad"><i class="fa-solid fa-pen-to-square"></i></a>
+                                </div>
+                              </div>
+
+                              <hr>
+                         }
+                         else
+                         {
+                            @if ((!identificacion.AprobadoFrontal && !identificacion.AprobadoPosterior) || (identificacion.AprobadoFrontal && !identificacion.AprobadoPosterior) ||(!identificacion.AprobadoFrontal && identificacion.AprobadoPosterior))
+                            {@* en cualquiera de los demas casod ebe poder editar,exepto cuando ya se aprobo la identidad*@
+                               @*BOTON EDITAR*@
+                              <div class="row col-sm-12" style="display:block">
+                                <div class="col-sm-12 div-opcion-editar" style="display:flex;justify-content:end;">
+                                  <a class="btn color-oscuro"  asp-controller="Sesion" asp-action="Identidad"><i class="fa-solid fa-pen-to-square"></i></a>
+                                </div>
+                              </div>
+
+                                <hr>
+                            }
+                            else
+                            {
+
+                              <div class="row col-sm-12" style="display:block">
+                                <div class="col-sm-12 div-opcion-editar" style="display:flex;justify-content:end;">
+                                  <a class="btn color-oscuro"  asp-controller="Sesion" asp-action="Identidad"> <i class="fa-solid fa-eye"></i> </a>
+                                </div>
+                              </div>
+
+                            <hr>
+                         }
+                  {%endif%}
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-md-9 col-12">
+
+              <div class="card mb-3">
+
+                <div class="card-body">
+
+
+                  <div class="row color-oscuro">
+
+                    <div class="col-sm-3 div-titulo-apartado">
+                      <h6 class="mb-0">Datos personales</h6>
+                    </div>
+
+                  </div>
+
+                  <hr>
+
+                  <div class="row">
+
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Nombre completo</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      <h6>Usuario1</h6>
+                    </div>
+
+                  </div>
+
+                  <hr>
+
+                  <div class="row">
+
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Codigo area</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      <h6>+52</h6>
+                    </div>
+
+                  </div>
+
+                  <hr>
+
+                  <div class="row">
+
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Telefono</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      <h6>3541033211</h6>
+                    </div>
+
+                  </div>
+
+                  <hr>
+
+                  <div class="row">
+
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Correo</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      <h6>correo1@gmail.com</h6>
+                    </div>
+
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-sm-12 div-opcion-editar">
+                      <a class="btn color-oscuro"  data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa-solid fa-pen-to-square" ></i></a>
+                    </div>
+                  </div>
+
+                  <hr>
+
+                  <div class="row color-oscuro">
+
+                    <div class="col-sm-3 div-titulo-apartado">
+                      <h6 class="mb-0">Datos Cuenta</h6>
+                    </div>
+
+                  </div>
+
+                  <hr>
+
+                  <div class="row">
+
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Usuario</h6>
+                    </div>
+                    <div class="col-sm-7 text-secondary">
+                      <h6>Usuario1</h6>
+                    </div>
+                     <div class="col-sm-2 div-opcion-editar">
+                      <a class="btn color-oscuro"  data-bs-toggle="modal" data-bs-target="#staticBackdropPU"><i class="fa-solid fa-pen-to-square"></i></a>
+                    </div>
+
+                  </div>
+
+                  <hr>
+
+                  <div class="row">
+
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Contraseña</h6>
+                    </div>
+                    <div class="col-sm-7 text-secondary">
+                      <h6>**********</h6>
+                    </div>
+                     <div class="col-sm-2 div-opcion-editar">
+                      <a class="btn color-oscuro"  data-bs-toggle="modal" data-bs-target="#staticBackdropPC"><i class="fa-solid fa-pen-to-square"></i></a>
+                    </div>
+
+                  </div>
+
+                  <hr>
+
+                   <div class="row">
+
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Fecha registro</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      <h6>20/11/2022</h6>
+                    </div>
+
+                  </div>
+
+                  <hr />
+
+
+                  <div class="row color-oscuro">
+                        <div class="col-sm-3 div-titulo-apartado">
+                            <h6 class="mb-0">Direcciones de envios</h6>
+                        </div>
+                  </div>
+
+
+                        <div class="row">
+
+                           {# @if (@Model.detectionService.Device.Type == Device.Mobile)#}
+                            {% if(true==false) %}
+
+                               <div class="container h-100">
+                                    <div class="row d-flex justify-content-center align-items-center h-100">
+                                        {#@foreach (getsetDireccion direccion in @usuario.Direcciones)#}
+                                        {%if(true)%}
+                                            <div class="card col-12 py-2 my-2" style="border-radius: 16px;">
+                                                <div class="card-stepper text-black row">
+
+                                                    <div class="row">
+
+                                                        <div class="col-sm-3">
+                                                            <h6 class="mb-0">Destinatario</h6>
+                                                        </div>
+                                                        <div class="col-sm-9 text-secondary">
+                                                            <h6>Usuario1</h6>
+                                                        </div>
+
+                                                        <div class="col-sm-3">
+                                                            <h6 class="mb-0">Direccion</h6>
+                                                        </div>
+                                                        <div class="col-sm-9 text-secondary">
+                                                            <h6>Guillermo prieto #338-A, Cotija, Los lotes, Michoacan, Mexico - C.P. 59940</h6>
+                                                        </div>
+                                                        <div class="col-12 d-flex">
+                                                            <a class="btn color-oscuro margin-btn col-6"  data-bs-toggle="modal" data-bs-target="#staticBackdropAD" onclick="Editar(@direccion.idDireccion)"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                            <a class="btn color-oscuro margin-btn col-6"  data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa-solid fa-trash-can"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                               </div>
+
+                            {%else%}
+
+                                 <div class="div-tabla-direccion">
+                                    <table class="table">
+                                        <thead>
+                                            <tr class="color-extra-claro">
+                                                <th class="texto-titulo-tabla-p">
+                                                    País
+                                                </th>
+                                                <th class="texto-titulo-tabla-p">
+                                                    Estado
+                                                </th>
+                                                <th class="texto-titulo-tabla-p">
+                                                    Ciudad
+                                                </th>
+                                                <th class="texto-titulo-tabla-p">
+                                                    Colonia
+                                                </th>
+                                                <th class="texto-titulo-tabla-p">
+                                                    Calle
+                                                </th>
+                                                <th class="texto-titulo-tabla-p">
+                                                    Numero Exterior
+                                                </th>
+                                                <th class="texto-titulo-tabla-p">
+                                                    Numero Interior
+                                                </th>
+                                                <th class="texto-titulo-tabla-p">
+                                                    Destinatario
+                                                </th>
+                                                <th class="texto-titulo-tabla-p">
+
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {#@if (@usuario.Direcciones != null)#}
+                                            {% if(true)%}
+                                                {#@foreach (getsetDireccion dir in @usuario.Direcciones)#}
+                                                {%if(true)%}
+                                                    <tr>
+                                                        <td class="columna-tabla">
+                                                            <div class="div-texto-tabla-p">
+                                                                <h6 class="texto-tabla-p">
+                                                                    Mexico
+                                                                </h6>
+                                                            </div>
+
+                                                        </td>
+                                                        <td class="columna-tabla">
+                                                            <div class="div-texto-tabla-p">
+                                                                <h6 class="texto-tabla-p">
+                                                                   Michoacan
+                                                                </h6>
+                                                            </div>
+
+                                                        </td>
+                                                        <td class="columna-tabla">
+                                                            <div class="div-texto-tabla-p">
+                                                                <h6 class="texto-tabla-p">
+                                                                    Cotija
+                                                                </h6>
+                                                            </div>
+
+                                                        </td>
+                                                        <td class="columna-tabla">
+                                                            <div class="div-texto-tabla-p">
+                                                                <h6 class="texto-tabla-p">
+                                                                    Los lotes
+                                                                </h6>
+                                                            </div>
+
+                                                        </td>
+                                                        <td class="columna-tabla">
+                                                            <div class="div-texto-tabla-p">
+                                                                <h6 class="texto-tabla-p">
+                                                                    Guillermo prieto
+                                                                </h6>
+                                                            </div>
+
+                                                        </td>
+                                                        <td class="columna-tabla">
+                                                            <div class="div-texto-tabla-p">
+                                                                <h6 class="texto-tabla-p">
+                                                                    #338
+                                                                </h6>
+                                                            </div>
+
+                                                        </td>
+                                                        <td class="columna-tabla">
+                                                            <div class="div-texto-tabla-p">
+                                                                <h6 class="texto-tabla-p">
+                                                                   A
+                                                                </h6>
+                                                            </div>
+
+                                                        </td>
+                                                        <td class="columna-tabla">
+                                                            <div class="div-texto-tabla-p">
+                                                                <h6 class="texto-tabla-p">
+                                                                    Usuario1
+                                                                </h6>
+                                                            </div>
+
+                                                        </td>
+                                                        <td class="columna-tabla">
+
+                                                            <div class="row">
+                                                                <div class="col-sm-12 div-botones-tabla">
+                                                                    <a class="btn color-oscuro margin-btn"  data-bs-toggle="modal" data-bs-target="#staticBackdropAD" onclick="Editar(@dir.idDireccion)"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                                    <a class="btn color-oscuro margin-btn"  data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa-solid fa-trash-can"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {%endif%}
+                                            {% endif%}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                  <div class="row">
+                    <div class="col-sm-12 div-opcion-agregar">
+                      <a class="btn color-oscuro"  data-bs-toggle="modal" data-bs-target="#staticBackdropAD" onclick="AsignarId(-1)"><i class="fa-solid fa-plus"></i></a>
+                    </div>
+                  </div>
+
+
+
+
+                </div>
+
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+        </div>
+    </div>
+
+
+
+        <!-- Modal DATOS PERSONALES-->
+        <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable no-scroll-x">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Datos personales</h5>
+                 </div>
+              <div class="modal-body no-scroll-x">
+
+                <div class="div-registro ancho-total">
+                    <div class="div-inputs-registro">
+
+                        <div class="div-input-item">
+                            <div class="div-icono-item">
+                              <i class="fa-regular fa-user"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label class="label-item-horiz">Nombre</label>
+                                </div>
+
+                                <div class="div-contenido-input-item">
+                                    <input value="@usuario.Nombre" name="inputNombre" id="inputNombre" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                </div>
+                           </div>
+                        </div>
+
+                        <div class="alert alert-danger div-alert-input" role="alert" id="divAlertNombre" style="display:none">
+                            <label class="label-alert-input" id="labelAlertNombre"></label>
+                        </div>
+
+
+                        <div class="div-input-item">
+                            <div class="div-icono-item">
+                              <i class="fa-regular fa-user"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label class="label-item-horiz">Apellidos</label>
+                                </div>
+
+                                <div class="div-contenido-input-item">
+                                    <input value="@usuario.Apellido" name="inputApellido" id="inputApellido" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                </div>
+
+                            </div>
+                         </div>
+
+                           <div class="alert alert-danger div-alert-input" role="alert" id="divAlertApellido" style="display:none">
+                            <label class="label-alert-input" id="labelAlertApellido"></label>
+                        </div>
+
+                         <div class="div-input-item">
+                            <div class="div-icono-item">
+                              <i class="fa-regular fa-user"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label class="label-item-horiz">Correo</label>
+                                </div>
+
+                                <div class="div-contenido-input-item">
+                                    <input value="@usuario.Correo" name="inputCorreo" id="inputCorreo" type="email" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                </div>
+
+                            </div>
+                         </div>
+
+                           <div class="alert alert-danger div-alert-input" role="alert" id="divAlertCorreo" style="display:none">
+                            <label class="label-alert-input" id="labelAlertCorreo">This is a danger alert—check it out!</label>
+                        </div>
+
+                        <div class="div-input-item">
+                            <div class="div-icono-item">
+                              <i class="fa-regular fa-user"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label class="label-item-horiz">Codigo área</label>
+                                </div>
+
+                                <div class="div-contenido-input-item">
+                                    <select id="inputcodigoTelefono" name="inputcodigoTelefono" class="form form-control input-txt-item form-select" asp-items="@listaCodigosTelefono" required style="text-align: center; ">
+                                         <i class="fa-solid fa-caret-down"></i>
+                                     </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                          <div class="alert alert-danger div-alert-input" role="alert" id="divAlertTelefono" style="display:none">
+                            <label class="label-alert-input" id="labelAlertTelefono"></label>
+                        </div>
+
+
+                        <div class="div-input-item">
+                            <div class="div-icono-item">
+                              <i class="fa-regular fa-user"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label class="label-item-horiz">Telefono</label>
+                                </div>
+
+                                <div class="div-contenido-input-item">
+                                    <input value="@usuario.Telefono" name="inputTelefono" id="inputTelefono" type="tel" class="input-txt-item" placeholder="Campo opcional"/>
+                                </div>
+
+                            </div>
+                        </div>
+
+                          <div class="alert alert-danger div-alert-input" role="alert" id="divAlertTelefono" style="display:none">
+                            <label class="label-alert-input" id="labelAlertTelefono"></label>
+                        </div>
+
+                    </div>
+
+                </div>
+              </div>
+              <div class="modal-footer">
+                  <div class="alert alert-danger col-md-7" role="alert" id="divAlertDatosPersonales" name="divAlertDatosPersonales" style="display:none">
+                   <label class="label-alert-input" name="labelAlertDatosPersonales" id="labelAlertDatosPersonales"></label>
+                </div>
+
+                <button type="button" name="btnCancelarDatosP" id="btnCancelarDatosP" class="btn btn-secondary col-md-2" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" name="btnGuardarDatosP" id="btnGuardarDatosP" class="btn btn-primary col-md-2">Guardar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal DATOS CUENTA CONTRASEÑA-->
+        <div class="modal fade " id="staticBackdropPC" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable no-scroll-x">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Datos cuenta</h5>
+                </div>
+              <div class="modal-body no-scroll-x">
+
+                <div class="div-registro ancho-total">
+                    <div class="div-inputs-registro">
+
+                         <div class="div-input-item">
+                            <div class="div-icono-item">
+                             <i class="fa-solid fa-lock"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label  class="label-item-horiz">Contraseña actual</label>
+                                </div>
+
+                                <div class="div-contenido-input-item">
+                                    <input value="" name="inputContraseñaActual" id="inputContraseñaActual" type="password" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                </div>
+
+                            </div>
+                        </div>
+
+                          <div class="alert alert-danger div-alert-input" role="alert" id="divAlertContraseñaActual" style="display:none">
+                            <label class="label-alert-input" id="labelAlertContraseñaActual"></label>
+                        </div>
+
+                          <div class="div-input-item">
+                            <div class="div-icono-item">
+                             <i class="fa-solid fa-lock"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label  class="label-item-horiz">Nueva contraseña</label>
+                                </div>
+
+                                <div class="div-contenido-input-item">
+                                    <input value="" name="inputContraseña" id="inputContraseña" type="password" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                </div>
+
+                            </div>
+                        </div>
+
+                          <div class="alert alert-danger div-alert-input" role="alert" id="divAlertContraseña" style="display:none">
+                            <label class="label-alert-input" id="labelAlertContraseña"></label>
+                        </div>
+
+                         <div class="div-input-item">
+                            <div class="div-icono-item">
+                             <i class="fa-solid fa-lock"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label class="label-item-horiz">Confirmar contraseña</label>
+                                </div>
+
+                                <div class="div-contenido-input-item">
+                                    <input name="inputConfirmarContraseña" id="inputConfirmarContraseña" type="password" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                </div>
+
+                            </div>
+                        </div>
+
+                          <div class="alert alert-danger div-alert-input" role="alert" id="divAlertConfirmarContraseña" style="display:none">
+                            <label class="label-alert-input" id="labelAlertConfirmarContraseñae"></label>
+                        </div>
+
+                    </div>
+
+                </div>
+              </div>
+              <div class="modal-footer">
+                   <div class="alert alert-danger col-md-7" role="alert" id="divAlertDatosCuentaC" name="divAlertDatosCuentaC" style="display:none">
+                   <label class="label-alert-input col-md-2" name="labelAlertDatosCuentaC" id="labelAlertDatosCuentaC"></label>
+                </div>
+
+                <button name="btnCancelarDatosCC" id="btnCancelarDatosCC"  type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button name="btnGuardarDatosCC" id="btnGuardarDatosCC" type="button" class="btn btn-primary col-md-2">Guardar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         <!-- Modal DATOS CUENTA USUARIO-->
+        <div class="modal fade " id="staticBackdropPU" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable no-scroll-x">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Datos cuenta</h5>
+               </div>
+              <div class="modal-body no-scroll-x">
+                  <div class="div-registro ancho-total">
+                    <div class="div-inputs-registro">
+                         <div class="div-input-item">
+                            <div class="div-icono-item">
+                              <i class="fa-regular fa-user"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label class="label-item-horiz">Usuario</label>
+                                </div>
+
+                                <div class="div-contenido-input-item">
+                                    <input value="@usuario.Usuario" id="inputUsuario" name="inputUsuario" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                </div>
+
+                            </div>
+                        </div>
+
+                          <div class="alert alert-danger div-alert-input" role="alert" id="divAlertUsuario" style="display:none">
+                            <label class="label-alert-input" id="labelAlertUsuario"></label>
+                        </div>
+
+                    </div>
+
+                </div>
+              </div>
+              <div class="modal-footer">
+                   <div class="alert alert-danger col-md-7" role="alert" id="divAlertDatosCuenta" name="divAlertDatosCuenta" style="display:none">
+                   <label class="label-alert-input col-md-2" name="labelAlertDatosCuenta" id="labelAlertDatosCuenta"></label>
+                </div>
+
+                <button name="btnCancelarDatosCU" id="btnCancelarDatosCU"  type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button name="btnGuardarDatosCU" id="btnGuardarDatosCU" type="button" class="btn btn-primary col-md-2">Guardar</button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal AGREGAR  DIRECCIONE-->
+        <div class="modal fade " id="staticBackdropAD" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable no-scroll-x">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Nueva direccion</h5>
+                 </div>
+              <div class="modal-body no-scroll-x">
+                   <div class="div-registro ancho-total">
+                    <div class="div-inputs-registro">
+
+                          <div class="div-input-item">
+                            <div class="div-icono-item">
+                              <i class="fa-solid fa-earth-americas"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label class="label-item-horiz">País</label>
+                                </div>
+
+                                <div class="div-contenido-input-item">
+
+                                     <select id="inputPais" name="inputPais" class="form form-control input-txt-item form-select" asp-items="@listaPaises" required style="text-align: center;"> </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                          <div class="alert alert-danger div-alert-input" role="alert" id="divAlertPais" style="display:none">
+                            <label class="label-alert-input" id="labelAlertPais"></label>
+                        </div>
+
+                         <div class="div-input-item">
+                            <div class="div-icono-item">
+                              <i class="fa-solid fa-landmark-dome"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label class="label-item-horiz">Estado</label>
+                                </div>
+
+                                <div class="div-contenido-input-item">
+
+                                     <select id="inputEstado" name="inputEstado" class="form form-control input-txt-item form-select" asp-items="@listaEstados" required style="text-align: center; ">
+                                         <i class="fa-solid fa-caret-down"></i>
+                                     </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                          <div class="alert alert-danger div-alert-input" role="alert" id="divAlertEstado" style="display:none">
+                            <label class="label-alert-input" id="labelAlertEstado"></label>
+                        </div>
+
+                        <div class="div-input-item">
+                            <div class="div-icono-item">
+                              <i class="fa-solid fa-city"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label class="label-item-horiz">Ciudad</label>
+                                </div>
+
+                                 <div class="div-contenido-input-item">
+
+                                     <select id="inputCiudad" name="inputCiudad" class="form form-control input-txt-item form-select" asp-items="@listaCiudades" required style="text-align: center;"> </select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                          <div class="alert alert-danger div-alert-input" role="alert" id="divAlertCiudad" style="display:none">
+                            <label class="label-alert-input" id="labelAlertCiudad"></label>
+                        </div>
+
+                          <div class="div-input-item">
+                            <div class="div-icono-item">
+                              <i class="fa-solid fa-city"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label class="label-item-horiz">Codigo Postal</label>
+                                </div>
+
+                                 <div class="div-contenido-input-item">
+                                    <input value="" id="inputCodigoPostal" name="inputCodigoPostal" type="text" class="input-txt-item"  value="@usuario.Direcciones" required onkeyup="doSearch(this.value)"/>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                          <div class="alert alert-danger div-alert-input" role="alert" id="divAlertCodigoPostal" style="display:none">
+                            <label class="label-alert-input" id="labelAlertCodigoPostal"></label>
+                        </div>
+                         <div class="div-input-item">
+                            <div class="div-icono-item">
+                             <i class="fa-solid fa-people-roof"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label  class="label-item-horiz">Colonia</label>
+                                </div>
+
+                                <div class="div-contenido-input-item" id="div-contenido-input-item-colonia" name="div-contenido-input-item-colonia">
+
+                                      <select id="inputColonia" name="inputColonia" class="form form-control input-txt-item form-select" asp-items="@listaColonias" required style="text-align: center;"> </select>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                          <div class="alert alert-danger div-alert-input" role="alert" id="divAlertColonia" style="display:none">
+                            <label class="label-alert-input" id="labelAlertColonia"></label>
+                        </div>
+                          <div class="div-input-item">
+                            <div class="div-icono-item">
+                             <i class="fa-solid fa-road"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label class="label-item-horiz">Nombre Calle</label>
+                                </div>
+
+                                <div class="div-contenido-input-item">
+                                    <input name="inputCalle" id="inputCalle" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                </div>
+
+                            </div>
+                        </div>
+
+                          <div class="alert alert-danger div-alert-input" role="alert" id="divAlertCalle" style="display:none">
+                            <label class="label-alert-input" id="labelAlertCalle"></label>
+                        </div>
+
+                         <div class="div-input-item">
+                            <div class="div-icono-item">
+                            <i class="fa-solid fa-hashtag"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label class="label-item-horiz">Numero exterior</label>
+                                </div>
+
+                                <div class="div-contenido-input-item">
+                                    <input name="inputNumeroExterior" id="inputNumeroExterior" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                </div>
+
+                            </div>
+                        </div>
+
+                          <div class="alert alert-danger div-alert-input" role="alert" id="divAlertNumeroExterior" style="display:none">
+                            <label class="label-alert-input" id="labelAlertNumeroExterior"></label>
+                        </div>
+
+                         <div class="div-input-item">
+                            <div class="div-icono-item">
+                             <i class="fa-solid fa-hashtag"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label class="label-item-horiz">Numero interior</label>
+                                </div>
+
+                                <div class="div-contenido-input-item">
+                                    <input name="inputNumeroInterior" id="inputNumeroInterior" type="text" class="input-txt-item" placeholder="Campo opcional"/>
+                                </div>
+
+                            </div>
+                        </div>
+
+                          <div class="alert alert-danger div-alert-input" role="alert" id="divAlertNumeroInterior" style="display:none">
+                            <label class="label-alert-input" id="labelAlertNumeroInterior"></label>
+                        </div>
+
+                          <div class="div-input-item">
+                            <div class="div-icono-item">
+                            <i class="fa-solid fa-person"></i>
+                            </div>
+                            <div class="div-leyenda-input-item">
+                                <div class="div-leyenda-item-horiz">
+                                     <label class="label-item-horiz">Destinatario</label>
+                                </div>
+
+                                <div class="div-contenido-input-item">
+                                    <input name="inputDestinatario" id="inputDestinatario" type="text" class="input-txt-item" placeholder="Campo obligatorio"/>
+                                </div>
+
+                            </div>
+                        </div>
+
+                          <div class="alert alert-danger div-alert-input" role="alert" id="divAlertDestinatario" style="display:none">
+                            <label class="label-alert-input" id="labelAlertDestinatario"></label>
+                        </div>
+
+                    </div>
+
+                </div>
+              </div>
+              <div class="modal-footer">
+                  <div class="alert alert-danger col-md-7" role="alert" id="divAlertDatosDireccion" name="divAlertDatosDireccion" style="display:none">
+                   <label class="label-alert-input" name="labelAlertDatosDireccion" id="labelAlertDatosDireccion"></label>
+                </div>
+
+                <button name="btnCancelarDatosAD" id="btnCancelarDatosAD"  type="button" class="btn btn-secondary  col-md-2" data-bs-dismiss="modal">Cancelar</button>
+                <button name="btnGuardarDatosAD" id="btnGuardarDatosAD" type="button" class="btn btn-primary  col-md-2">Guardar</button>
+
+              </div>
+            </div>
+          </div>
+        </div>
 
 
 <script src="{{ url_for('static', filename='wwwroot/lib/jquery/dist/jquery.min.js' ) }}"></script>
@@ -36,4 +998,9 @@
 <script src="{{ url_for('static', filename='wwwroot/js/ScriptModalDireccion.js' ) }}"></script>
 
 </body>
+
+<footer>
+    {#@(await Component.InvokeAsync("PieInformacion"))#}
+{{pieInformacion()}}
+</footer>
 </html>

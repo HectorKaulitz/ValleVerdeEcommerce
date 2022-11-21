@@ -72,6 +72,11 @@ def procesoCompra():
 def ayuda():
     return render_template('ayuda.html')
 
+@app.route('/perfilUsuario')
+def perfilUsuario():
+    return render_template('perfilUsuario.html')
+
+
 
 
 if __name__ == '__main__':
