@@ -36,6 +36,10 @@ def productos():
 def historialCompras():
     return render_template('historialCompras.html')
 
+@app.route('/promociones')
+def promociones():
+    return render_template('promociones.html')
+
 @app.route('/producto')
 def producto():
     return render_template('Producto.html')
