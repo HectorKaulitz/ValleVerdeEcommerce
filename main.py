@@ -50,7 +50,19 @@ def comentarios():
 
 @app.route('/carritoUsuario')
 def carrito():
-    return render_template('carritoUsuario.html')
+    return render_template('carritoUsuario.html', EsParaFavoritos=False)
+
+@app.route('/favorito')
+def favorito():
+    return render_template('carritoUsuario.html', EsParaFavoritos=True)
+
+@app.route('/procesoCompra')
+def procesoCompra():
+    return render_template('procesoCompra.html')
+
+@app.route('/ayuda')
+def ayuda():
+    return render_template('ayuda.html')
 
 
 

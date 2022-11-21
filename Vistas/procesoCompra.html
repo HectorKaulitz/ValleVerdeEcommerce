@@ -1,0 +1,308 @@
+{% from 'cabeceraComponente.html' import cabecera with context %}
+{% from 'pieInformacion.html' import pieInformacion with context %}
+{% from 'totalesCarrito.html' import totalesCarrito with context %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Proceso compra</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/site.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosBarraSuperior.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloSubMenuFlotante.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloCartaCarrito.css' ) }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloProcesoCompra.css' ) }}">
+
+     <script src="https://kit.fontawesome.com/1e636cb0f6.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <style>
+
+        :root {
+            --colorOscuro: rgb(116,196,102);
+            --colorMasOscuro: rgb(35, 61, 31);
+            --colorClaro: rgb(206,234,201);
+            --colorExtraClaro: rgb(243,250,242));
+            --colorBlanco: white;
+        }
+   </style>
+
+</head>
+<header>
+    {{cabecera('')}}
+</header>
+<body>
+
+<section class="section-proceso-compra jumbotron jumbotron-fluid ">
+        <div class="div-contenedor-principal-proceso-compra container">
+
+
+            <div class="jumbotron jumbotron-fluid subcontenedor-proceso-compra jumbotron1">
+                <div class="container contenedor-envio">
+
+                    <div class="contenedor-leyenda-envio">
+                        <h3 class="leyenda-envio">
+                            Direccion de entrega
+                        </h3>
+                    </div>
+                    <hr />
+                    <div>
+                        <div class="div-radio-entrega">
+                            {#@if(paqueteriaHabilitada)#}
+
+                            {% if(true)%}
+                                <div class="form-check margen-derecha-5">
+                                    {#@if(Model.envioADomicilioPorDefecto)#}
+                                    {% if(true)%}
+                                        <input class="form-check-input" type="radio" name="radioP" id="radioPaqueteria" checked onclick="CambiarTipoEnvio(true)">
+
+                                    {% else %}
+                                        <input class="form-check-input" type="radio" name="radioP" id="radioPaqueteria" onclick="CambiarTipoEnvio(true)">
+                                    {% endif %}
+                                    <label class="texto-radio" for="radioPaqueteria">
+                                        Entrega por paqueteria
+                                    </label>
+                                </div>
+                            {%endif%}
+
+                            <div class="form-check margen-derecha-5">
+                                {#@if(!Model.envioADomicilioPorDefecto)#}
+                                {% if(true==false)%}
+                                    <input class="form-check-input" type="radio" name="radioP" id="radioTienda" checked onclick="CambiarTipoEnvio(false)">
+
+                                {% else %}
+                                    <input class="form-check-input" type="radio" name="radioP" id="radioTienda" onclick="CambiarTipoEnvio(false)">
+                                {% endif %}
+                                <label class="texto-radio" for="radioTienda">
+                                    Recoger en tienda
+                                </label>
+                            </div>
+
+                        </div>
+
+                        {#@if(!Model.envioADomicilioPorDefecto)#}
+                        {% if(true==false)%}
+                            <div class="contenedor-informacion-direccion-envio">
+                                <div class="contenedor-icono-envio">
+                                    <span class="span-icono">
+                                        <i class="fa-solid fa-location-dot icono-ubicacion"></i>
+                                    </span>
+                                </div>
+                                <div class="contenedor-informacion-seleccionada-sin-envio">
+                                    <div class="contenedor-destinatario-informacion">
+                                        <h4 class="textos">Bodega Valle Verde</h4>
+                                    </div>
+                                    <div class="contenedor-datos-direccion">
+                                        <h6 class="textos">Madero #870,Cotija,Michoacan,México.</h6>
+                                    </div>
+                                </div>
+                                @*<div class="contenedor-elegir-opcion-envio">
+                                    <button type="button" class="btn btn-primary btn-sm me-1 mb-2 btn-elejir-opcion" data-mdb-toggle="tooltip" title="" data-mdb-original-title="Proceder a compra" onclick="">
+                                                Elegir otra opcion
+                                        </button>
+                                </div>*@
+                            </div>
+
+                        {%else%}
+                            <div class="contenedor-informacion-direccion-envio">
+                                <div class="contenedor-icono-envio">
+                                    <span class="span-icono">
+                                        <i class="fa-solid fa-location-dot icono-ubicacion"></i>
+                                    </span>
+                                </div>
+                                <div class="contenedor-informacion-seleccionada">
+                                    <div class="contenedor-destinatario-informacion">
+                                        <h4 class="textos">Destinatario</h4>
+                                    </div>
+                                    <div class="contenedor-datos-direccion">
+                                        <h6 class="textos">GUILLERMO PRIETO #338,COTIJA,MEXICO.</h6>
+                                    </div>
+                                </div>
+                                <div class="contenedor-elegir-opcion-envio">
+                                    <button type="button" class="btn btn-primary btn-sm me-1 mb-2 btn-elejir-opcion" data-mdb-toggle="tooltip" title="" data-mdb-original-title="Proceder a compra" onclick="">
+                                                Elegir otra opcion
+                                        </button>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+
+                </div>
+                <div class="container contenedor-productos">
+                    <div class="contenedor-leyenda-productos">
+                        <hr />
+                        <h3 class="leyenda-productos">
+                            Productos en compra:
+                        </h3>
+                    </div>
+                    <div>
+
+                        <section class="h-100  seccion-PC">
+
+                            <div class="subdiv-PC">
+
+                                <div class="div-carta-itemsPC">
+                                    <div class="dropdown-divider"></div>
+                                    {#@if (productosCarrito.Count > 0)#}
+                                    {% if(true) %}
+                                        {#@foreach (getsetProductoCarrito productoCarrito in productosCarrito)#}
+                                        {% if(true) %}
+                                            <div style="" class="div-carta-proceso-compra-itemPC">
+
+                                                <div class="contenedor-imagen-itemPC  d-flex flex-wrap align-items-center">
+                                                    <img src="../static/wwwroot/Resources/Productos/089826001415.png"  class="item-imagen-productoPC img-fluid mx-auto d-block"/>
+                                                </div>
+
+                                                <div class="contenedor-2-itemPC">
+                                                    <p class="item-informacion-parrafosPC"><strong> DURAZNO LATA 355 ML </strong></p>
+                                                    <p class="item-informacion-parrafosPC">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since </p>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="dropdown-divider"></div>
+                                        {% endif %}
+
+                                    {% else %}
+                                        <div class="jumbotron jumbotron-fluid">
+                                            <div class="container contenedor-venta-vacia">
+                                            <h1 class="display-4 texto-carrito-vacio">Tu venta no tiene productos</h1>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+
+                        </section>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="jumbotron jumbotron-fluid subcontenedor-proceso-compra jumbotron2">
+
+                <div class="container contenedor-resumen-productos">
+                    <div class="contenedor-leyenda-Resumen">
+                        <h3 class="leyenda-Resumen">
+                            Resumen producto(s):
+                        </h3>
+                    </div>
+
+                    <div  class="div-carta-carrito-totalC">
+                       {# @if (@productosCarrito.Count > 0) #}
+                        {% if(true) %}
+
+                            <table class="table blockquote text-center">
+                                <tr>
+                                    <td class="texto-tablaPC">Producto</td>
+                                    <th class="texto-tablaPC">Cantidad</th>
+                                    <th class="texto-tablaPC">Precio unitario</th>
+                                    <th class="texto-tablaPC">Total en venta</th>
+                                </tr>
+                               {# @foreach (getsetProductoCarrito productoCarrito in productosCarrito) #}
+                                {% if(true) %}
+                                    <tr>
+                                        <td class="texto-tablaPCP">DURAZNO LATA 355 ML</td>
+                                        <td class="texto-tablaPCP">1</td>
+
+                                       {# @if (productoCarrito.precioOriginal != productoCarrito.precioPromocion)#}
+                                        {% if(true==false)%}
+                                            <td class="texto-tablaPCP">
+                                                <div class="position-relative">
+                                                    <p><strike class="strike-text precio-descuento">@productoCarrito.precioOriginal.ToString("C")</strike></p>
+                                                    @productoCarrito.precioPromocion.ToString("C")
+                                                </div>
+                                            </td>
+                                            <td class="texto-tablaPCP">
+                                                <div class="position-relative">
+                                                    <p><strike class="strike-text precio-descuento">@productoCarrito.importeOriginalProducto.ToString("C")</strike></p>
+                                                    @productoCarrito.importeProducto.ToString("C")
+                                                </div>
+                                            </td>
+
+                                        {%else%}
+                                            <td class="texto-tablaPCP">$20</td>
+                                            <td class="texto-tablaPCP">$22</td>
+                                        {% endif %}
+                                    </tr>
+                                {% endif %}
+
+                            </table>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+                <div class="container mt-3">
+                    <div class="contenedor-leyenda-Resumen">
+                        <hr />
+                        <h3 class="leyenda-Resumen">
+                            Resumen compra:
+                        </h3>
+                    </div>
+
+
+
+                    <div  class="div-carta-carrito-totalC">
+                        {#@if (@productosCarrito.Count > 0)#}
+                        {% if(true)%}
+                            {#@(await Component.InvokeAsync("TotalesCarrito",@obj.totalesCarrito))#}
+                            {{totalesCarrito()}}
+                            <div class="col-12 row">
+                                <div class="div-radio-pago col">
+                                    {#@foreach (getsetTipoPago pago in obj.tipoPagos)#}
+
+                                        {#if (pago.idTipopago == obj.tipoPago+"")#}
+
+                                            <div class="form-check margen-derecha-5">
+                                                <input class="form-check-input" type="radio" name="idRadioPagar" id="idRadioPagar @pago.idTipopago" onclick="ActualizarTipoPago(@pago.idTipopago)" checked>
+                                                <label class="texto-radio" for="idRadioPagarTienda">
+                                                    Mercado Pago
+                                                </label>
+                                            </div>
+
+                                        {#else#}
+                                            <div class="form-check margen-derecha-5">
+                                                <input class="form-check-input" type="radio" name="idRadioPagar" id="idRadioPagar @pago.idTipopago" onclick="ActualizarTipoPago(@pago.idTipopago)">
+                                                <label class="texto-radio" for="idRadioPagarTienda">
+                                                   Tienda
+                                                </label>
+                                            </div>
+                                        {#endif#}
+
+
+                                    {# endif #}
+
+                                </div>
+
+                                <div class="col-auto" style="margin: 10px;">
+                                    <button type="button" class="btn btn-primary btn-sm me-1 mb-2 btn-continuar-compra" data-mdb-toggle="tooltip" title="" data-mdb-original-title="Proceder" onclick="GenerarPagoCompra('@obj.idUsuarioEncriptado')">
+                                            Continuar
+                                    </button>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </section>
+
+<script src="{{ url_for('static', filename='wwwroot/lib/jquery/dist/jquery.min.js' ) }}"></script>
+ <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='wwwroot/js/ScriptProcesoCompra.js' ) }}"></script>
+</body>
+
+<footer>
+{#@(await Component.InvokeAsync("PieInformacion"))#}
+{{pieInformacion()}}
+</footer>
+</html>

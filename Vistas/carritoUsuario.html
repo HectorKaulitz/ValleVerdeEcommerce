@@ -1,6 +1,6 @@
 {% from 'cabeceraComponente.html' import cabecera with context %}
 {% from 'pieInformacion.html' import pieInformacion with context %}
-
+{% from 'productosFavoritos.html' import productosFavoritos with context %}
 {% from 'carritoCompleto.html' import carritoCompleto with context %}
 {% from 'carouselProductos.html' import carouselProductos with context %}
 
@@ -44,7 +44,7 @@
 <div class="contenedor-principal-carritoC">
 
     {#@if (!@objetoCarrito.EsParaFavoritos)#}
-    {% if(true) %}
+    {% if(EsParaFavoritos==False) %}
         <ul class="nav nav-tabs ul-tab-carrito-usuario" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="carrito-tab" data-bs-toggle="tab" data-bs-target="#carrito" type="button" role="tab" aria-controls="carrito" aria-selected="true">Carrito</button>
@@ -62,7 +62,8 @@
 
 
             <div class="tab-pane fade" id="favoritos" name="favoritos" role="tabpanel" aria-labelledby="favoritos-tab">
-                @(await Component.InvokeAsync("ProductosFavoritos",@objFavoritos))
+                {@(await Component.InvokeAsync("ProductosFavoritos",@objFavoritos))}
+                {{productosFavoritos()}}
             </div>
 
             </div>
@@ -85,7 +86,8 @@
 
 
             <div class="tab-pane fade show active" id="favoritos" name="favoritos" role="tabpanel" aria-labelledby="favoritos-tab">
-                @(await Component.InvokeAsync("ProductosFavoritos",@objFavoritos))
+                {#@(await Component.InvokeAsync("ProductosFavoritos",@objFavoritos))#}
+                {{productosFavoritos()}}
             </div>
 
             </div>
