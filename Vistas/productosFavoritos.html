@@ -1,0 +1,98 @@
+
+{% macro productosFavoritos() %}
+
+<section class="h-100  seccion-carta-carritoF">
+        <div class="subdiv-carta-carritoF">
+            <div class="div-carta-carrito-itemsF">
+                {#@if (productosFavoritos.Count > 0)#}
+                {%if(true)%}
+                    {#@foreach (getsetProductoFavorito productoFavorito in productosFavoritos)#}
+                    {% if(true) %}
+                        <div style="" class="div-carta-carrito-itemF row">
+
+                            <div class="contenedor-1-itemF col-md-2 col-4">
+                                <div class="contenedor-imagen-itemF">
+                                        <img src="../static/wwwroot/Resources/Productos/089826001415.png"  class="item-imagen-productoF"/>
+
+                                </div>
+                            </div>
+
+                            <div class="contenedor-2-itemF col-md-7 col-8">
+                                <p class="item-informacion-parrafosF"><strong>Producto favorito1</strong></p>
+
+                                <div class="contenedor-precion-subio-bajo">
+
+                                 {#@if(productoFavorito.DiferenciaConPrecioActual>0)//el precio subio#}
+                                  {% if(true==false)%}
+                                    <p class="parrafo-diferencia-precio text-danger">El precio subio @productoFavorito.DiferenciaConPrecioActual.ToString("C") desde que se agrego </p>
+                                  {%endif%}
+                                  {#@if(productoFavorito.DiferenciaConPrecioActual<0)//el precio bajo#}
+                                  {%if(true)%}
+                                    <p class="parrafo-diferencia-precio text-success">El precio bajo $05.00 desde que se agrego </p>
+                                  {% endif %}
+                                 </div>
+                                <p class="item-informacion-parrafosF">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s</p>
+                            </div>
+
+                            <div class="contenedor-3-itemF col-md-2 col-12">
+
+                                <div class="contenedor-item-precioF">
+                                    {#@if(productoFavorito.PrecioPromocion<=0)#}
+                                    {% if(true==false) %}
+                                       <p class="item-informacion-parrafosF leyenda-precio-totalF"><strong >Sin precio</strong></p>
+
+                                    {%else%}
+                                        {#@if (productoFavorito.PrecioAgregado != productoFavorito.PrecioPromocion)#}
+                                        {% if(true==false)%}
+                                            <p class="item-informacion-parrafosF leyenda-precio-totalF"><strike >@productoFavorito.PrecioAgregado.ToString("C")</strike></p>
+                                            <p class="item-informacion-parrafosF leyenda-precio-totalF"><strong >@productoFavorito.PrecioPromocion.ToString("C")</strong></p>
+
+                                        {%else%}
+                                            <p class="item-informacion-parrafosF leyenda-precio-totalF"><strong >$12</strong></p>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+
+                                <div class="contenedor-cantidad-input-botonesF">
+                                    {#@if (productoFavorito.mostrarInteraccion)#}
+                                    {% if(true)%}
+                                        <button name="btnMoverCarritoCompleto" id="btnMoverCarritoCompleto" type="button" class="btn btn-primary btn-mover-carrito" onclick="convertirProductoFavorito('@productoFavorito.IDProductoFavoritoEncriptado')" >Mover a carrito</button>
+                                    {% endif %}
+                                </div>
+
+                                <div class="alert alert-danger div-alert-inputF" role="alert" >
+                                    {#@if (@productoFavorito.ExistenciaTotalProducto < 0)#}
+                                    {% if(true) %}
+                                        <label class="label-alert-input" >Existencia: 0</label>
+
+                                    {% else %}
+                                       <label class="label-alert-input" >Existencia: @productoFavorito.ExistenciaTotalProducto</label>
+
+                                    {% endif %}
+                                </div>
+
+                            </div>
+                            <div class="contenedor-4-itemF col-md-1 col-12">
+
+                                <div class="contenedor-item-boton-eliminarF">
+                                    <i class="fa-solid fa-trash-can icon-eliminarF" onclick="EliminarProductoFavorito('@productoFavorito.IDProductoFavoritoEncriptado')"></i>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="dropdown-divider"></div>
+                    {% endif %}
+
+                {% else %}
+                    <div class="jumbotron jumbotron-fluid">
+                      <div class="container contenedor-favorito-vacio">
+                        <h1 class="display-4 texto-favorito-vacio">Tus productos favoritos estan vacios</h1>
+                      </div>
+                    </div>
+                {% endif %}
+
+            </div>
+
+        </div>
+</section>
+{% endmacro %}
