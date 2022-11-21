@@ -1,9 +1,9 @@
 
-{% macro itemProductoBusqueda(index, nombreProducto, descripcion,precioOriginal,precioDescuento) %}
+{% macro itemProductoBusqueda(index, nombreProducto, descripcion,precioOriginal,precioDescuento, idProducto) %}
 
 
 <div class="row p-2 bg-white border rounded contenedor-producto-item">
-    <a class="enlace-producto col-md-9" asp-controller="Inicio" asp-action="Producto" asp-route-idProducto="@producto.idProductoEncriptado">
+    <a class="enlace-producto col-md-9" asp-controller="Inicio" href="producto?idProducto='{{idProducto}}'">
         <div class="col-md-3 col-4 mt-1 div-imagen-producto d-flex flex-wrap align-items-center"><img class="img-fluid mx-auto d-block rounded product-image" src="../static/wwwroot/Resources/LOGO.png"></div>
 
 

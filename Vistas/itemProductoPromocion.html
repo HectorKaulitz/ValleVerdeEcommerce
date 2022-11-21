@@ -11,9 +11,10 @@
 {% set mostrarInteraccion = 6 %}
 {% set estaEnProductoFavorito = 7 %}
 {% set urlImagen = 8 %}
+{% set idProducto = 9 %}
 
 <div class="row p-2 bg-white border rounded contenedor-producto-item">
-    <a class="enlace-producto col-md-9" asp-controller="Inicio" asp-action="Producto" asp-route-idProducto="@producto.IDProductoEncriptado">
+    <a class="enlace-producto col-md-9" asp-controller="Inicio" href="producto?idProducto='{{producto[idProducto]}}'">
         <div class="col-md-3 col-4 mt-1 div-imagen-producto d-flex flex-wrap align-items-center"><img class="img-fluid mx-auto d-block rounded product-image" src="{{producto[urlImagen]}}"></div>
 
 
