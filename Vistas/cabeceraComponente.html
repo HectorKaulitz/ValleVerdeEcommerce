@@ -82,7 +82,7 @@
                         <ul class="navbar-nav flex-grow-1 ul-opciones-nav">
 
                             <li class="nav-item li-opciones-nav">
-                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
+                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Home" href="/">Inicio</a>
                             </li>
 
                             <li class="nav-item dropdown" id="myDropdown">
@@ -97,22 +97,22 @@
                             {# @foreach (getsetCategoria categoria in categorias) #}
                             <li class="nav-item">
                                  <!-- <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" asp-action="Productos" asp-route-tipo="@categoria.tipEncriptado" asp-route-numeroPagina="$1" asp-route-productosPag="@sNum" asp-route-busqueda="" >@categoria.nombre</a>-->
-                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" asp-action="Productos" asp-route-tipo="@categoria.tipEncriptado" asp-route-numeroPagina="$1" asp-route-productosPag="@sNum" asp-route-busqueda="" >Linea</a>
+                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" href="productos?tipo=@categoria.tipEncriptado&numeroPagina=$1&productosPag={{sNum}}&busqueda=''" >Linea</a>
 
                             </li>
                             <li class="nav-item">
                                      <!-- <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" asp-action="Productos" asp-route-tipo="@categoria.tipEncriptado" asp-route-numeroPagina="$1" asp-route-productosPag="@sNum" asp-route-busqueda="" >@categoria.nombre</a>-->
-                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" asp-action="Productos" asp-route-tipo="@categoria.tipEncriptado" asp-route-numeroPagina="$1" asp-route-productosPag="@sNum" asp-route-busqueda="" >Marca</a>
+                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" href="productos?tipo=@categoria.tipEncriptado&numeroPagina=$1&productosPag={{sNum}}&busqueda=''" >Marca</a>
 
                             </li>
 
                             {# } #}
                             <li class="nav-item li-opciones-nav">
-                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" asp-action="Promociones" asp-route-numeroPagina="$1" asp-route-productosPag="'@sNum'" >Promociones</a>
+                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" href="promociones?numeroPagina=$1&productosPag='{{sNum}}'" >Promociones</a>
                             </li>
 
                               <li class="nav-item li-opciones-nav">
-                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Home" asp-action="Ayuda">Ayuda</a>
+                                <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Home" href="ayuda">Ayuda</a>
                             </li>
 
 

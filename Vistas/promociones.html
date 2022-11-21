@@ -1,0 +1,242 @@
+{% from 'cabeceraComponente.html' import cabecera with context %}
+{% from 'carouselProductos.html' import carouselProductos with context %}
+{% from 'pieInformacion.html' import pieInformacion with context %}
+{% from 'filtrosAcordeon.html' import filtrosAcordeon with context %}
+{% from 'productosBusqueda.html' import productosBusqueda with context %}
+{% from 'itemProductoPromocion.html' import itemProductoPromocion with context %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/site.css' ) }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosBarraSuperior.css' ) }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloCartaCarrito.css' ) }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloSubMenuFlotante.css' ) }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloSubMenuFlotante.css' ) }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosFiltrosAside.css' ) }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloFiltrosEspeciales.css' ) }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosProductosBusqueda.css' ) }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosCarouselProductos.css' ) }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosPaginaGrid.css' ) }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosPromociones.css' ) }}">
+
+    <script src="https://kit.fontawesome.com/1e636cb0f6.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+     <style>
+
+        :root {
+            --colorOscuro: rgb(116,196,102);
+            --colorMasOscuro: rgb(35, 61, 31);
+            --colorClaro: rgb(206,234,201);
+            --colorExtraClaro: rgb(243,250,242));
+            --colorBlanco: white;
+        }
+   </style>
+</head>
+<body>
+
+<header>
+       {{cabecera('bdbhdbd')}}
+</header>
+
+<div class="contenedor-principal-promociones">
+
+    {# @if(@productosPromocion!=null && @productosPromocion.Count>0) #}
+     {% set nombreDependiendoCategoria = 0 %}
+     {% set nombreProducto = 1 %}
+     {% set descripcion = 2 %}
+     {% set precio = 3 %}
+    {% set precioPromocion = 4 %}
+    {% set urlImagen = 5 %}
+    {% set productosPromocion = [['Promocion 1','Nombre producto','Descripcion del producto',150,100,"../static/wwwroot/Resources/LOGO.png"], ['Promocion 1','Nombre producto','Descripcion del producto',150,100,"../static/wwwroot/Resources/LOGO.png"],['Promocion 1','Nombre producto','Descripcion del producto',150,100,"../static/wwwroot/Resources/LOGO.png"],['Promocion 1','Nombre producto','Descripcion del producto',150,100,"../static/wwwroot/Resources/LOGO.png"],['Promocion 1','Nombre producto','Descripcion del producto',150,100,"../static/wwwroot/Resources/LOGO.png"]] %}
+
+    {% if(productosPromocion!=null and productosPromocion|length>0) %}
+
+      <div class="">
+          <div id="carouselExampleControls" class="carousel slide" data-bs-ride="">
+
+           <div class="contenedor-leyenda-carousel-grid">
+
+              {#@foreach(getsetProductoPromocionPorCategoria producto in @productosPromocion)#}
+              {# for producto in productosPromocion #}
+
+                  <h2 class="leyenda-carousel-grid">Promocion en <b>{{productosPromocion[0][nombreDependiendoCategoria]}}</b></h2>
+
+              {# endfor #}
+
+           </div>
+
+           <div class="carousel-inner">
+
+          {# @for (int i = 0; i < productosPromocion.Count; i++) #}
+          {% set itemAbierto = {'value': false} %}
+          {% set active = {'value': 'active'} %}
+          {% set productosSlider = 3 %}
+          {% for producto in productosPromocion %}
+              {% if(itemAbierto.value == false) %}
+
+                    <div class="carousel-item {{active.value}}">
+                        <div class="cards-wrapper ">
+
+                {% if itemAbierto.update({'value': true}) %} {% endif %}
+                 {% if active.update({'value': ""}) %} {% endif %}
+              {% endif %}
+
+                <div class="card item-promo">
+                    <img src="{{producto[urlImagen]}}" class="card-img-top img-fluid img" alt="...">
+                    <div class="card-body thumb-content">
+                        <a class="card-title nombre-producto" asp-controller="Inicio" asp-action="Producto" asp-route-idProducto="@productosPromocion[i].IDProductoEncriptado"> <h5 style="color:black;">{{producto[nombreProducto]}}</h5> </a>
+                        <p class="card-text descripcion-promocion">{{producto[descripcion]}}</p>
+                        <p class="item-price precio-pro"><strike> {{"${:,.2f}".format(producto[precio])}} </strike> <b>{{"${:,.2f}".format(producto[precioPromocion])}}</b></p>
+                        <div class="contenedor-botone-agregar-carrito-promo">
+                            {# if(@objetoPromociones.informacionCarousel.usuario!=null) #}
+                            {% if(false) %}
+
+                            <button class="btn btn-primary btn-sm " type="button" onclick="AgregarAcarrito(@productosPromocion[i].IDProducto,@objetoPromociones.informacionCarousel.usuario.IDUsuarioRegistrado, '@productosPromocion[i].imagenes[0]','@productosPromocion[i].nombreProducto')">Añadir al carrito</button>
+
+                            {% else %}
+
+                             <button class="btn btn-primary btn-sm " type="button" onclick="AgregarAcarrito(@productosPromocion[i].IDProducto,null, '@productosPromocion[i].imagenes[0]','@productosPromocion[i].nombreProducto')">Añadir al carrito</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+
+                {% if (loop.index % productosSlider == 0) %}
+                    </div>
+                    </div>
+                   {% if itemAbierto.update({'value': false}) %} {% endif %}
+
+                {% endif %}
+          {% endfor %}
+           {% if(itemAbierto.value) %}
+
+				</div>
+				</div>
+				{% if itemAbierto.update({'value': false}) %} {% endif %}
+          {% endif %}
+
+
+         </div>
+
+          <button class="carousel-control-prev" data-bs-target="#carouselExampleControls" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </button>
+          <button class="carousel-control-next" data-bs-target="#carouselExampleControls" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </button>
+
+        </div>
+    </div>
+    {% endif %}
+
+
+<div class="contenedor-subprincipal-productos-busqueda">
+    <div class="d-flex justify-content-center row">
+        <div class="contenedor-producto">
+
+            {# @foreach (getsetProductoPromocionPorCategoria producto in productosPromocionIndividuales) #}
+            {% set productosPromocionIndividuales = [['Nombre producto','Descripcion del producto',15,10,true,10,true,false,"../static/wwwroot/Resources/LOGO.png"],['Nombre producto','Descripcion del producto',15,10,true,10,true,true,"../static/wwwroot/Resources/LOGO.png"],['Nombre producto','Descripcion del producto',15,10,true,10,true,false,"../static/wwwroot/Resources/LOGO.png"],['Nombre producto','Descripcion del producto',15,10,true,10,true,false,"../static/wwwroot/Resources/LOGO.png"],['Nombre producto','Descripcion del producto',15,10,true,10,true,false,"../static/wwwroot/Resources/LOGO.png"],['Nombre producto','Descripcion del producto',15,10,true,10,true,false,"../static/wwwroot/Resources/LOGO.png"]] %}
+            {% for producto in productosPromocionIndividuales %}
+
+                 {# @await Component.InvokeAsync("ItemProductoPromocion",new{ producto=@producto,usuario=@objetoPromociones.informacionCarousel.usuario} ) #}
+                {{itemProductoPromocion(producto)}}
+
+            {% endfor %}}
+
+        </div>
+    </div>
+</div>
+<ul class="pagination row">
+
+        {# @if(numeDiaAct>1) #}
+        {% set numeDiaAct = 5 %}
+        {% if(numeDiaAct>1) %}
+
+            <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+{{numeDiaAct}},"$"+({{numeDiaAct}}-1))">Anterior</a></li>
+            <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+{{numeDiaAct}},"$1")">1</a></li>
+        {% endif %}
+
+        {# @for(int ant=@numeDiaAct-@numCuadros;ant<@numeDiaAct ;ant++) #}
+        {% set numCuadros = 4 %}
+        {% set ant = (numeDiaAct-numCuadros) %}
+        {% set cont = 0 %}
+        {%  for i  in range(numeDiaAct) if i < numeDiaAct %}
+            {% if (i > 1) %}
+
+                {% if(numeDiaAct-numCuadros==ant and ant>2) %}
+
+                     <li class="page-item col-auto"><a class="page-link paginacion" href="">...</a></li>
+                {% endif %}
+                <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+{{numeDiaAct}},"$"+{{ant}})">{{i}}</a></li>
+            {% endif %}
+            {% set cont = (cont+1) %}
+        {% endfor %}
+
+         <li class="page-item col-auto active"><a class="page-link paginacion" href="@urlDireccion"> {{numeDiaAct}}</a></li>
+
+        {# @for(int ant=@numeDiaAct+1;ant<=@numeDiaAct+@numCuadros;ant++) #}
+
+        {% set numCuadros = 4 %}
+        {% set ant = (numeDiaAct+1) %}
+        {%  for i  in range((numeDiaAct+numCuadros)) if i+ant-1 < (numeDiaAct+numCuadros) %}
+
+            {# if (@ant < @objetoProductos.Informacion.NumeroTotalProductos) #}
+            {% if (i+ant < 1200) %}
+
+                 <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+@numeDiaAct,"$"+ant)">{{i+ant}}</a></li>
+
+                {# if(@numeDiaAct+@numCuadros==@ant && ant<@objetoProductos.Informacion.NumeroTotalProductos-1) #}
+                {% if((numeDiaAct+numCuadros)==i+ant and i+ant<(1200-1)) %}
+
+                     <li class="page-item col-auto"><a class="page-link paginacion" href="">...</a></li>
+                {% endif %}
+
+            {% endif %}
+        {% endfor %}
+
+        {# @if (numeDiaAct < objetoProductos.Informacion.NumeroTotalProductos) #}
+        {% if (numeDiaAct < 1200) %}
+
+            <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+@numeDiaAct,"$"+@objetoProductos.Informacion.NumeroTotalProductos)">1200</a></li>
+            <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+@numeDiaAct,"$"+(@numeDiaAct+1))" >Siguiente</a></li>
+        {% endif %}
+
+</ul>
+
+
+
+
+    <div class="contenedor-carousel-en-productos">
+        <div class="contenedor-carousel-pag">
+            {#@if (@objetoPromociones.informacionCarousel.productosCarousel.Count > 0)#}
+            {% if (true) %}
+
+
+                {{carouselProductos('DESTACADOS')}}
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='wwwroot/lib/jquery/dist/jquery.min.js' ) }}"></script>
+<script src="{{ url_for('static', filename='wwwroot/js/ScriptFiltrosAcordeon.js' ) }}" asp-append-version="true"></script>
+<script src="{{ url_for('static', filename='wwwroot/js/ScriptProductoBusqueda.js' ) }}" asp-append-version="true"></script>
+ <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
+</body>
+
+<footer>
+    {#@(await Component.InvokeAsync("PieInformacion"))#}
+    {{pieInformacion()}}
+</footer>
+</html>
