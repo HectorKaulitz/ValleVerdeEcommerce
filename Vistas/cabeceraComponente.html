@@ -2,7 +2,7 @@
 {% from 'subMenuFlotante.html' import subMenuFlotante with context %}
 {% from 'carrito.html' import carrito with context %}
 
-{% macro cabecera(text) %}
+{% macro cabecera(text, sesionIniciada,mostrarTodoCabecera,mostrarCarrito) %}
 
  <div  class="contenedor-header gradient-custom2">
             <div class="contenedor-principal-2 row">
@@ -17,7 +17,7 @@
 
                 <form class="contenedor-busqueda col" id="formularioBarraBusqueda" autocomplete="off" >
                     {# @if(informacion.mostrarTodoCabecera) #}
-                     {% if(true) %}
+                     {% if(mostrarTodoCabecera) %}
                           <div class="contenedor-lupa">
                               {#<input class="barra-busqueda rounded-pill " type="text" placeholder="Busqueda" name="inputBarraBusqueda" id="inputBarraBusqueda" value="@informacion.busqueda">#}
                               <input class="barra-busqueda rounded-pill " type="text" placeholder="Busqueda" name="inputBarraBusqueda" id="inputBarraBusqueda" value="Producto busqueda">
@@ -34,11 +34,11 @@
                     <div class="contenedor-login" id="contenedor-login" name="contenedor-login">
 
                        {#@Html.Partial("~/Views/Sesion/ContenedorUsuario.cshtml",@contenedorUsuario)#}
-                        {{contenedorUsuario()}}
+                        {{contenedorUsuario(sesionIniciada)}}
 
                     </div>
                     {# @if (informacion.mostrarCarrito) #}
-                 {% if(true) %}
+                 {% if(mostrarCarrito) %}
 
                     <div class="btn-group contenedor-carrito" id="contenedor-carrito-flotante" name="contenedor-carrito-flotante">
                         {# @if (productosCarrito.Count < 100) #}
@@ -69,7 +69,7 @@
 
             </div>
     {# @if(informacion.mostrarTodoCabecera) #}
-     {% if(true) %}
+     {% if(mostrarTodoCabecera) %}
         <div class="contenedor-principal-3">
 
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light  box-shadow mb-3 contenedor-nav">
@@ -120,15 +120,15 @@
                                  <div id="contenedorSesionCarritoH" class="contenedor-derecho col-md-auto">
 
                                      {# @if (informacion.mostrarTodoCabecera)#}
-                                        {% if(true) %}
+                                        {% if(mostrarTodoCabecera) %}
                                             <div class="contenedor-login" id="contenedor-loginF" name="contenedor-loginF">
 
                                               {# @Html.Partial("~/Views/Sesion/ContenedorUsuario.cshtml",@contenedorUsuario) #}
-                                                {{contenedorUsuario()}}
+                                                {{contenedorUsuario(sesionIniciada)}}
 
                                             </div>
                                      {# @if (informacion.mostrarCarrito) #}
-                                        {% if(true) %}
+                                        {% if(mostrarCarrito) %}
                                             <div class="btn-group contenedor-carrito">
                                                 @if (productosCarrito.Count < 100)
                                                 {

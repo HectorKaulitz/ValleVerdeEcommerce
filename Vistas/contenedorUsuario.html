@@ -1,6 +1,6 @@
-{% macro contenedorUsuario() %}
+{% macro contenedorUsuario(sesionIniciada) %}
     {#@if (usuario != null)#}
-    {% if(true) %}
+    {% if(sesionIniciada) %}
         <div class="btn-group contenedor-user">
             <a href="#" data-bs-toggle="dropdown" class=" nav-link dropdown-toggle contenedor-icono-letra" data-bs-auto-close="outside">
                 <div class="contenedor-icono-usuario">

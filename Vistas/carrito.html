@@ -87,10 +87,10 @@
             {#if(@datosUsuario!=null)#}
             {% if(true) %}
 
-                <a name="btnVerCarritoCompleto" id="btnVerCarritoCompleto" type="button" class="btn btn-primary btn-carrito-completo" asp-controller="Venta" asp-action="CarritoUsuario">Ir a carrito</a>
+                <a name="btnVerCarritoCompleto" id="btnVerCarritoCompleto" type="button" class="btn btn-primary btn-carrito-completo" asp-controller="Venta" href="carritoUsuario">Ir a carrito</a>
             {%else%}
 
-                <a name="btnVerCarritoCompleto" id="btnVerCarritoCompleto" type="button" class="btn btn-primary btn-carrito-completo" asp-controller="Sesion" asp-action="IniciarSesion">Ir a carrito</a>
+                <a name="btnVerCarritoCompleto" id="btnVerCarritoCompleto" type="button" class="btn btn-primary btn-carrito-completo" asp-controller="Sesion" href="iniciarSesion">Ir a carrito</a>
             {% endif %}
 
         </div>
