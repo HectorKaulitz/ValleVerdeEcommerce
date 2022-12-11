@@ -1,7 +1,11 @@
-from flask import Flask, render_template, Blueprint;
-from flask_cors import CORS;
+from flask import Flask, render_template, Blueprint
+from flask_cors import CORS
+
+from MySqlConexion import MySQL
 
 index = Blueprint('index', __name__, url_prefix='/index', template_folder='Vistas')
+
+
 # producto = Blueprint('producto', __name__, url_prefix='/producto', template_folder='Vistas')
 
 
@@ -25,58 +29,72 @@ app = create_app()
 # ruta principal
 @app.route('/')
 def index():
-    return render_template('Index.html')\
+    mySql = MySQL()
+    if mySql.conectar_mysql():
+        categorias = mySql.ObtenerCategoria()
+        print(categorias)
+    mySql.desconectar_mysql()
+    return render_template('Index.html')
 
 
 @app.route('/productos')
 def productos():
-    return render_template('productos.html')\
+    return render_template('productos.html')
+
 
 @app.route('/historialCompras')
 def historialCompras():
     return render_template('historialCompras.html')
 
+
 @app.route('/promociones')
 def promociones():
     return render_template('promociones.html')
+
 
 @app.route('/iniciarSesion')
 def iniciarSesion():
     return render_template('iniciarSesion.html')
 
+
 @app.route('/registrar')
 def registrar():
     return render_template('registrar.html')
+
 
 @app.route('/producto')
 def producto():
     return render_template('Producto.html')
 
+
 @app.route('/comentarios')
 def comentarios():
     return render_template('comentarios.html')
+
 
 @app.route('/carritoUsuario')
 def carrito():
     return render_template('carritoUsuario.html', EsParaFavoritos=False)
 
+
 @app.route('/favorito')
 def favorito():
     return render_template('carritoUsuario.html', EsParaFavoritos=True)
+
 
 @app.route('/procesoCompra')
 def procesoCompra():
     return render_template('procesoCompra.html')
 
+
 @app.route('/ayuda')
 def ayuda():
     return render_template('ayuda.html')
 
+
 @app.route('/perfilUsuario')
 def perfilUsuario():
     return render_template('perfilUsuario.html')
-
-
 
 #
 # if __name__ == '__main__':
