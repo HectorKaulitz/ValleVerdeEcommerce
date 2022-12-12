@@ -2,19 +2,15 @@
 {% from 'subMenuFlotante.html' import subMenuFlotante with context %}
 {% from 'carrito.html' import carrito with context %}
 
-{% macro cabecera(text, sesionIniciada,mostrarTodoCabecera,mostrarCarrito) %}
+{% macro cabecera(text, sesionIniciada, mostrarTodoCabecera, mostrarCarrito) %}
 
  <div  class="contenedor-header gradient-custom2">
             <div class="contenedor-principal-2 row">
-
-
                 <div class="contenedor-logo col-md-2">
-                   <a asp-controller="Home"  href="/" tabindex="">
+                   <a href="/" tabindex="">
                        <img id="logo" class="img-fluid mx-auto d-block" src="../static/wwwroot/Resources/LOGO.png" alt="Abarrotes Valle Verde" />
                    </a>
                 </div>
-
-
                 <form class="contenedor-busqueda col" id="formularioBarraBusqueda" autocomplete="off" >
                     {# @if(informacion.mostrarTodoCabecera) #}
                      {% if(mostrarTodoCabecera) %}

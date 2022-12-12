@@ -1,4 +1,4 @@
-from Programacion.getset.getsetBadgeFlotante import getsetBadgeFlotante
+from Programacion.getset import getsetUsuarioRegistrado, getsetTotalesCarrito, getsetBadgeFlotante
 
 
 class getsetInformacionCabecera:
@@ -14,12 +14,12 @@ class getsetInformacionCabecera:
 
     def __init__(self, listaCategorias, listaDepartamentos, listaProductosCarrito, usuario,
                  mostrarTodoCabecera, busqueda, mostrarCarrito, totalCarrito, totalesBadgeFlotantes):
-        self.listaCategorias = listaCategorias;
-        self.listaDepartamentos = listaDepartamentos;
-        self.listaProductosCarrito = listaProductosCarrito;
-        self.usuario = usuario;
-        self.mostrarTodoCabecera = mostrarTodoCabecera;
-        self.busqueda = busqueda;
-        self.mostrarCarrito = mostrarCarrito;
-        self.totalCarrito = totalCarrito;
-        self.totalesBadgeFlotantes = totalesBadgeFlotantes;
+        self.listaCategorias = listaCategorias
+        self.listaDepartamentos = listaDepartamentos
+        self.listaProductosCarrito = listaProductosCarrito
+        self.usuario = usuario
+        self.mostrarTodoCabecera = mostrarTodoCabecera
+        self.busqueda = busqueda
+        self.mostrarCarrito = mostrarCarrito
+        self.totalCarrito = totalCarrito
+        self.totalesBadgeFlotantes = totalesBadgeFlotantes

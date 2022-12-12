@@ -1,7 +1,13 @@
-from flask import Flask, render_template, Blueprint
+from flask import Flask, render_template, Blueprint, request
 from flask_cors import CORS
 
 from MySqlConexion import MySQL
+from Programacion.Funcionalidad.Utileria import Utileria
+from Programacion.getset.getsetBadgeFlotante import getsetBadgeFlotante
+from Programacion.getset.getsetInformacionCabecera import getsetInformacionCabecera
+from Programacion.getset.getsetInformacionCarousel import getsetInformacionCarousel
+from Programacion.getset.getsetObjetoPaginaInicio import getsetObjetoPaginaInicio
+from Programacion.getset.getsetTotalesCarrito import getsetTotalesCarrito
 
 index = Blueprint('index', __name__, url_prefix='/index', template_folder='Vistas')
 
@@ -30,11 +36,21 @@ app = create_app()
 @app.route('/')
 def index():
     mySql = MySQL()
-    if mySql.conectar_mysql():
-        categorias = mySql.ObtenerCategoria()
-        print(categorias)
-    mySql.desconectar_mysql()
-    return render_template('Index.html')
+    # if mySql.conectar_mysql():
+    #     categorias = mySql.ObtenerCategoria()
+    #     print(categorias)
+    #     mySql.desconectar_mysql()
+
+    datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request=request)
+    productosOfertaCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(1), datosUsuario)
+    productosDestacadosCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(2), datosUsuario)
+    productosNuevosCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(4), datosUsuario)
+    objetoInicio = getsetObjetoPaginaInicio("index", productosOfertaCarousel, productosDestacadosCarousel,
+                                            productosNuevosCarousel)
+
+    # cabecera = LlenarCabecera(True, "")
+
+    return render_template('Index.html', objetoInicio=objetoInicio)
 
 
 @app.route('/productos')
@@ -95,6 +111,33 @@ def ayuda():
 @app.route('/perfilUsuario')
 def perfilUsuario():
     return render_template('perfilUsuario.html')
+
+
+def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True, template=""):
+    informacion = None
+    cookieSesion = None
+    datosUsuario = None
+    token = None
+    if mostrar:
+        mySql = MySQL()
+        datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
+        productosCarrito = []
+        totalCarrito = getsetTotalesCarrito()
+        totalesBadgeFlotantes = getsetBadgeFlotante(0, 0, 0)
+        if datosUsuario is None:
+            Utileria().EliminarCookie(template)
+        else:
+            productosCarrito = mySql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
+            totalCarrito = mySql.ObtenerTotalesCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
+            totalesBadgeFlotantes = mySql.ObtenerTotalesParaBadgeFlotantes(datosUsuario.IDUsuarioRegistrado)
+
+        categorias = mySql.ObtenerCategoria()
+        departamentos = mySql.ObtenerDepartamentos()
+        informacion = getsetInformacionCabecera(categorias, departamentos, productosCarrito, datosUsuario, mostrar,
+                                                busqueda, mostrarCarrito, totalCarrito, totalesBadgeFlotantes)
+    else:
+        informacion = getsetInformacionCabecera(None, None, None, None, mostrar, "", mostrarCarrito, None, None)
+    return informacion
 
 #
 # if __name__ == '__main__':
