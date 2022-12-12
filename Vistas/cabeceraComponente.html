@@ -13,7 +13,7 @@
                 </div>
                 <form class="contenedor-busqueda col" id="formularioBarraBusqueda" autocomplete="off" >
                     {# @if(informacionCabecera.mostrarTodoCabecera) #}
-                     {% if {{informacionCabecera.mostrarTodoCabecera}} %}
+                     {% if informacionCabecera.mostrarTodoCabecera %}
                           <div class="contenedor-lupa">
                               <input class="barra-busqueda rounded-pill " type="text" placeholder="Busqueda" name="inputBarraBusqueda" id="inputBarraBusqueda" value="{{informacionCabecera.busqueda}}">
 
@@ -26,7 +26,7 @@
                 <div id="contenedorSesionCarrito" class="contenedor-derecho col-md-auto">
 
               {# @if(informacionCabecera.mostrarTodoCabecera) #}
-                 {% if {{informacionCabecera.mostrarTodoCabecera}} %}
+                 {% if informacionCabecera.mostrarTodoCabecera %}
                     <div class="contenedor-login" id="contenedor-login" name="contenedor-login">
 
                        {#@Html.Partial("~/Views/Sesion/ContenedorUsuario.cshtml",@contenedorUsuario)#}
@@ -34,12 +34,12 @@
 
                     </div>
                     {# @if (informacion.mostrarCarrito) #}
-                 {% if({{informacionCabecera.mostrarCarrito}}) %}
+                 {% if informacionCabecera.mostrarCarrito  %}
 
                     <div class="btn-group contenedor-carrito" id="contenedor-carrito-flotante" name="contenedor-carrito-flotante">
                         {# @if (productosCarrito.Count < 100) #}
-                        {% if({{informacionCabecera.productosCarrito|len}}<100) %}
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">{{informacionCabecera.productosCarrito|len}}</span>
+                        {% if informacionCabecera.productosCarrito|length < 100 %}
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">{{informacionCabecera.productosCarrito|length}}</span>
 
                         {% else %}
 
@@ -65,7 +65,7 @@
 
             </div>
     {# @if(informacion.mostrarTodoCabecera) #}
-     {% if({{informacionCabecera.mostrarTodoCabecera}}) %}
+     {% if informacionCabecera.mostrarTodoCabecera  %}
         <div class="contenedor-principal-3">
 
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light  box-shadow mb-3 contenedor-nav">
@@ -90,7 +90,7 @@
                                 </ul>
                             </li>
 
-                            {% for categoria in informacionCabecera.categorias %}
+                            {% for categoria in informacionCabecera.listaCategorias %}
                             <li class="nav-item">
                                  <!-- <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" asp-action="Productos" asp-route-tipo="@categoria.tipEncriptado" asp-route-numeroPagina="$1" asp-route-productosPag="@sNum" asp-route-busqueda="" >@categoria.nombre</a>-->
                                 <a class="nav-link  letra-opciones-nav"  href="productos?tipo={{categoria.tipEncriptado}}&numeroPagina=$1&productosPag={{sNum}}&busqueda=''" >{{categoria.nombre}}</a>
@@ -111,7 +111,7 @@
                                  <div id="contenedorSesionCarritoH" class="contenedor-derecho col-md-auto">
 
                                      {# @if (informacion.mostrarTodoCabecera)#}
-                                        {% if({{informacionCabecera.mostrarTodoCabecera}}) %}
+                                        {% if informacionCabecera.mostrarTodoCabecera %}
                                             <div class="contenedor-login" id="contenedor-loginF" name="contenedor-loginF">
 
                                               {# @Html.Partial("~/Views/Sesion/ContenedorUsuario.cshtml",@contenedorUsuario) #}
@@ -119,11 +119,11 @@
 
                                             </div>
                                      {# @if (informacion.mostrarCarrito) #}
-                                        {% if({{informacionCabecera.mostrarCarrito}}) %}
+                                        {% if informacionCabecera.mostrarCarrito %}
                                             <div class="btn-group contenedor-carrito">
-                                                {% if {{informacionCabecera.productosCarrito|len}} < 100 %}
+                                                {% if informacionCabecera.productosCarrito|length < 100 %}
 
-                                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">{{informacionCabecera.productosCarrito|len}}</span>
+                                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">{{informacionCabecera.productosCarrito|length}}</span>
 
                                                 {% else %}
 

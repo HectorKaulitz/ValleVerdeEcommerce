@@ -19,10 +19,6 @@ class Utileria:
         resp = make_response(render_template(template))
         resp.delete_cookie('SesionUsuario')
 
-    def CrearCookie(self, datosUsuario, template):
-        resp = make_response(render_template(template))
-        resp.set_cookie('SesionUsuario', datosUsuario)
-
     def VerificarCookie(self, nombreCookie):
         valor = None  # controlador.Request.Cookies[nombreCookie];
         if valor is not None:

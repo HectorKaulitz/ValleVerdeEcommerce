@@ -9,7 +9,6 @@ from Programacion.getset.getsetInformacionCabecera import getsetInformacionCabec
 from Programacion.getset.getsetInformacionCarousel import getsetInformacionCarousel
 from Programacion.getset.getsetObjetoPaginaInicio import getsetObjetoPaginaInicio
 from Programacion.getset.getsetObjetoProducto import getsetObjetoProducto
-from Programacion.getset.getsetObjetoPromociones import getsetObjetoPromociones
 from Programacion.getset.getsetTotalesCarrito import getsetTotalesCarrito
 
 index = Blueprint('index', __name__, url_prefix='/index', template_folder='Vistas')
@@ -35,7 +34,7 @@ def create_app():
 app = create_app()
 
 
-def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True, template=""):
+def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True):
     informacion = None
     cookieSesion = None
     datosUsuario = None
@@ -46,9 +45,7 @@ def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True, template="
         productosCarrito = []
         totalCarrito = getsetTotalesCarrito()
         totalesBadgeFlotantes = getsetBadgeFlotante(0, 0, 0)
-        if datosUsuario is None:
-            Utileria().EliminarCookie(template)
-        else:
+        if datosUsuario is not None:
             productosCarrito = mySql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
             totalCarrito = mySql.ObtenerTotalesCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
             totalesBadgeFlotantes = mySql.ObtenerTotalesParaBadgeFlotantes(datosUsuario.IDUsuarioRegistrado)
@@ -79,14 +76,14 @@ def index():
     productosNuevosCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(4),
                                                         datosUsuario)
     # cabecera-----------------------------
-    informacionCabecera = LlenarCabecera(True, "", "Index.html")
+    informacionCabecera = LlenarCabecera(True, "")
     # ----------------------------
     objetoInicio = getsetObjetoPaginaInicio("index", productosOfertaCarousel, productosDestacadosCarousel,
                                             productosNuevosCarousel, informacionCabecera)
 
 
 
-    return render_template('Index.html', objetoInicio=objetoInicio)
+    return render_template('Index.html', objetoInicio=objetoInicio,informacionCabecera=informacionCabecera )
 
 
 @app.route('/productos')

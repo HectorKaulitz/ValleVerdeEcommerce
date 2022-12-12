@@ -1,6 +1,9 @@
 import mysql.connector
 
+from Programacion.Funcionalidad.Encriptacion import Encriptacion
+from Programacion.Funcionalidad.Utileria import Utileria
 from Programacion.getset import getsetUsuarioRegistrado
+from Programacion.getset.getsetCategoria import getsetCategoria
 from Programacion.getset.getsetDireccion import getsetDireccion
 from Programacion.getset.getsetProducto import getsetProducto
 from Programacion.getset.getsetProductoPromocionPorCategoria import getsetProductoPromocionPorCategoria
@@ -77,16 +80,20 @@ class MySQL:
             args = [tipo]
             CURSOR.callproc('ObtenerCategoria', args)
             if lectura:
+                # for row in CURSOR.stored_results():
+                #     resultados.append(row.fetchall())
+                #     if imprimir:
+                #         print(row)
+                #         print(row.fetchall())
                 for row in CURSOR.stored_results():
-                    resultados.append(row.fetchall())
-                    if imprimir:
-                        print(row)
-                        print(row.fetchall())
+                    items = row.fetchall()
+                    for item in items:
+                        resultados.append(getsetCategoria(item[0], item[1], item[2], Encriptacion().Encrypt(str(item[2]))))
 
         except mysql.connector.errors.ProgrammingError as e:
-            print("Error en el procedimiento ", e)
+            print("Error en el procedimiento ObtenerCategoria: ", e)
         except Exception as error:
-            print("ERROR: ", error)
+            print("ERROR ObtenerCategoria: ", error)
 
         CURSOR.close()
         self.desconectar_mysql()
@@ -129,10 +136,11 @@ class MySQL:
                                                     item[5], 5000, True, titulo, item[6], item[7],
                                                     interaccionConUsuario))
             CURSOR.close()
+
         except mysql.connector.errors.ProgrammingError as e:
-            print("Error en el procedimiento ", e)
+            print("Error en el procedimiento ObtenerProductosCarouselPorCategoria: ", e)
         except Exception as error:
-            print("ERROR: ", error)
+            print("ERROR ObtenerProductosCarouselPorCategoria: ", error)
 
         self.desconectar_mysql()
 
@@ -154,7 +162,7 @@ class MySQL:
             self.desconectar_mysql()
 
         except mysql.connector.errors.ProgrammingError as e:
-            print("Error en el procedimiento ", e)
+            print("Error en el procedimiento ObtenerProductosCarouselPorCategoria: ", e)
         except Exception as error:
             print("ERROR: ", error)
 
@@ -295,3 +303,15 @@ class MySQL:
             print("ERROR: ", error)
 
         return productosPromocion
+
+    def ObtenerProductosCarritoUsuario(self, IDUsuarioRegistrado):
+        return []
+
+    def ObtenerTotalesCarritoUsuario(self, IDUsuarioRegistrado):
+        return []
+
+    def ObtenerTotalesParaBadgeFlotantes(self, IDUsuarioRegistrado):
+        return []
+
+    def ObtenerDepartamentos(self):
+        return []
