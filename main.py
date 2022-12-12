@@ -2,11 +2,13 @@ from flask import Flask, render_template, Blueprint, request
 from flask_cors import CORS
 
 from MySqlConexion import MySQL
+from Programacion.Funcionalidad.Encriptacion import Encriptacion
 from Programacion.Funcionalidad.Utileria import Utileria
 from Programacion.getset.getsetBadgeFlotante import getsetBadgeFlotante
 from Programacion.getset.getsetInformacionCabecera import getsetInformacionCabecera
 from Programacion.getset.getsetInformacionCarousel import getsetInformacionCarousel
 from Programacion.getset.getsetObjetoPaginaInicio import getsetObjetoPaginaInicio
+from Programacion.getset.getsetObjetoProducto import getsetObjetoProducto
 from Programacion.getset.getsetObjetoPromociones import getsetObjetoPromociones
 from Programacion.getset.getsetTotalesCarrito import getsetTotalesCarrito
 
@@ -43,9 +45,12 @@ def index():
     #     mySql.desconectar_mysql()
 
     datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request=request)
-    productosOfertaCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(1), datosUsuario)
-    productosDestacadosCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(2), datosUsuario)
-    productosNuevosCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(4), datosUsuario)
+    productosOfertaCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(1),
+                                                        datosUsuario)
+    productosDestacadosCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(2),
+                                                            datosUsuario)
+    productosNuevosCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(4),
+                                                        datosUsuario)
     objetoInicio = getsetObjetoPaginaInicio("index", productosOfertaCarousel, productosDestacadosCarousel,
                                             productosNuevosCarousel)
 
@@ -66,30 +71,7 @@ def historialCompras():
 
 @app.route('/promociones')
 def promociones():
-    mySql = MySQL()
-    productosPagEnc = 10
-    numeroPagina = 0
-
-    if (productosPagEnc == -2):
-        productosPagEnc = 10
-
-    numeroCuadrosPagina = 5
-
-    #if (_detectionService.Device.Type == Device.Mobile)
-    #   numeroCuadrosPagina = 4;
-
-    productosPromocion = mySql.ObtenerProductosDePromocionPorCategoria(2);
-
-    productosPromocionIndividuales = mySql.ObtenerProductosDePromocionPorCategoria(-1, numeroPagina, productosPagEnc);
-
-    NumeroTotalProductos = mySql.ObtenerNumeroPaginasProductosDePromocionPorCategoria(-1, productosPagEnc );
-    datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request);
-
-    informacionCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(2), datosUsuario);
-    objetoPromociones = getsetObjetoPromociones( "", informacionCarousel, productosPromocion, productosPromocionIndividuales,
-                                numeroPagina, productosPagEnc , numeroCuadrosPagina, NumeroTotalProductos);
-
-    return render_template('promociones.html', objetoPromociones = objetoPromociones)
+    return render_template('promociones.html')
 
 
 @app.route('/iniciarSesion')
@@ -103,8 +85,15 @@ def registrar():
 
 
 @app.route('/producto')
-def producto():
-    return render_template('Producto.html')
+def producto(tipo=-1, busqueda="", idProducto=""):
+    mySql = MySQL();
+    idProductoDes = Encriptacion().Decrypt(idProducto);
+    productosCarousel = mySql.ObtenerProductosCarouselPorCategoria(3, idProductoDes);
+    productoSeleccionado = mySql.ObtenerProducto(idProductoDes);
+    token = Utileria().VerificarCookie("SesionUsuario");
+    datosUsuario = mySql.ObtenerUsuarioPorToken(token);
+    informacion = getsetObjetoProducto(None, busqueda, productosCarousel, productoSeleccionado, None, datosUsuario)
+    return render_template('Producto.html',informacion = informacion)
 
 
 @app.route('/comentarios')
