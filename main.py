@@ -7,6 +7,7 @@ from Programacion.getset.getsetBadgeFlotante import getsetBadgeFlotante
 from Programacion.getset.getsetInformacionCabecera import getsetInformacionCabecera
 from Programacion.getset.getsetInformacionCarousel import getsetInformacionCarousel
 from Programacion.getset.getsetObjetoPaginaInicio import getsetObjetoPaginaInicio
+from Programacion.getset.getsetObjetoPromociones import getsetObjetoPromociones
 from Programacion.getset.getsetTotalesCarrito import getsetTotalesCarrito
 
 index = Blueprint('index', __name__, url_prefix='/index', template_folder='Vistas')
@@ -65,7 +66,30 @@ def historialCompras():
 
 @app.route('/promociones')
 def promociones():
-    return render_template('promociones.html')
+    mySql = MySQL()
+    productosPagEnc = 10
+    numeroPagina = 0
+
+    if (productosPagEnc == -2):
+        productosPagEnc = 10
+
+    numeroCuadrosPagina = 5
+
+    #if (_detectionService.Device.Type == Device.Mobile)
+    #   numeroCuadrosPagina = 4;
+
+    productosPromocion = mySql.ObtenerProductosDePromocionPorCategoria(2);
+
+    productosPromocionIndividuales = mySql.ObtenerProductosDePromocionPorCategoria(-1, numeroPagina, productosPagEnc);
+
+    NumeroTotalProductos = mySql.ObtenerNumeroPaginasProductosDePromocionPorCategoria(-1, productosPagEnc );
+    datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request);
+
+    informacionCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(2), datosUsuario);
+    objetoPromociones = getsetObjetoPromociones( "", informacionCarousel, productosPromocion, productosPromocionIndividuales,
+                                numeroPagina, productosPagEnc , numeroCuadrosPagina, NumeroTotalProductos);
+
+    return render_template('promociones.html', objetoPromociones = objetoPromociones)
 
 
 @app.route('/iniciarSesion')

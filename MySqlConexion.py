@@ -2,6 +2,7 @@ import mysql.connector
 
 from Programacion.getset import getsetUsuarioRegistrado
 from Programacion.getset.getsetProducto import getsetProducto
+from Programacion.getset.getsetProductoPromocionPorCategoria import getsetProductoPromocionPorCategoria
 
 
 class MySQL:
@@ -156,3 +157,56 @@ class MySQL:
             print("ERROR: ", error)
 
         return rutasImagenes
+
+    def ObtenerProductosDePromocionPorCategoria(self, tipoCategoria=-1, numeroPagina=-1, numeroProductosPorPagina=-1):
+        productosPromocion = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [tipoCategoria,numeroPagina,numeroProductosPorPagina]
+            CURSOR.callproc('ObtenerProductosDePromocionPorCategoria', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    interaccionConUsuario = item[15] > 0
+                    imagenes = self.ObtenerImagenesProducto(item[0])
+                    productosPromocion.append(getsetProductoPromocionPorCategoria(item[0], item[1], item[2],
+                                                                                  item[3],item[4],item[5],item[6],item[7],item[8],item[9],item[10]
+                    ,item[11],item[12],item[13],item[14],imagenes,item[15],item[16],5,False,0,item[17],interaccionConUsuario))
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+        return productosPromocion
+
+    def ObtenerNumeroPaginasProductosDePromocionPorCategoria(self, tipoCategoria=-1, numeroProductosPorPagina ="10"):
+        productosPromocion = 0
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [tipoCategoria,numeroProductosPorPagina]
+            CURSOR.callproc('ObtenerNumeroPaginasProductosDePromocionPorCategoria', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    productosPromocion = item[0]
+
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+        return productosPromocion
