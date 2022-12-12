@@ -8,7 +8,7 @@ from Programacion.getset.getsetProductoPromocionPorCategoria import getsetProduc
 
 class MySQL:
 
-    def __init__(self, host="192.168.0.106", user="usuario1", pws="cotija20", bd="valleverdeecommerce"):
+    def __init__(self, host="192.168.0.116", user="usuario1", pws="cotija20", bd="valleverdeecommerce"):
         self.HOST = host
         self.USER = user
         self.PASSWORD = pws
