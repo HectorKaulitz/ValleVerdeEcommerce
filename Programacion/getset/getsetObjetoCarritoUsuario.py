@@ -11,7 +11,7 @@ class getsetObjetoCarritoUsuario:
     paqueteriaHabilitada = False
 
     def __init__(self, controlador, busqueda, productosCarousel, productosCarritos, datosUsuario,
-                 totalesCarrito, paqueteriaHabilitada, detectionService):
+                 totalesCarrito, paqueteriaHabilitada, detectionService, configuracionWeb):
         self.controlador = controlador
         self.busqueda = busqueda
         self.informacionCarousel = getsetInformacionCarousel(detectionService, productosCarousel, datosUsuario);

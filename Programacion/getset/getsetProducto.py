@@ -15,9 +15,9 @@ class getsetProducto:
         self.urlsImagenes = urlsImagenes
         self.mostrarEstrellas = mostrarEstrellas
         self.puntuacion = puntuacion
-        self.precioOriginal = self.obu.RedondeoDouble(str(precioOriginal))
-        self.precioDescuento = self.obu.RedondeoDouble(str(precioDescuento))
-        self.costoEnvio = self.obu.RedondeoDouble(str(costoEnvio))
+        self.precioOriginal = precioOriginal
+        self.precioDescuento = precioDescuento
+        self.costoEnvio = costoEnvio
         self.tieneEnvio = tieneEnvio
         self.tituloProductos = tituloProductos
         self.existencia = existencia

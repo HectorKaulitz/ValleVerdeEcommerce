@@ -71,7 +71,7 @@
            {# @if (@objetoInicio.productosNuevosCarousel.productosCarousel.Count> 0)#}
             {% if objetoInicio.productosNuevosCarousel.productosCarousel|length > 0 %}
                 {#@(await Component.InvokeAsync("CarouselProductos",@objetoInicio.productosNuevosCarousel))#}
-                {{carouselProductos('Nuevos', objetoInicio.productosNuevosCarousel, False)}}
+                {{carouselProductos('Nuevos', objetoInicio.productosNuevosCarousel, False, 1)}}
             {% endif %}
         </div>
     </div>
@@ -82,7 +82,7 @@
             {#@if (@objetoInicio.productosOfertaCarousel.productosCarousel.Count > 0)#}
              {% if objetoInicio.productosOfertaCarousel.productosCarousel|length > 0 %}
                 {#@(await Component.InvokeAsync("CarouselProductos",@objetoInicio.productosOfertaCarousel))#}
-                {{carouselProductos('Oferta', objetoInicio.productosOfertaCarousel, False)}}
+                {{carouselProductos('Oferta', objetoInicio.productosOfertaCarousel, False, 2)}}
             {% endif %}
         </div>
     </div>
@@ -92,7 +92,7 @@
            {# @if (@objetoInicio.productosDestacadosCarousel.productosCarousel.Count > 0)#}
              {% if objetoInicio.productosDestacadosCarousel.productosCarousel|length > 0  %}
                {# @(await Component.InvokeAsync("CarouselProductos",@objetoInicio.productosDestacadosCarousel))#}
-                {{carouselProductos('Destacados', objetoInicio.productosDestacadosCarousel, False)}}
+                {{carouselProductos('Destacados', objetoInicio.productosDestacadosCarousel, False, 3)}}
             {% endif %}
         </div>
     </div>
