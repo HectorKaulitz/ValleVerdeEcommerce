@@ -8,6 +8,7 @@ from Programacion.getset import getsetUsuarioRegistrado
 from Programacion.getset.getsetBadgeFlotante import getsetBadgeFlotante
 from Programacion.getset.getsetInformacionCabecera import getsetInformacionCabecera
 from Programacion.getset.getsetInformacionCarousel import getsetInformacionCarousel
+from Programacion.getset.getsetInformacionGeneralProducto import getsetInformacionGeneralProducto
 from Programacion.getset.getsetObjetoAyuda import getsetObjetoAyuda
 from Programacion.getset.getsetObjetoCarrito import getsetObjetoCarrito
 from Programacion.getset.getsetObjetoCarritoUsuario import getsetObjetoCarritoUsuario
@@ -15,6 +16,7 @@ from Programacion.getset.getsetObjetoComentario import getsetObjetoComentario
 from Programacion.getset.getsetObjetoHistorialCompra import getsetObjetoHistorialCompra
 from Programacion.getset.getsetObjetoPaginaInicio import getsetObjetoPaginaInicio
 from Programacion.getset.getsetObjetoProducto import getsetObjetoProducto
+from Programacion.getset.getsetObjetoProductos import getsetObjetoProductos
 from Programacion.getset.getsetObjetoProductosFavoritos import getsetObjetoProductosFavoritos
 from Programacion.getset.getsetObjetoPromociones import getsetObjetoPromociones
 from Programacion.getset.getsetResultado import getsetResultado
@@ -96,8 +98,35 @@ def index():
 
 
 @app.route('/productos')
-def productos():
-    return render_template('productos.html')
+def productos(tipo="-1", numeroPagina="1", productosPag="10", idMarca="-1", idLinea="-1", idFabricantes="-1",
+              idDepartamento="-1", busqueda="", idSubLinea="-1"):
+    oben = Encriptacion()
+    mySql = MySQL()
+    productosPagEnc = int(oben.Decrypt(productosPag))
+    if productosPagEnc == -2:
+        productosPagEnc = 10
+
+    tipoEnc = int(oben.Decrypt(tipo))
+    if tipoEnc == -2:
+        tipoEnc = -1
+
+    filtros = mySql.ObtenerFiltros(tipoEnc)
+
+    productosResultado = mySql.ObtenerProductos(int(numeroPagina.replace("$","")), productosPagEnc, idMarca, idLinea,
+                                                    idFabricantes, idDepartamento, busqueda, idSubLinea)
+
+    productosCarousel = mySql.ObtenerProductosCarouselPorCategoria(2,"-1",idLinea,idMarca,idFabricantes,idSubLinea)
+
+    datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
+
+    numeroCuadrosPagina = 5
+
+    informacion = getsetObjetoProductos(productosResultado, productosCarousel, filtros, getsetInformacionGeneralProducto(
+        mySql.ObtenerNumeroPaginasProductos(productosPagEnc, idMarca, idLinea, idFabricantes, idDepartamento, busqueda, idSubLinea),
+        tipoEnc, productosPagEnc,numeroCuadrosPagina), "productos", busqueda, datosUsuario, "Escritorio")
+
+    informacionCabecera = LlenarCabecera(True, busqueda)
+    return render_template('productos.html',informacionCabecera=informacionCabecera, informacion=informacion)
 
 
 @app.route('/historialCompras')

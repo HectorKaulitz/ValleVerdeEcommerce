@@ -2,19 +2,26 @@ import mysql.connector
 
 from Programacion.Funcionalidad.Encriptacion import Encriptacion
 from Programacion.getset import getsetUsuarioRegistrado
+from Programacion.getset.getsetBadgeFlotante import getsetBadgeFlotante
 from Programacion.getset.getsetCategoria import getsetCategoria
 from Programacion.getset.getsetComentario import getsetComentario
 from Programacion.getset.getsetConfiguracionWeb import getsetConfiguracionWeb
+from Programacion.getset.getsetDepartamento import getsetDepartamento
+from Programacion.getset.getsetDepartamentoLinea import getsetDepartamentoLinea
+from Programacion.getset.getsetDepartamentoMarca import getsetDepartamentoMarca
 from Programacion.getset.getsetDireccion import getsetDireccion
+from Programacion.getset.getsetFiltros import getsetFiltros
 from Programacion.getset.getsetPreguntaAyuda import getsetPreguntaAyuda
 from Programacion.getset.getsetProducto import getsetProducto
 from Programacion.getset.getsetProductoFavorito import getsetProductoFavorito
+from Programacion.getset.getsetProductoCarrito import getsetProductoCarrito
 from Programacion.getset.getsetProductoPromocionPorCategoria import getsetProductoPromocionPorCategoria
 from Programacion.getset.getsetRespuestaAyuda import getsetRespuestaAyuda
 from Programacion.getset.getsetRespuestaComentario import getsetRespuestaComentario
 from Programacion.getset.getsetTemaAyuda import getsetTemaAyuda
 from Programacion.getset.getsetTotalesCarrito import getsetTotalesCarrito
 from Programacion.getset.getsetVenta import getsetVenta
+from Programacion.getset.getsetTotalesCarrito import getsetTotalesCarrito
 
 
 class MySQL:
@@ -110,6 +117,8 @@ class MySQL:
 
     def ObtenerProductosCarouselPorCategoria(self, tipoCat, idProducto="-1", idLinea="-1", idMarca="-1",
                                              idFabricante="-1", idSubLinea="-1"):
+        from Programacion.Funcionalidad.Utileria import Utileria
+        obu = Utileria()
         titulo = ""
         match tipoCat:
             case 1:
@@ -141,10 +150,10 @@ class MySQL:
                 for item in items:
                     interaccionConUsuario = item[5] > 0
                     imagenes = self.ObtenerImagenesProducto(item[0])
-                    productos.append(getsetProducto(item[0], item[1], item[2], item[3], imagenes, False, 5, item[4],
-                                                    item[5], 5000, True, titulo, item[6], item[7],
-                                                    interaccionConUsuario))
-            CURSOR.close()
+                    productos.append(getsetProducto(item[0], item[1], item[2], item[3], imagenes, False, 5, obu.RedondeoDouble(str(item[4])),
+                                                    obu.RedondeoDouble(str(item[5])), obu.RedondeoDouble(str(5000)),
+                                                    True, titulo, item[6], item[7], interaccionConUsuario))
+            # CURSOR.close()
 
         except mysql.connector.errors.ProgrammingError as e:
             print("Error en el procedimiento ObtenerProductosCarouselPorCategoria: ", e)
@@ -209,7 +218,7 @@ class MySQL:
         return producto
 
     def ObtenerUsuarioPorToken(self, token):
-        usuario: getsetUsuarioRegistrado = None;
+        usuario:getsetUsuarioRegistrado = None;
         if self.CONNECTION is None:
             self.conectar_mysql()
         try:
@@ -393,16 +402,149 @@ class MySQL:
         return respuestas
 
     def ObtenerProductosCarritoUsuario(self, IDUsuarioRegistrado):
-        return []
+        res = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [IDUsuarioRegistrado]
+            CURSOR.callproc('ObtenerProductosCarritoUsuario', args)
+
+            ind = 0
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    imagenes = self.ObtenerImagenesProducto(item[1])
+                    res.append(getsetProductoCarrito(ind, item[0], item[1], item[2], item[3], item[4], item[5], item[6],
+                                                     item[7], item[8], item[9], item[10], item[11], item[12], item[13],
+                                                     item[14], imagenes, item[15], item[16], item[17], item[18]))
+                    ind+=1
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ObtenerProductosCarritoUsuario: ", e)
+        except Exception as error:
+            print("ERROR ObtenerProductosCarritoUsuario: ", error)
+        return res
 
     def ObtenerTotalesCarritoUsuario(self, IDUsuarioRegistrado):
-        return []
+        res = getsetTotalesCarrito()
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [IDUsuarioRegistrado]
+            CURSOR.callproc('ObtenerTotalesCarritoUsuario', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = getsetTotalesCarrito(item[0], item[1], item[2], item[3], item[4], item[5], item[6])
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ObtenerTotalesCarritoUsuario: ", e)
+        except Exception as error:
+            print("ERROR ObtenerTotalesCarritoUsuario: ", error)
+        return res
 
     def ObtenerTotalesParaBadgeFlotantes(self, IDUsuarioRegistrado):
-        return []
+        res = getsetBadgeFlotante(0, 0, 0)
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [IDUsuarioRegistrado]
+            CURSOR.callproc('ObtenerTotalesParaBadgeFlotantes', args)
 
-    def ObtenerDepartamentos(self):
-        return []
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = getsetBadgeFlotante(item[0], item[1], item[0] + item[1])
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ObtenerTotalesParaBadgeFlotantes: ", e)
+        except Exception as error:
+            print("ERROR ObtenerTotalesParaBadgeFlotantes: ", error)
+        return res
+
+    def ObtenerDepartamentos(self, tipo=-1, idDepartamento=-1):
+        res = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [tipo, idDepartamento]
+            CURSOR.callproc('ObtenerDepartamentos', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res.append(getsetDepartamento(item[0], item[1], item[2], item[3],
+                                                  self.ObtenerDepartamentoLinea(item[0]),
+                                                  self.ObtenerDepartamentoMarca(item[0]),))
+
+            # CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ObtenerDepartamentos: ", e)
+        except Exception as error:
+            print("ERROR ObtenerDepartamentos: ", error)
+
+        return res
+
+    def ObtenerDepartamentoLinea(self, idDepartamento, tipo=1):
+        obe = Encriptacion()
+        res = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idDepartamento, tipo]
+            CURSOR.callproc('ObtenerDepartamentoLinea', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res.append(getsetDepartamentoLinea(item[0], item[1], item[2], item[3], item[4], 2, obe.Encrypt("2")))
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ObtenerDepartamentos: ", e)
+        except Exception as error:
+            print("ERROR ObtenerDepartamentos: ", error)
+
+        return res
+
+    def ObtenerDepartamentoMarca(self, idDepartamento, tipo=1):
+        obe = Encriptacion()
+        res = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idDepartamento, tipo]
+            CURSOR.callproc('ObtenerDepartamentoMarca', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res.append(getsetDepartamentoMarca(item[0], item[1], item[2], item[3], item[4], 1, obe.Encrypt("1")))
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ObtenerDepartamentoMarca: ", e)
+        except Exception as error:
+            print("ERROR ObtenerDepartamentoMarca: ", error)
+
+        return res
 
     def ObtenerComentarioUsuario(self, idUsuario, idComentario="-1", activo=True):
         comentarios = []
@@ -508,7 +650,7 @@ class MySQL:
         return res
 
     def AgregarSesionUsuario(self, usuario):
-        res = ["-3", "", ""];
+        res = ["-3","",""];
         if self.CONNECTION is None:
             self.conectar_mysql()
         try:
@@ -531,6 +673,87 @@ class MySQL:
             print("ERROR: ", error)
 
         return res
+
+    def ObtenerFiltros(self, tipo):
+        res = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [tipo]
+            CURSOR.callproc('ObtenerFiltros', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res.append(getsetFiltros(item[0],item[1],item[2],item[3],item[4]))
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ObtenerFiltros: ", e)
+        except Exception as error:
+            print("ERROR ObtenerFiltros: ", error)
+
+        return res
+
+    def ObtenerProductos(self, numerPagina, productosPagina, idMarca , idLinea, idFabricante, idDepartamento,
+                         busqueda, idSubLinea):
+        res = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [numerPagina, productosPagina, idMarca , idLinea, idFabricante, idDepartamento,
+                         busqueda, idSubLinea]
+            CURSOR.callproc('ObtenerProductos', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    interaccionConUsuario = False
+                    if (item[4] > 0):
+                        interaccionConUsuario = True
+                    imagenes = self.ObtenerImagenesProducto(item[0])
+                    res.append(getsetProducto(item[0], item[1], item[2], item[3],
+                                              imagenes, False, 5, item[4]
+                                              , item[5], 5000, True, "", item[6], item[7],
+                                              interaccionConUsuario))
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ObtenerProductos:", e)
+        except Exception as error:
+            print("ERROR ObtenerProductos: ", error)
+
+        return res
+
+    def ObtenerNumeroPaginasProductos(self, productosPagina, idMarca, idLinea, idFabricante, idDepartamento, busqueda,
+                                      idSubLinea):
+        paginas = 0
+        res = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [productosPagina, idMarca, idLinea, idFabricante, idDepartamento, busqueda, idSubLinea]
+            CURSOR.callproc('ObtenerProductos', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    paginas = int(item[0])
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ObtenerNumeroPaginasProductos:", e)
+        except Exception as error:
+            print("ERROR ObtenerNumeroPaginasProductos: ", error)
+
+        return paginas
 
     def ObtenerTotalesCarritoUsuario(self, idUsuario):
         totalCarrito = getsetTotalesCarrito();
