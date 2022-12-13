@@ -119,6 +119,9 @@ class MySQL:
 
     def ObtenerProductosCarouselPorCategoria(self, tipoCat, idProducto="-1", idLinea="-1", idMarca="-1",
                                              idFabricante="-1", idSubLinea="-1"):
+
+        from Programacion.Funcionalidad.Utileria import Utileria
+        obu = Utileria()
         titulo = ""
         match tipoCat:
             case 1:
