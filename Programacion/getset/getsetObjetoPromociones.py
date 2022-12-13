@@ -16,4 +16,4 @@ class getsetObjetoPromociones:
         self.productosPag = productosPag
         self.numeroCuadrosPagina = numeroCuadrosPagina
         self.NumeroTotalProductos = NumeroTotalProductos
-        self.informacionCabecera = NumeroTotalProductos
+        self.informacionCabecera = informacionCabecera

@@ -28,8 +28,9 @@ class Utileria:
         else:
             return None
 
-    def EliminarCookie(self, template):
-        resp = make_response(render_template(template))
+    def EliminarCookie(self):
+        resp = make_response("Cookie Removed")
+        resp.set_cookie('SesionUsuario', '', expires=0)
         resp.delete_cookie('SesionUsuario')
 
     def VerificarCookie(self, nombreCookie):

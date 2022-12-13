@@ -20,18 +20,18 @@
 function cerrarSesion() {
   
     $.ajax({
-        url: "/Validacion/CerrarSesionUsuario/",
+        url: "/cerrarSesionUsuario/",
         data:
         {
 
-            token: readCookie("SesionUsuario")
+            'token': readCookie("SesionUsuario")
 
         },
         type: "POST"
     })
         .done(function (result) {
             if (result != null) {
-                window.location.replace('/Home/Index')
+                window.location.replace('/')
             }
         })
         .fail(function (result) {

@@ -51,7 +51,7 @@ def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True):
         totalCarrito = getsetTotalesCarrito()
         totalesBadgeFlotantes = getsetBadgeFlotante(0, 0, 0)
         if datosUsuario is None:
-            # Utileria().EliminarCookie(template)
+            Utileria().EliminarCookie()
             intd = 4
         else:
             productosCarrito = mySql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
@@ -88,6 +88,7 @@ def index():
     # ----------------------------
     objetoInicio = getsetObjetoPaginaInicio("index", productosOfertaCarousel, productosDestacadosCarousel,
                                             productosNuevosCarousel, informacionCabecera)
+
     return render_template('Index.html', objetoInicio=objetoInicio, informacionCabecera=informacionCabecera)
 
 
@@ -123,7 +124,7 @@ def promociones():
     datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request);
 
     informacionCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(2), datosUsuario);
-    informacionCabecera = LlenarCabecera(True,'',True);
+    informacionCabecera: getsetInformacionCabecera = LlenarCabecera(True,"");
     objetoPromociones = getsetObjetoPromociones("", informacionCarousel, productosPromocion,
                                                 productosPromocionIndividuales,
                                                 numeroPagina, productosPagEnc, numeroCuadrosPagina,
@@ -376,6 +377,45 @@ def validarContrasenaInicioSesion():
 
     return jsonify({"resultado": res.resultado, "idSesion": res.idSesion, "token": res.token,
                     "fechaExpiracion": res.fechaExpiracion})
+
+
+@app.route('/cerrarSesionUsuario/', methods=['POST', 'GET'])
+def cerrarSesionUsuario():
+    token = request.form['token'];
+
+    mySql = MySQL();
+
+    mySql.EliminarSesionUsuario(token);
+
+    return jsonify({"res": "Sesion cerrada"})\
+
+@app.route('/validarBusqueda/', methods=['POST', 'GET'])
+def validarBusqueda():
+    busqueda = request.form['busqueda'];
+
+    res: int = -3;
+    if (busqueda == None):
+        busqueda = "";
+
+    if (busqueda==""):
+        res = -1;
+    else:
+        res = 1;
+
+    tipoEnc = "-1";
+    numProductosPagina = "10";
+    return jsonify( { "resultado" : res, "tipo" : tipoEnc, "numero" : numProductosPagina });
+
+@app.route('/obtenerSugerenciasBusqueda/', methods=['POST', 'GET'])
+def obtenerSugerenciasBusqueda():
+    busqueda = request.form['busqueda'];
+
+    sugerencias = []
+    if (len(busqueda) > 0):
+        mySql = MySQL();
+        sugerencias = mySql.ObtenerSugerenciasBusqueda(busqueda);
+
+    return jsonify(sugerencias)
 
 #
 # if __name__ == '__main__':

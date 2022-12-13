@@ -29,7 +29,7 @@
 
 </head>
 <header>
-    {{cabecera('',true,true,true)}}
+    {{cabecera(informacionCabecera)}}
 </header>
 <body>
  {% set identificador = "colp" %}
@@ -111,6 +111,9 @@
 <script src="{{ url_for('static', filename='wwwroot/lib/jquery/dist/jquery.min.js' ) }}"></script>
  <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
 <script src="{{ url_for('static', filename='wwwroot/js/ScriptAyuda.js' ) }}"></script>
+<script src="{{ url_for('static', filename='wwwroot/js/site.js' ) }}" asp-append-version="true"></script>
+<script src="{{ url_for('static', filename='wwwroot/js/ScriptBarraBusqueda.js' ) }}" asp-append-version="true"></script>
+<script src="{{ url_for('static', filename='wwwroot/js/autocomplete.js' ) }}" asp-append-version="true"></script>
 </body>
 
 <footer>

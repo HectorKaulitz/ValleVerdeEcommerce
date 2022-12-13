@@ -1,7 +1,6 @@
 import mysql.connector
 
 from Programacion.Funcionalidad.Encriptacion import Encriptacion
-from Programacion.getset import getsetUsuarioRegistrado
 from Programacion.getset.getsetCategoria import getsetCategoria
 from Programacion.getset.getsetComentario import getsetComentario
 from Programacion.getset.getsetDireccion import getsetDireccion
@@ -11,6 +10,8 @@ from Programacion.getset.getsetProductoPromocionPorCategoria import getsetProduc
 from Programacion.getset.getsetRespuestaAyuda import getsetRespuestaAyuda
 from Programacion.getset.getsetRespuestaComentario import getsetRespuestaComentario
 from Programacion.getset.getsetTemaAyuda import getsetTemaAyuda
+from Programacion.getset.getsetUsuarioRegistrado import getsetUsuarioRegistrado
+from Programacion.getset.getsetSugerenciaBusqueda import getsetSugerenciaBusqueda
 
 
 class MySQL:
@@ -516,6 +517,51 @@ class MySQL:
                 items = row.fetchall()
                 for item in items:
                     res = [item[0],item[1].decode('utf-8'),item[2].strftime('%Y-%m-%d')]
+
+            self.CONNECTION.commit()
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+        return res
+
+    def EliminarSesionUsuario(self, token):
+
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [token]
+            CURSOR.callproc('EliminarSesionUsuario', args)
+
+            self.CONNECTION.commit()
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+    def ObtenerSugerenciasBusqueda(self, busqueda):
+        res =  {}
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [busqueda]
+            CURSOR.callproc('ObtenerSugerenciasBusqueda', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                indice = 1
+                for item in items:
+                    res[indice] = { "idProducto" :str(item[0]),"codigoBarras" :str(item[1]),"nombre" :str(item[2])}
+                    indice += 1
 
             self.CONNECTION.commit()
             CURSOR.close()

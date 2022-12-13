@@ -29,7 +29,7 @@ $(document).ready(function () {
             }, onInput: (value) => {
 
                 $.ajax({
-                    url: "/Producto/ObtenerSugerenciasBusqueda/",
+                    url: "/obtenerSugerenciasBusqueda/",
                     data:
                     {
                         busqueda: value
@@ -37,8 +37,8 @@ $(document).ready(function () {
                     type: "POST"
                 })
                     .done(function (result) {
-                        if (result != null) {
 
+                        if (result != null) {
                             ac.setData(result)
 
                         }
@@ -66,16 +66,17 @@ $(document).ready(function () {
     $("#btnBusqueda").click(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarBusqueda/",
+            url: "/validarBusqueda/",
             data:
             {
 
-                busqueda: $("#inputBarraBusqueda").val().toString(),
+                'busqueda': $("#inputBarraBusqueda").val().toString(),
                 
             },
             type: "POST"
         })
             .done(function (result) {
+
                 if (result != null) {
                
                     switch (result.resultado.toString()) {
