@@ -85,7 +85,8 @@
                                 <a class="nav-link dropdown-toggle  letra-opciones-nav" href="#" data-bs-toggle="dropdown" data-bs-auto-closed="outside" aria-expanded="false">Departamentos</a>
                                 <ul class="dropdown-menu div-depart shadow" aria-labelledby="navbarDropdown">
                                   {# @(await Component.InvokeAsync("SubMenuFlotante",@departamentos))#}
-                                    {{subMenuFlotante()}}
+
+                                    {{subMenuFlotante(informacionCabecera.listaDepartamentos, informacionCabecera.sNum)}}
 
                                 </ul>
                             </li>
