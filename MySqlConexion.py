@@ -5,8 +5,11 @@ from Programacion.Funcionalidad.Utileria import Utileria
 from Programacion.getset import getsetUsuarioRegistrado
 from Programacion.getset.getsetCategoria import getsetCategoria
 from Programacion.getset.getsetDireccion import getsetDireccion
+from Programacion.getset.getsetPreguntaAyuda import getsetPreguntaAyuda
 from Programacion.getset.getsetProducto import getsetProducto
 from Programacion.getset.getsetProductoPromocionPorCategoria import getsetProductoPromocionPorCategoria
+from Programacion.getset.getsetRespuestaAyuda import getsetRespuestaAyuda
+from Programacion.getset.getsetTemaAyuda import getsetTemaAyuda
 
 
 class MySQL:
@@ -303,6 +306,81 @@ class MySQL:
             print("ERROR: ", error)
 
         return productosPromocion
+
+    def ObtenerTemasAyuda(self):
+        temas = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = []
+            CURSOR.callproc('ObtenerTemasAyuda', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    idTema = item[0]
+                    temas.append(getsetTemaAyuda(idTema, item[1],   self.ObtenerPreguntasAyuda(idTema)))
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+        return temas
+
+    def ObtenerPreguntasAyuda(self, idTema):
+        preguntas = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idTema]
+            CURSOR.callproc('ObtenerPreguntasAyuda', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    idPregunta = item[0]
+                    preguntas.append(getsetPreguntaAyuda(idPregunta, idTema, item[1],   self.ObtenerRespuestasAyuda(idPregunta)))
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+        return preguntas
+
+    def ObtenerRespuestasAyuda(self, idPregunta):
+        respuestas = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idPregunta]
+            CURSOR.callproc('ObtenerRespuestasAyuda', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+
+                    respuestas.append(getsetRespuestaAyuda(item[0], idPregunta, item[1]))
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+        return respuestas
 
     def ObtenerProductosCarritoUsuario(self, IDUsuarioRegistrado):
         return []

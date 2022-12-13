@@ -7,6 +7,7 @@ from Programacion.Funcionalidad.Utileria import Utileria
 from Programacion.getset.getsetBadgeFlotante import getsetBadgeFlotante
 from Programacion.getset.getsetInformacionCabecera import getsetInformacionCabecera
 from Programacion.getset.getsetInformacionCarousel import getsetInformacionCarousel
+from Programacion.getset.getsetObjetoAyuda import getsetObjetoAyuda
 from Programacion.getset.getsetObjetoPaginaInicio import getsetObjetoPaginaInicio
 from Programacion.getset.getsetObjetoProducto import getsetObjetoProducto
 from Programacion.getset.getsetTotalesCarrito import getsetTotalesCarrito
@@ -34,7 +35,7 @@ def create_app():
 app = create_app()
 
 
-def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True):
+def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True, template=""):
     informacion = None
     cookieSesion = None
     datosUsuario = None
@@ -45,7 +46,9 @@ def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True):
         productosCarrito = []
         totalCarrito = getsetTotalesCarrito()
         totalesBadgeFlotantes = getsetBadgeFlotante(0, 0, 0)
-        if datosUsuario is not None:
+        if datosUsuario is None:
+            Utileria().EliminarCookie(template)
+        else:
             productosCarrito = mySql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
             totalCarrito = mySql.ObtenerTotalesCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
             totalesBadgeFlotantes = mySql.ObtenerTotalesParaBadgeFlotantes(datosUsuario.IDUsuarioRegistrado)
@@ -80,10 +83,7 @@ def index():
     # ----------------------------
     objetoInicio = getsetObjetoPaginaInicio("index", productosOfertaCarousel, productosDestacadosCarousel,
                                             productosNuevosCarousel, informacionCabecera)
-
-
-
-    return render_template('Index.html', objetoInicio=objetoInicio,informacionCabecera=informacionCabecera )
+    return render_template('Index.html', objetoInicio=objetoInicio, informacionCabecera=informacionCabecera)
 
 
 @app.route('/productos')
@@ -119,10 +119,11 @@ def producto(tipo=-1, busqueda="", idProducto=""):
     productoSeleccionado = mySql.ObtenerProducto(idProductoDes);
     token = Utileria().VerificarCookie("SesionUsuario");
     datosUsuario = mySql.ObtenerUsuarioPorToken(token);
-    #cabecera-----------------------------
-    informacionCabecera = LlenarCabecera(True, busqueda, "producto.html")
-    #----------------------------
-    informacion = getsetObjetoProducto(None, busqueda, productosCarousel, productoSeleccionado, None, datosUsuario, informacionCabecera)
+    # cabecera-----------------------------
+    informacionCabecera = LlenarCabecera(True, busqueda)
+    # ----------------------------
+    informacion = getsetObjetoProducto(None, busqueda, productosCarousel, productoSeleccionado, None, datosUsuario,
+                                       informacionCabecera)
     return render_template('Producto.html', informacion=informacion)
 
 
@@ -148,14 +149,15 @@ def procesoCompra():
 
 @app.route('/ayuda')
 def ayuda():
-    return render_template('ayuda.html')
+    mysql = MySQL()
+    temas = mysql.ObtenerTemasAyuda();
+    objetoAyuda = getsetObjetoAyuda(None, "", temas);
+    return render_template('ayuda.html', temas)
 
 
 @app.route('/perfilUsuario')
 def perfilUsuario():
     return render_template('perfilUsuario.html')
-
-
 
 #
 # if __name__ == '__main__':
