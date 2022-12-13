@@ -1,5 +1,8 @@
 from flask import make_response, render_template
 
+from MySqlConexion import MySQL
+from Programacion.getset import getsetUsuarioRegistrado
+
 
 class Utileria:
 
@@ -12,8 +15,15 @@ class Utileria:
         return d
 
     def ObtenerUsuarioDeLaSesionActual(self, request):
-        cookie = request.cookies.get('SesionUsuario')
-        return cookie
+        cookie: bytearray = request.cookies.get('SesionUsuario')
+
+        b = bytearray()
+        b.extend(map(ord, cookie))
+
+        mySql = MySQL();
+        datosUsuario:getsetUsuarioRegistrado = mySql.ObtenerUsuarioPorToken(b);
+
+        return datosUsuario
 
     def EliminarCookie(self, template):
         resp = make_response(render_template(template))

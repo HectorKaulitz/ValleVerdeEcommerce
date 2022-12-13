@@ -1,9 +1,6 @@
 from Programacion.Funcionalidad.Encriptacion import Encriptacion
-from Programacion.Funcionalidad.Utileria import Utileria
-
 
 class getsetProductoPromocionPorCategoria:
-    obu = Utileria()
     oben = Encriptacion()
 
     def __init__(self, idProducto, codigoBarras, nombreProducto, descripcionProducto, idDependiendoCategoria,nombreDependiendoCategoria,IDPromocionTablaVarianteDeCategoria,

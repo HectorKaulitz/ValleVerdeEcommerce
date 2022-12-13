@@ -1,7 +1,6 @@
 import mysql.connector
 
 from Programacion.Funcionalidad.Encriptacion import Encriptacion
-from Programacion.Funcionalidad.Utileria import Utileria
 from Programacion.getset import getsetUsuarioRegistrado
 from Programacion.getset.getsetCategoria import getsetCategoria
 from Programacion.getset.getsetComentario import getsetComentario
@@ -206,7 +205,7 @@ class MySQL:
         return producto
 
     def ObtenerUsuarioPorToken(self, token):
-        usuario = None;
+        usuario:getsetUsuarioRegistrado = None;
         if self.CONNECTION is None:
             self.conectar_mysql()
         try:
@@ -518,6 +517,7 @@ class MySQL:
                 for item in items:
                     res = [item[0],item[1].decode('utf-8'),item[2].strftime('%Y-%m-%d')]
 
+            self.CONNECTION.commit()
             CURSOR.close()
             self.desconectar_mysql()
 

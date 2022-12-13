@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Blueprint, request
+from flask import Flask, render_template, Blueprint, request, jsonify
 from flask_cors import CORS
 
 from MySqlConexion import MySQL
@@ -39,7 +39,7 @@ def create_app():
 app = create_app()
 
 
-def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True, template=""):
+def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True):
     informacion = None
     cookieSesion = None
     datosUsuario = None
@@ -51,7 +51,8 @@ def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True, template="
         totalCarrito = getsetTotalesCarrito()
         totalesBadgeFlotantes = getsetBadgeFlotante(0, 0, 0)
         if datosUsuario is None:
-            Utileria().EliminarCookie(template)
+            #Utileria().EliminarCookie(template)
+            intd = 4
         else:
             productosCarrito = mySql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
             totalCarrito = mySql.ObtenerTotalesCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
@@ -132,7 +133,8 @@ def promociones():
 
 @app.route('/iniciarSesion')
 def iniciarSesion():
-    return render_template('iniciarSesion.html')
+    informacionCabecera = LlenarCabecera(True,'')
+    return render_template('iniciarSesion.html', informacionCabecera=informacionCabecera)
 
 
 @app.route('/registrar')
@@ -368,31 +370,6 @@ def validarContrasenaInicioSesion():
                     "fechaExpiracion": res.fechaExpiracion})
 
 
-def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True, template=""):
-    informacion = None
-    cookieSesion = None
-    datosUsuario = None
-    token = None
-    if mostrar:
-        mySql = MySQL()
-        datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
-        productosCarrito = []
-        totalCarrito = getsetTotalesCarrito()
-        totalesBadgeFlotantes = getsetBadgeFlotante(0, 0, 0)
-        if datosUsuario is None:
-            Utileria().EliminarCookie(template)
-        else:
-            productosCarrito = mySql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
-            totalCarrito = mySql.ObtenerTotalesCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
-            totalesBadgeFlotantes = mySql.ObtenerTotalesParaBadgeFlotantes(datosUsuario.IDUsuarioRegistrado)
-
-        categorias = mySql.ObtenerCategoria()
-        departamentos = mySql.ObtenerDepartamentos()
-        informacion = getsetInformacionCabecera(categorias, departamentos, productosCarrito, datosUsuario, mostrar,
-                                                busqueda, mostrarCarrito, totalCarrito, totalesBadgeFlotantes)
-    else:
-        informacion = getsetInformacionCabecera(None, None, None, None, mostrar, "", mostrarCarrito, None, None)
-    return informacion
 
 #
 # if __name__ == '__main__':
