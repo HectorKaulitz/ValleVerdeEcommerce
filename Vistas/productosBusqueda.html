@@ -1,5 +1,5 @@
 {% from 'itemProductoBusqueda.html' import itemProductoBusqueda with context %}
-{% macro productosBusqueda(text) %}
+{% macro productosBusqueda(productosResultado) %}
 
 
 <div class="contenedor-principal-productos-busqueda">
@@ -8,9 +8,9 @@
         <div class="contenedor-producto">
 
             {# @foreach (getsetProducto producto in objetoProductos.productosResultado) #}
-            {% for i in range(5) %}
+            {% for producto in productosResultado %}
 
-                {{itemProductoBusqueda(loop.index, 'Nombre producto', 'Descripcion producto',100,80,1)}}
+                {{itemProductoBusqueda(loop.index, producto.nombreProducto, producto.descripcionProducto,producto.precioOriginal,producto.precioDescuento,producto.idProducto, producto.codigoBarras)}}
 
            {% endfor %}
 

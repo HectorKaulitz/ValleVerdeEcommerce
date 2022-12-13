@@ -85,14 +85,14 @@
             </nav>
         </div>
         <div class="contenedor-carousel-pag">
-            {# @if (@Objeto.informacionCarousel.productosCarousel.Count > 0) #}
+            {# @if (@Objeto.informacionCarousel.informacionCarousel.productosCarousel.Count > 0) #}
             {% if (true) %}
 
-             {{carouselProductos()}}
+             {{carouselProductos('Destacados',informacion.informacionCarousel.productosCarousel, False,0)}}
             {% endif %}
         </div>
         <div class="contenedor-productosBus-pag">
-            {{productosBusqueda('')}}
+            {{productosBusqueda(informacion.productosResultado)}}
         </div>
     </div>
 </div>

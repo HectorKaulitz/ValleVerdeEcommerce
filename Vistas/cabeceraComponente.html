@@ -93,7 +93,7 @@
                             {% for categoria in informacionCabecera.listaCategorias %}
                             <li class="nav-item">
                                  <!-- <a class="nav-link  letra-opciones-nav" asp-area="" asp-controller="Inicio" asp-action="Productos" asp-route-tipo="@categoria.tipEncriptado" asp-route-numeroPagina="$1" asp-route-productosPag="@sNum" asp-route-busqueda="" >@categoria.nombre</a>-->
-                                <a class="nav-link  letra-opciones-nav"  href="productos?tipo={{categoria.tipEncriptado}}&numeroPagina=$1&productosPag={{sNum}}&busqueda=''" >{{categoria.nombre}}</a>
+                                <a class="nav-link  letra-opciones-nav"  href="productos?tipo={{categoria.tipEncriptado}}&numeroPagina=1&productosPag={{sNum}}&busqueda=''" >{{categoria.nombre}}</a>
 
                             </li>
                              {% endfor %}

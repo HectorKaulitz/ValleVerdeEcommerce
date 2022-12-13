@@ -98,11 +98,21 @@ def index():
     return render_template('Index.html', objetoInicio=objetoInicio, informacionCabecera=informacionCabecera)
 
 
-@app.route('/productos')
-def productos(tipo="-1", numeroPagina="1", productosPag="10", idMarca="-1", idLinea="-1", idFabricantes="-1",
-              idDepartamento="-1", busqueda="", idSubLinea="-1"):
+@app.route('/productos', methods=['POST', 'GET'])
+def productos():
     oben = Encriptacion()
     mySql = MySQL()
+
+    busqueda: str = request.args.get('busqueda','')
+    numeroPagina = request.args.get('numeroPagina',0)
+    productosPag = request.args.get('productosPag',10)
+    tipo = request.args.get('tipo','-1')
+    idMarca = request.args.get('idMarca','-1')
+    idLinea = request.args.get('idLinea','-1')
+    idFabricantes = request.args.get('idFabricantes','-1')
+    idDepartamento = request.args.get('idDepartamento','-1')
+    idSubLinea = request.args.get('idSubLinea','-1')
+
     productosPagEnc = int(oben.Decrypt(productosPag))
     if productosPagEnc == -2:
         productosPagEnc = 10
@@ -113,7 +123,8 @@ def productos(tipo="-1", numeroPagina="1", productosPag="10", idMarca="-1", idLi
 
     filtros = mySql.ObtenerFiltros(tipoEnc)
 
-    productosResultado = mySql.ObtenerProductos(int(numeroPagina.replace("$","")), productosPagEnc, idMarca, idLinea,
+
+    productosResultado = mySql.ObtenerProductos(numeroPagina, productosPagEnc, idMarca, idLinea,
                                                     idFabricantes, idDepartamento, busqueda, idSubLinea)
 
     productosCarousel = mySql.ObtenerProductosCarouselPorCategoria(2,"-1",idLinea,idMarca,idFabricantes,idSubLinea)
@@ -175,7 +186,7 @@ def promociones():
 
 @app.route('/iniciarSesion')
 def iniciarSesion():
-    informacionCabecera = LlenarCabecera(True, '')
+    informacionCabecera = LlenarCabecera(False, '')
     return render_template('iniciarSesion.html', informacionCabecera=informacionCabecera)
 
 
