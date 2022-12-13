@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Blueprint, request
+from flask import Flask, render_template, Blueprint, request, jsonify
 from flask_cors import CORS
 
 from MySqlConexion import MySQL
@@ -8,6 +8,7 @@ from Programacion.getset.getsetInformacionCabecera import getsetInformacionCabec
 from Programacion.getset.getsetInformacionCarousel import getsetInformacionCarousel
 from Programacion.getset.getsetObjetoPaginaInicio import getsetObjetoPaginaInicio
 from Programacion.getset.getsetObjetoPromociones import getsetObjetoPromociones
+from Programacion.getset.getsetResultado import getsetResultado
 from Programacion.getset.getsetTotalesCarrito import getsetTotalesCarrito
 
 index = Blueprint('index', __name__, url_prefix='/index', template_folder='Vistas')
@@ -43,9 +44,12 @@ def index():
     #     mySql.desconectar_mysql()
 
     datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request=request)
-    productosOfertaCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(1), datosUsuario)
-    productosDestacadosCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(2), datosUsuario)
-    productosNuevosCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(4), datosUsuario)
+    productosOfertaCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(1),
+                                                        datosUsuario)
+    productosDestacadosCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(2),
+                                                            datosUsuario)
+    productosNuevosCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(4),
+                                                        datosUsuario)
     objetoInicio = getsetObjetoPaginaInicio("index", productosOfertaCarousel, productosDestacadosCarousel,
                                             productosNuevosCarousel)
 
@@ -75,21 +79,23 @@ def promociones():
 
     numeroCuadrosPagina = 5
 
-    #if (_detectionService.Device.Type == Device.Mobile)
+    # if (_detectionService.Device.Type == Device.Mobile)
     #   numeroCuadrosPagina = 4;
 
     productosPromocion = mySql.ObtenerProductosDePromocionPorCategoria(2);
 
     productosPromocionIndividuales = mySql.ObtenerProductosDePromocionPorCategoria(-1, numeroPagina, productosPagEnc);
 
-    NumeroTotalProductos = mySql.ObtenerNumeroPaginasProductosDePromocionPorCategoria(-1, productosPagEnc );
+    NumeroTotalProductos = mySql.ObtenerNumeroPaginasProductosDePromocionPorCategoria(-1, productosPagEnc);
     datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request);
 
     informacionCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(2), datosUsuario);
-    objetoPromociones = getsetObjetoPromociones( "", informacionCarousel, productosPromocion, productosPromocionIndividuales,
-                                numeroPagina, productosPagEnc , numeroCuadrosPagina, NumeroTotalProductos);
+    objetoPromociones = getsetObjetoPromociones("", informacionCarousel, productosPromocion,
+                                                productosPromocionIndividuales,
+                                                numeroPagina, productosPagEnc, numeroCuadrosPagina,
+                                                NumeroTotalProductos);
 
-    return render_template('promociones.html', objetoPromociones = objetoPromociones)
+    return render_template('promociones.html', objetoPromociones=objetoPromociones)
 
 
 @app.route('/iniciarSesion')
@@ -135,6 +141,179 @@ def ayuda():
 @app.route('/perfilUsuario')
 def perfilUsuario():
     return render_template('perfilUsuario.html')
+
+
+def _validarUsuarioInicioSesion(usuario):
+    res: int = -3;
+    longitudMinima: int = 8;
+    longitudMaxima: int = 20;
+
+    continuar: bool = True;
+
+    if (usuario == None):
+        res = -2;
+    else:
+        caracteres = list();
+        caracteres.extend(usuario);
+
+        if (len(caracteres) >= longitudMinima):
+            if (len(caracteres) <= longitudMaxima):
+                for caracter in caracteres:
+                    if (ord(caracter) >= 65 and ord(caracter) <= 90):
+                        # caracteres A-Z MAYUSCULAS CODIGO ASCII
+                        continuar = True;
+                    else:
+                        if (ord(caracter) >= 97 and ord(caracter) <= 122):
+                            # caracteres a-z minusculas CODIGO ASCII
+                            continuar = True;
+                        else:
+                            if (ord(caracter) >= 48 and ord(caracter) <= 57):
+                                # caracteres 0-9 CODIGO ASCII
+                                continuar = True;
+                            else:
+                                if ((caracter + "") == ("-") or (caracter + "") == ("_")):
+                                    # guiones
+                                    continuar = True;
+                                else:
+                                    # encontro otro caracter
+                                    continuar = False;
+                                    break;
+
+                if (continuar):
+                    mySql = MySQL()
+                    resB: int = mySql.ExisteUsuario(usuario);
+                    if (resB == -1):  # si existe
+                        res = 1;
+                    else:  # esta disponible
+                        res = -6;
+                else:
+                    res = -1;  # caracteres ivalidos
+            else:
+                res = -5;  # no cumple lo maximo
+        else:
+            res = -4;  # no cumple lo minimo
+
+            # 1 existe usuario
+            # -1caracteres ivalidos
+            # -2 vacio
+            # -3 error metodo
+            # -4longitud minima
+            # -5 longitud maxima
+            # -6 no existe
+    return getsetResultado(res, '', '', '');
+
+
+def _validarContrasenaInicioSesion(contrasena):
+    # contrasena = contrasena.Trim();
+    res: int = -3;
+    longitudMinima: int = 8;
+    longitudMaxima: int = 25;
+
+    contieneLetras = False;
+    contieneNumeros = False;
+    cumpleLongitud = True;
+    continuar = True;
+
+    if (contrasena == None):
+        res = -2;  # vacio
+    else:
+        # contraseña = contraseña.Trim();
+        caracteres = list();
+        caracteres.extend(contrasena);
+        if (len(caracteres) >= longitudMinima):
+            if (len(caracteres) <= longitudMaxima):
+                for caracter in caracteres:
+                    if (ord(caracter) >= 65 and ord(caracter) <= 90):
+                        # caracteres A-Z MAYUSCULAS CODIGO ASCII
+                        contieneLetras = True;
+                        continuar = True;
+                    else:
+                        if (ord(caracter) >= 97 and ord(caracter) <= 122):
+                            # caracteres a-z minusculas CODIGO ASCII
+                            contieneLetras = True;
+                            continuar = True;
+                        else:
+                            if (ord(caracter) >= 48 and ord(caracter) <= 57):
+                                # caracteres 0-9 CODIGO ASCII
+                                contieneNumeros = True;
+                                continuar = True;
+                            else:
+                                # encontro otro caracter
+                                continuar = False;
+                                break;
+                if (continuar):
+                    if (contieneLetras):
+                        if (contieneNumeros):
+                            res = 1;
+                        else:
+                            res = -7;
+                    else:
+                        res = -6;
+                else:
+                    res = -1;  # caracteres ivalidos
+            else:
+                cumpleLongitud = False;
+                res = -5;  # no cumple lo maximo
+        else:
+            cumpleLongitud = False;
+            res = -4;  # no cumple lo minimo
+
+    # 1 todo bien
+    # -1caracteres ivalidos
+    # -2 vacio
+    # -3 error metodo
+    # -4longitud minima
+    # -5 longitud maxima
+    # -6 no contiene letras
+    # -7 no contiene numeros
+    return getsetResultado(res, '', '', '');
+
+
+@app.route('/validarDatosInicioSesion/', methods=['POST', 'GET'])
+def validarDatosInicioSesion():
+    res: int = -3;
+
+    mySql = MySQL()
+    usuario = request.form['usuario'];
+    contrasena = request.form['contrasena'];
+    resultU: int = _validarUsuarioInicioSesion(usuario).resultado;
+    resultC: int = _validarContrasenaInicioSesion(contrasena).resultado;
+
+    if ((resultU == 1 or resultU == -6) and resultC == 1):
+        res = mySql.ValidarDatosInicioSesion(usuario, contrasena);
+        if (res == 1):
+            sesion = mySql.AgregarSesionUsuario(usuario);
+            return jsonify({"resultado": res, "idSesion": sesion[0], "token": sesion[1], "fechaExpiracion": sesion[2]});
+    else:
+        res = 2;
+
+    # 1 coincide y esta activo
+    # 2 debe pasar la validacion de campos
+    # -1 usuario no existe
+    # -2 usuario existe,contraseña mal
+    # -3 erro metodo/proced
+    # -4 cuenta inactiva
+
+    return jsonify({"resultado": res, "idSesion": "", "token": "", "fechaExpiracion": ""})
+
+@app.route('/validarUsuarioInicioSesion/', methods=['POST', 'GET'])
+def validarUsuarioInicioSesion():
+
+    usuario = request.form['usuario'];
+
+    res = _validarUsuarioInicioSesion(usuario);
+
+    return jsonify({"resultado": res.resultado, "idSesion": res.idSesion, "token": res.token, "fechaExpiracion": res.fechaExpiracion})
+
+@app.route('/validarContrasenaInicioSesion/', methods=['POST', 'GET'])
+def validarContrasenaInicioSesion():
+
+    contrasena = request.form['contrasena'];
+
+    res = _validarContrasenaInicioSesion(contrasena);
+
+    return jsonify({"resultado": res.resultado, "idSesion": res.idSesion, "token": res.token,
+                    "fechaExpiracion": res.fechaExpiracion})
 
 
 def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True, template=""):

@@ -6,14 +6,15 @@
     $("#inputUsuario").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarUsuarioInicioSesion/",
+            url: "/validarUsuarioInicioSesion/",
             data:
             {
-                usuario: $("#inputUsuario").val().toString()
+                'usuario': $("#inputUsuario").val().toString()
             },
             type: "POST"
         })
             .done(function (result) {
+
                 if (result != null) {
                     /* alert("done")*/
             //1 existe usuario
@@ -79,10 +80,10 @@
     $("#inputContraseña").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarcontrasenaInicioSesion/",
+            url: "/validarContrasenaInicioSesion/",
             data:
             {
-                contrasena: $("#inputContraseña").val().toString()
+                'contrasena': $("#inputContraseña").val().toString()
             },
             type: "POST"
         })
@@ -128,7 +129,7 @@
                             $("#inputContraseña").css("background-color", "#ff3c335c");
                             $("#divAlertContraseña").show("slow");
                             document.getElementById('labelAlertContraseña').textContent = "Debe contener numero(s)";
-                            breaK;
+                            break;
 
 
                     }
@@ -144,16 +145,17 @@
     $("#btnIniciarSesion").click(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarDatosInicioSesion/",
+            url: "/validarDatosInicioSesion",
             data:
             {
               
-                usuario: $("#inputUsuario").val().toString(),
-                contrasena: $("#inputContraseña").val().toString()
+                'usuario': $("#inputUsuario").val().toString(),
+                'contrasena': $("#inputContraseña").val().toString()
             },
             type: "POST"
         })
             .done(function (result) {
+            //alert('hol'+JSON.stringify(result))
                 if (result != null) {
              //1 coincide y esta activo
             //2 debe pasar la validacion de campos
@@ -171,10 +173,9 @@
                             //var fecha = new Date(2023,1,02,11,20);
                             document.cookie = "SesionUsuario=" + result.token.toString() + "; expires=" + fecha.toUTCString()+";path=/";
                             var form =document.getElementById("formularioSesion");
-                            form.submit();
+                            //form.submit();
                             //document.cookie = "SesionUsuario=" + result.token.toString();
-
-
+                           document.location.href="/";
                             break;
                         case "2"://debe pasar la validacion de campos
 

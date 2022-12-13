@@ -7,7 +7,7 @@ from Programacion.getset.getsetProductoPromocionPorCategoria import getsetProduc
 
 class MySQL:
 
-    def __init__(self, host="192.168.0.106", user="usuario1", pws="cotija20", bd="valleverdeecommerce"):
+    def __init__(self, host="192.168.0.116", user="usuario1", pws="cotija20", bd="valleverdeecommerce"):
         self.HOST = host
         self.USER = user
         self.PASSWORD = pws
@@ -210,3 +210,75 @@ class MySQL:
             print("ERROR: ", error)
 
         return productosPromocion
+
+    def ExisteUsuario(self, usuario, idUsuario="-1"):
+        res = -3;
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [usuario, idUsuario]
+            CURSOR.callproc('ExisteUsuario', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = item[0]
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+        return res
+
+    def ValidarDatosInicioSesion(self, usuario, contrasena):
+        res = -3;
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [usuario, contrasena]
+            CURSOR.callproc('ValidarDatosInicioSesion', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = item[0]
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+        return res
+
+    def AgregarSesionUsuario(self, usuario):
+        res = ["-3","",""];
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [usuario]
+            CURSOR.callproc('AgregarSesionUsuario', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = [item[0],item[1].decode('utf-8'),item[2].strftime('%Y-%m-%d')]
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+        return res
