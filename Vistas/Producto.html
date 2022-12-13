@@ -20,7 +20,7 @@
 
 </head>
 <body>
-{{cabecera(informacion.informacionCabecera)}}
+{{cabecera(ObjetoProducto.informacionCabecera)}}
 <aside class="contenedor-principal-producto">
     <!-- breadcrumb -->
     <div class="contenedor-breadcrumb">
@@ -49,8 +49,8 @@
     <div class="container contenedor-sub-principal-producto">
         <!-- NOMBRE PRODUCTO-->
         <div class="div-nombre-producto">
-<!--            <h1 class="txt-nombre-producto">@ObjetoProducto.productoSeleccionado.nombreProducto<small> </small></h1>-->
-            <h1 class="txt-nombre-producto">MICRODYN 500 ML<small> </small></h1>
+          <h1 class="txt-nombre-producto">{{ObjetoProducto.productoSeleccionado.nombreProducto}}<small> </small></h1>
+            {#<h1 class="txt-nombre-producto">MICRODYN 500 ML<small> </small></h1>#}
         </div>
 
         <!-- INFORMACION PRODUCTO -->
@@ -95,8 +95,7 @@
                     </div>
 
                     <div class="contenedor-solo-descripcion">
-<!--                        <p class="txt-solo-decripcion">@ObjetoProducto.productoSeleccionado.descripcion</p>-->
-                        <p class="txt-solo-decripcion">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                        <p class="txt-solo-decripcion">{{ObjetoProducto.productoSeleccionado.descripcion}}</p>
                     </div>
 
                 </div>
@@ -104,24 +103,16 @@
                     <div class="contenedor-precio-producto">
                         <h3 class="my-3 txt-precio">Precio</h3>
                         <div class="position-relative">
-<!--                            @if(ObjetoProducto.productoSeleccionado.precioOriginal<=0)-->
-<!--                            {-->
-                                {%if(true==false)%}
+                                {% if ObjetoProducto.productoSeleccionado.precioOriginal < 1 %}
                                     <h3 class="item-lista">Sin precio</h3>
                                 {%else%}
-    <!--                            @if (ObjetoProducto.productoSeleccionado.precioOriginal != ObjetoProducto.productoSeleccionado.precioDescuento)-->
-    <!--                            {-->
-    <!--                            <p><strike class="strike-text precio-descuento"> @ObjetoProducto.productoSeleccionado.precioOriginal.ToString("C")</strike></p>-->
-    <!--                            <h4 class="mr-1">@ObjetoProducto.productoSeleccionado.precioDescuento.ToString("C")</h4>-->
-    <!--                            }-->
-    <!--                            else-->
-    <!--                            {-->
-    <!--                            <h4 class="mr-1">@ObjetoProducto.productoSeleccionado.precioDescuento.ToString("C")</h4>-->
-    <!--                            }-->
+                                    {%if ObjetoProducto.productoSeleccionado.precioOriginal == ObjetoProducto.productoSeleccionado.precioDescuento %}
+                                        <h4 class="mr-1">$ {{ObjetoProducto.productoSeleccionado.precioDescuento}}</h4>
+                                    {% else %}
+                                        <p><strike class="strike-text precio-descuento">$ {{ObjetoProducto.productoSeleccionado.precioOriginal}}</strike></p>
+                                        <h4 class="mr-1">$ {{ObjetoProducto.productoSeleccionado.precioDescuento}}</h4>
 
-                            <p><strike class="strike-text precio-descuento"> $340</strike></p>
-                            <h4 class="mr-1">$230 </h4>
-
+                                    {% endif %}
                                 {% endif %}
 
                         </div>
@@ -129,14 +120,11 @@
                     <div class="contenedor-existencia-producto">
                         <h3 class="my-3 txt-existencia">Existencia</h3>
                         <ul class="lista-ul">
-<!--                            @if (ObjetoProducto.productoSeleccionado.existencia>0)-->
-<!--                            {-->
-<!--                            <li class="muted item-lista">Disponibles: @ObjetoProducto.productoSeleccionado.existencia</li>-->
-<!--                            }-->
-<!--                            else-->
-<!--                            {-->
-                            <li class="muted item-lista">Sin existencia</li>
-<!--                            }-->
+                            {% if ObjetoProducto.productoSeleccionado.existencia>0 %}
+                                <li class="muted item-lista">Disponibles: {{ObjetoProducto.productoSeleccionado.existencia}}</li>
+                            {% else %}
+                                <li class="muted item-lista">Sin existencia</li>
+                            {% endif %}
                         </ul>
                     </div>
 
@@ -144,23 +132,19 @@
 
                 <div class="contenedor-btn-producto">
                     <form action='procesarCambioCarrito.php' method='POST' class="formulario-btn-producto">
-<!--                        @if(ObjetoProducto.productoSeleccionado.mostrarInteraccion)-->
-<!--                        {-->
-                        <div>
+                       {% if ObjetoProducto.productoSeleccionado.mostrarInteraccion %}
 
-<!--                            @if(@usuario!=null)-->
-<!--                            {-->
-                            <button class="btn btn-primary btn-ac" type="button" onclick="AgregarAcarrito('1122','2','../static/wwwroot/Resources/Productos/1.png','Sin descripcion')">Añadir al carrito</button>
-<!--                            }-->
-<!--                            else-->
-<!--                            {-->
-<!--                            <button class="btn btn-primary btn-ac" type="button" onclick="AgregarAcarrito(@ObjetoProducto.productoSeleccionado.idProducto,null,'@ObjetoProducto.productoSeleccionado.urlsImagenes[0]','@ObjetoProducto.productoSeleccionado.nombreProducto')">Añadir al carrito</button>-->
-<!--                            }-->
+                        <div>
+                           {% if ObjetoProducto.usuario is not none %}
+                                <button class="btn btn-primary btn-ac" type="button" onclick="AgregarAcarrito('1122','2','../static/wwwroot/Resources/Productos/1.png','Sin descripcion')">Añadir al carrito</button>
+                            {% else %}
+                                <button class="btn btn-primary btn-ac" type="button" onclick="AgregarAcarrito({{ObjetoProducto.productoSeleccionado.idProducto}},null,'{{ObjetoProducto.productoSeleccionado.urlsImagenes[0]}}','{{ObjetoProducto.productoSeleccionado.nombreProducto}}')">Añadir al carrito</button>
+                            {% endif %}
                         </div>
                         <div>
                             <button   type='submit' class='btn btn-primary btn-ac'>Comprar ahora</button>
                         </div>
-<!--                        }-->
+                        {% endif %}
                         <div>
                             <button   type='submit' class='btn btn-primary btn-ac'> <i class="fa-regular fa-heart"></i> </button>
                         </div>
@@ -172,11 +156,9 @@
     <!-- /.container -->
     <div class="contenedor-carousel-en-productos">
         <div class="contenedor-carousel-pag">
-<!--            @if (@ObjetoProducto.informacionCarousel.productosCarousel.Count > 0)-->
-<!--            {-->
-<!--            @(await Component.InvokeAsync("CarouselProductos",@ObjetoProducto.informacionCarousel))-->
-<!--            }-->
-            {{carouselProductos('Relacionados',informacion.productosCarousel,False,1)}}
+            {% if ObjetoProducto.productosCarousel|length > 0 %}
+                {{carouselProductos('Relacionados',ObjetoProducto.informacionCarousel,False,1)}}
+            {% endif %}
         </div>
     </div>
 

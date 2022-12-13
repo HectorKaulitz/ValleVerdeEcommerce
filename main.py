@@ -196,9 +196,10 @@ def producto(tipo=-1, busqueda="", idProducto=""):
     # cabecera-----------------------------
     informacionCabecera = LlenarCabecera(True, busqueda)
     # ----------------------------
+    informacionCarousel = getsetInformacionCarousel(None, productosCarousel, datosUsuario);
     informacion = getsetObjetoProducto(None, busqueda, productosCarousel, productoSeleccionado, None, datosUsuario,
-                                       informacionCabecera)
-    return render_template('Producto.html', informacion=informacion)
+                                       informacionCabecera, informacionCarousel)
+    return render_template('Producto.html', ObjetoProducto=informacion)
 
 
 @app.route('/comentarios')
