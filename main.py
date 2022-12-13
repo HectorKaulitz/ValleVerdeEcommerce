@@ -123,10 +123,11 @@ def promociones():
     datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request);
 
     informacionCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(2), datosUsuario);
+    informacionCabecera = LlenarCabecera(True,'',True);
     objetoPromociones = getsetObjetoPromociones("", informacionCarousel, productosPromocion,
                                                 productosPromocionIndividuales,
                                                 numeroPagina, productosPagEnc, numeroCuadrosPagina,
-                                                NumeroTotalProductos);
+                                                NumeroTotalProductos,informacionCabecera);
 
     return render_template('promociones.html', objetoPromociones=objetoPromociones)
 

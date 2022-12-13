@@ -7,7 +7,7 @@ class getsetObjetoPromociones:
     oben = Encriptacion()
 
     def __init__(self, busqueda, informacionCarousel, productosPromocion, productosPromocionIndividuales, numeroPagina,
-                 productosPag, numeroCuadrosPagina, NumeroTotalProductos):
+                 productosPag, numeroCuadrosPagina, NumeroTotalProductos,informacionCabecera):
         self.busqueda = busqueda
         self.informacionCarousel = informacionCarousel
         self.productosPromocion = productosPromocion
@@ -16,3 +16,4 @@ class getsetObjetoPromociones:
         self.productosPag = productosPag
         self.numeroCuadrosPagina = numeroCuadrosPagina
         self.NumeroTotalProductos = NumeroTotalProductos
+        self.informacionCabecera = NumeroTotalProductos
