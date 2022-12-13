@@ -4,10 +4,12 @@ from flask_cors import CORS
 from MySqlConexion import MySQL
 from Programacion.Funcionalidad.Encriptacion import Encriptacion
 from Programacion.Funcionalidad.Utileria import Utileria
+from Programacion.getset import getsetUsuarioRegistrado
 from Programacion.getset.getsetBadgeFlotante import getsetBadgeFlotante
 from Programacion.getset.getsetInformacionCabecera import getsetInformacionCabecera
 from Programacion.getset.getsetInformacionCarousel import getsetInformacionCarousel
 from Programacion.getset.getsetObjetoAyuda import getsetObjetoAyuda
+from Programacion.getset.getsetObjetoComentario import getsetObjetoComentario
 from Programacion.getset.getsetObjetoPaginaInicio import getsetObjetoPaginaInicio
 from Programacion.getset.getsetObjetoProducto import getsetObjetoProducto
 from Programacion.getset.getsetTotalesCarrito import getsetTotalesCarrito
@@ -129,7 +131,13 @@ def producto(tipo=-1, busqueda="", idProducto=""):
 
 @app.route('/comentarios')
 def comentarios():
-    return render_template('comentarios.html')
+    mysql = MySQL()
+    usuario: getsetUsuarioRegistrado = None  # falta obtener el usuario
+    comentarios = []
+    if usuario is not None:
+        comentarios = mysql.ObtenerComentarioUsuario(usuario.IDUsuarioRegistrado)
+        objetoComentario = getsetObjetoComentario(None, "", comentarios, usuario)
+    return render_template('comentarios.html', objetoComentario=objetoComentario)
 
 
 @app.route('/carritoUsuario')

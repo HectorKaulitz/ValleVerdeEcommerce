@@ -4,11 +4,13 @@ from Programacion.Funcionalidad.Encriptacion import Encriptacion
 from Programacion.Funcionalidad.Utileria import Utileria
 from Programacion.getset import getsetUsuarioRegistrado
 from Programacion.getset.getsetCategoria import getsetCategoria
+from Programacion.getset.getsetComentario import getsetComentario
 from Programacion.getset.getsetDireccion import getsetDireccion
 from Programacion.getset.getsetPreguntaAyuda import getsetPreguntaAyuda
 from Programacion.getset.getsetProducto import getsetProducto
 from Programacion.getset.getsetProductoPromocionPorCategoria import getsetProductoPromocionPorCategoria
 from Programacion.getset.getsetRespuestaAyuda import getsetRespuestaAyuda
+from Programacion.getset.getsetRespuestaComentario import getsetRespuestaComentario
 from Programacion.getset.getsetTemaAyuda import getsetTemaAyuda
 
 
@@ -91,7 +93,8 @@ class MySQL:
                 for row in CURSOR.stored_results():
                     items = row.fetchall()
                     for item in items:
-                        resultados.append(getsetCategoria(item[0], item[1], item[2], Encriptacion().Encrypt(str(item[2]))))
+                        resultados.append(
+                            getsetCategoria(item[0], item[1], item[2], Encriptacion().Encrypt(str(item[2]))))
 
         except mysql.connector.errors.ProgrammingError as e:
             print("Error en el procedimiento ObtenerCategoria: ", e)
@@ -170,6 +173,7 @@ class MySQL:
             print("ERROR: ", error)
 
         return rutasImagenes
+
     def ObtenerProducto(self, idProducto):
         producto = None
         if self.CONNECTION is None:
@@ -217,7 +221,7 @@ class MySQL:
                     direcciones = self.ObtenerDireccionUsuario(id);
                     usuario = getsetUsuarioRegistrado(id, item[1], item[2], item[3], item[4],
                                                       item[5], item[6], item[7], item[8], token, direcciones,
-                                                      item[9], item[10], item[11],)
+                                                      item[9], item[10], item[11], )
             CURSOR.close()
             self.desconectar_mysql()
 
@@ -228,7 +232,7 @@ class MySQL:
 
         return usuario;
 
-    def ObtenerDireccionUsuario(self, idUsuario, idDireccion = "-1"):
+    def ObtenerDireccionUsuario(self, idUsuario, idDireccion="-1"):
         direcciones = []
         if self.CONNECTION is None:
             self.conectar_mysql()
@@ -260,7 +264,7 @@ class MySQL:
             self.conectar_mysql()
         try:
             CURSOR = self.CONNECTION.cursor()
-            args = [tipoCategoria,numeroPagina,numeroProductosPorPagina]
+            args = [tipoCategoria, numeroPagina, numeroProductosPorPagina]
             CURSOR.callproc('ObtenerProductosDePromocionPorCategoria', args)
 
             for row in CURSOR.stored_results():
@@ -269,8 +273,12 @@ class MySQL:
                     interaccionConUsuario = item[15] > 0
                     imagenes = self.ObtenerImagenesProducto(item[0])
                     productosPromocion.append(getsetProductoPromocionPorCategoria(item[0], item[1], item[2],
-                                                                                  item[3],item[4],item[5],item[6],item[7],item[8],item[9],item[10]
-                    ,item[11],item[12],item[13],item[14],imagenes,item[15],item[16],5,False,0,item[17],interaccionConUsuario))
+                                                                                  item[3], item[4], item[5], item[6],
+                                                                                  item[7], item[8], item[9], item[10]
+                                                                                  , item[11], item[12], item[13],
+                                                                                  item[14], imagenes, item[15],
+                                                                                  item[16], 5, False, 0, item[17],
+                                                                                  interaccionConUsuario))
 
             CURSOR.close()
             self.desconectar_mysql()
@@ -282,20 +290,19 @@ class MySQL:
 
         return productosPromocion
 
-    def ObtenerNumeroPaginasProductosDePromocionPorCategoria(self, tipoCategoria=-1, numeroProductosPorPagina ="10"):
+    def ObtenerNumeroPaginasProductosDePromocionPorCategoria(self, tipoCategoria=-1, numeroProductosPorPagina="10"):
         productosPromocion = 0
         if self.CONNECTION is None:
             self.conectar_mysql()
         try:
             CURSOR = self.CONNECTION.cursor()
-            args = [tipoCategoria,numeroProductosPorPagina]
+            args = [tipoCategoria, numeroProductosPorPagina]
             CURSOR.callproc('ObtenerNumeroPaginasProductosDePromocionPorCategoria', args)
 
             for row in CURSOR.stored_results():
                 items = row.fetchall()
                 for item in items:
                     productosPromocion = item[0]
-
 
             CURSOR.close()
             self.desconectar_mysql()
@@ -320,7 +327,7 @@ class MySQL:
                 items = row.fetchall()
                 for item in items:
                     idTema = item[0]
-                    temas.append(getsetTemaAyuda(idTema, item[1],   self.ObtenerPreguntasAyuda(idTema)))
+                    temas.append(getsetTemaAyuda(idTema, item[1], self.ObtenerPreguntasAyuda(idTema)))
 
             CURSOR.close()
             self.desconectar_mysql()
@@ -345,7 +352,8 @@ class MySQL:
                 items = row.fetchall()
                 for item in items:
                     idPregunta = item[0]
-                    preguntas.append(getsetPreguntaAyuda(idPregunta, idTema, item[1],   self.ObtenerRespuestasAyuda(idPregunta)))
+                    preguntas.append(
+                        getsetPreguntaAyuda(idPregunta, idTema, item[1], self.ObtenerRespuestasAyuda(idPregunta)))
 
             CURSOR.close()
             self.desconectar_mysql()
@@ -369,7 +377,6 @@ class MySQL:
             for row in CURSOR.stored_results():
                 items = row.fetchall()
                 for item in items:
-
                     respuestas.append(getsetRespuestaAyuda(item[0], idPregunta, item[1]))
 
             CURSOR.close()
@@ -393,3 +400,58 @@ class MySQL:
 
     def ObtenerDepartamentos(self):
         return []
+
+    def ObtenerComentarioUsuario(self, idUsuario, idComentario="-1", activo=True):
+        comentarios = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idUsuario, idComentario, activo]
+            CURSOR.callproc('ObtenerComentarioUsuario', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                pos = 0
+                for item in items:
+                    idComen = item[0]
+                    comentarios.append(
+                        getsetComentario(pos, idComen, item[1], item[2], item[3], item[4], item[5], item[6], item[7],
+                                         item[8], self.ObtenerRespuestaCometario(idComen)))
+                    pos = pos + 1
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+        return comentarios
+
+    def ObtenerRespuestaCometario(self, idComentario):
+        respuestas = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idComentario]
+            CURSOR.callproc('ObtenerRespuestaCometario', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                pos = 0
+                for item in items:
+                    respuestas.append(getsetRespuestaComentario(item[0], item[1], item[2], item[3], item[4]))
+                    pos = pos + 1
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+        return respuestas
