@@ -184,12 +184,13 @@ def registrar():
     return render_template('registrar.html')
 
 
-@app.route('/producto')
+@app.route('/producto', methods=['POST', 'GET'])
 def producto(tipo=-1, busqueda="", idProducto=""):
+    idProducto = request.args['idProducto'];
     mySql = MySQL();
     idProductoDes = Encriptacion().Decrypt(idProducto);
-    productosCarousel = mySql.ObtenerProductosCarouselPorCategoria(3, idProductoDes);
-    productoSeleccionado = mySql.ObtenerProducto(idProductoDes);
+    productosCarousel = mySql.ObtenerProductosCarouselPorCategoria(3, idProducto);
+    productoSeleccionado = mySql.ObtenerProducto(idProducto);
     token = Utileria().VerificarCookie("SesionUsuario");
     datosUsuario = mySql.ObtenerUsuarioPorToken(token);
     # cabecera-----------------------------
