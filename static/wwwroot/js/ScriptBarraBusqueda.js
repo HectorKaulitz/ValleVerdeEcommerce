@@ -82,7 +82,7 @@ $(document).ready(function () {
                     switch (result.resultado.toString()) {
                         case "1"://todo correcto
                             var form = document.getElementById("formularioBarraBusqueda");
-                            window.location.replace('/Productos?tipo='+result.tipo+'&numeroPagina=$1&productosPag='+result.numero+'&busqueda=' + $("#inputBarraBusqueda").val().toString());
+                            window.location.replace('/productos?tipo='+result.tipo+'&numeroPagina=$1&productosPag='+result.numero+'&busqueda=' + $("#inputBarraBusqueda").val().toString());
                             ////form.setAttribute('asp-route-busqueda=', $("#inputBarraBusqueda").val().toString())
                             //form.submit();
                             break;

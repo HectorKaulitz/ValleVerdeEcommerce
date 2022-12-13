@@ -20,7 +20,7 @@
 
 </head>
 <body>
-{{cabecera('bdbhdbd',true,true,true)}}
+{{cabecera(informacion.informacionCabecera)}}
 <aside class="contenedor-principal-producto">
     <!-- breadcrumb -->
     <div class="contenedor-breadcrumb">
@@ -176,16 +176,17 @@
 <!--            {-->
 <!--            @(await Component.InvokeAsync("CarouselProductos",@ObjetoProducto.informacionCarousel))-->
 <!--            }-->
-            {{carouselProductos('Relacionados')}}
+            {{carouselProductos('Relacionados',informacion.productosCarousel,False,1)}}
         </div>
     </div>
 
 
 </aside>
 
-<script src="{{ url_for('static', filename='wwwroot/js/ScriptProducto.js' ) }}"></script>
+
 
 <script src="{{ url_for('static', filename='wwwroot/lib/jquery/dist/jquery.min.js' ) }}"></script>
+<script src="{{ url_for('static', filename='wwwroot/js/ScriptProducto.js' ) }}"></script>
  <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
 <script src="{{ url_for('static', filename='wwwroot/js/site.js' ) }}" asp-append-version="true"></script>
 <script src="{{ url_for('static', filename='wwwroot/js/ScriptBarraBusqueda.js' ) }}" asp-append-version="true"></script>
