@@ -13,7 +13,7 @@ class getsetInformacionCabecera:
     totalesBadgeFlotantes: getsetBadgeFlotante = None
 
     def __init__(self, listaCategorias, listaDepartamentos, listaProductosCarrito, usuario,
-                 mostrarTodoCabecera, busqueda, mostrarCarrito, totalCarrito, totalesBadgeFlotantes):
+                 mostrarTodoCabecera, busqueda, mostrarCarrito, totalCarrito, totalesBadgeFlotantes, sNum):
         self.listaCategorias = listaCategorias
         self.listaDepartamentos = listaDepartamentos
         self.listaProductosCarrito = listaProductosCarrito
@@ -23,3 +23,4 @@ class getsetInformacionCabecera:
         self.mostrarCarrito = mostrarCarrito
         self.totalCarrito = totalCarrito
         self.totalesBadgeFlotantes = totalesBadgeFlotantes
+        self.sNum = sNum

@@ -50,6 +50,7 @@ def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True):
     cookieSesion = None
     datosUsuario = None
     token = None
+    sNum = Encriptacion.Encrypt(clearText="10")
     if mostrar:
         mySql = MySQL()
         datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
@@ -67,9 +68,9 @@ def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True):
         categorias = mySql.ObtenerCategoria()
         departamentos = mySql.ObtenerDepartamentos()
         informacion = getsetInformacionCabecera(categorias, departamentos, productosCarrito, datosUsuario, mostrar,
-                                                busqueda, mostrarCarrito, totalCarrito, totalesBadgeFlotantes)
+                                                busqueda, mostrarCarrito, totalCarrito, totalesBadgeFlotantes, sNum)
     else:
-        informacion = getsetInformacionCabecera(None, None, None, None, mostrar, "", mostrarCarrito, None, None)
+        informacion = getsetInformacionCabecera(None, None, None, None, mostrar, "", mostrarCarrito, None, None, sNum)
     return informacion
 
 
@@ -186,6 +187,7 @@ def registrar():
 
 @app.route('/producto', methods=['POST', 'GET'])
 def producto(tipo=-1, busqueda="", idProducto=""):
+    patch = request.endpoint.split("/")
     idProducto = request.args['idProducto'];
     mySql = MySQL();
     idProductoDes = Encriptacion().Decrypt(idProducto);
@@ -199,7 +201,8 @@ def producto(tipo=-1, busqueda="", idProducto=""):
     informacionCarousel = getsetInformacionCarousel(None, productosCarousel, datosUsuario);
     informacion = getsetObjetoProducto(None, busqueda, productosCarousel, productoSeleccionado, None, datosUsuario,
                                        informacionCabecera, informacionCarousel)
-    return render_template('Producto.html', ObjetoProducto=informacion)
+    patch.append(productoSeleccionado.nombreProducto)
+    return render_template('Producto.html', ObjetoProducto=informacion, patch=patch)
 
 
 @app.route('/comentarios')

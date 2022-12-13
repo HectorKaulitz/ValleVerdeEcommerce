@@ -1,28 +1,24 @@
-{% macro subMenuFlotante() %}
-
-
+{% macro subMenuFlotante(departamentos, sNum) %}
 {#@foreach (getsetDepartamento dep in departamentos)#}
-{% for x in range(4) %}
+{% for dep in departamentos %}
+
     <li>
         <span class="div-nombre-departamento">
             <a  href="@ruta@dep.idDepartamento" class="txt-nombre-departamento nav-link" >
-                    {#@dep.nombreDepartamento#} Departamento {{x}}
+                    {{dep.nombreDepartamento}}
             </a>
 
 
-            {#@if(dep.departamentoMarcas.Count>0 || dep.departamentosLineas.Count>0)#}
-            {% if(true) %}
+            {% if dep.departamentoMarcas|length >0 or dep.departamentosLineas|length >0 %}
                 <i class="fa-solid fa-circle-arrow-right icon-arrow-right "></i>
             {% endif %}
         </span>
 
-         {#@if (dep.departamentoMarcas.Count > 0 || dep.departamentosLineas.Count > 0)#}
-        {% if(true) %}
+         {% if dep.departamentoMarcas|length > 0 or dep.departamentosLineas|length > 0 %}
             <ul class="submenu dropdown-menu div-flotante-dep shadow">
 
                 <section class="section-principal">
-                   {# @if (dep.departamentosLineas.Count > 0)#}
-                    {% if(true) %}
+                   {% if dep.departamentosLineas|length > 0 %}
                         <section class="section-inter">
                             <div class="div-categoria">
                                 <div class="div-nombre-categoria">
@@ -37,16 +33,16 @@
 
 
                             {#@foreach (getsetDepartamentoLinea linea in dep.departamentosLineas)#}
-                            {% for x in range(6) %}
+                            {% for linea in dep.departamentosLineas %}
 
                                 {% if(contador.value==0) %}
                                     <div class="div-dep">
                                 {% endif %}
 
                                 <div class="div-texto">
-                                    <a class="letra-opciones-item nav-link" asp-area="" asp-controller="Inicio" asp-action="Productos" asp-route-tipo="@linea.tipoEncritado" asp-route-numeroPagina="$1" asp-route-productosPag="@sNum" asp-route-idDepartamento="@dep.idDepartamento" asp-route-idLinea="@linea.idLinea">
+                                    <a class="letra-opciones-item nav-link" asp-area="" href="Productos?tipo={{linea.tipoEncritado}}&&numeroPagina=$1&&productosPag={{sNum}}&&idDepartamento={{dep.idDepartamento}}&&idLinea={{linea.idLinea}}">
                                         <i class="fa-solid fa-circle icon-punto"></i>
-                                        linea nombre {{x}}
+                                        {{linea.nombre}}
                                     </a>
                                 </div>
 
@@ -62,7 +58,7 @@
                     {% endif %}
 
                    {# @if (dep.departamentoMarcas.Count > 0)#}
-                    {% if(true) %}
+                    {% if dep.departamentoMarcas|length > 0 %}
                         <section class="section-inter">
                             <div class="div-categoria">
                                 <div class="div-nombre-categoria">
@@ -73,17 +69,18 @@
                             {% if(contador.value != 0)%}
                                 {% set contador ={'value':0} %}
                             {% endif %}
+
                             {#@foreach (getsetDepartamentoMarca depa in dep.departamentoMarcas)#}
-                            {% for x in range(4) %}
+                            {% for depa in dep.departamentoMarcas %}
 
                                 {% if(contador.value == 0) %}
                                     <div class="div-dep">
                                 {% endif %}
 
                                 <div class="div-texto">
-                                    <a class="letra-opciones-item nav-link" asp-area="" asp-controller="Inicio" asp-action="Productos" asp-route-tipo="@depa.tipoEncritado" asp-route-numeroPagina="$1" asp-route-productosPag="@sNum" asp-route-idDepartamento="@dep.idDepartamento" asp-route-idMarca="@depa.idMarca">
+                                    <a class="letra-opciones-item nav-link" href="Productos?tipo={{depa.tipoEncritado}}&&numeroPagina=$1&&productosPag={{sNum}}&&idDepartamento={{dep.idDepartamento}}&&idMarca={{depa.idMarca}}">
                                         <i class="fa-solid fa-circle icon-punto"></i>
-                                        Marca {{x}}
+                                        {{depa.nombre}}
                                     </a>
                                 </div>
 

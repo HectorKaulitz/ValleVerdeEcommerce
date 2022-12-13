@@ -476,7 +476,7 @@ class MySQL:
         return res
 
     def ObtenerDepartamentos(self, tipo=-1, idDepartamento=-1):
-        res = []
+        departamentos = []
         if self.CONNECTION is None:
             self.conectar_mysql()
         try:
@@ -487,7 +487,7 @@ class MySQL:
             for row in CURSOR.stored_results():
                 items = row.fetchall()
                 for item in items:
-                    res.append(getsetDepartamento(item[0], item[1], item[2], item[3],
+                    departamentos.append(getsetDepartamento(item[0], item[1], item[2], item[3],
                                                   self.ObtenerDepartamentoLinea(item[0]),
                                                   self.ObtenerDepartamentoMarca(item[0]),))
 
@@ -499,11 +499,11 @@ class MySQL:
         except Exception as error:
             print("ERROR ObtenerDepartamentos: ", error)
 
-        return res
+        return departamentos
 
     def ObtenerDepartamentoLinea(self, idDepartamento, tipo=1):
-        obe = Encriptacion()
-        res = []
+
+        departamentosLineas = []
         if self.CONNECTION is None:
             self.conectar_mysql()
         try:
@@ -514,7 +514,7 @@ class MySQL:
             for row in CURSOR.stored_results():
                 items = row.fetchall()
                 for item in items:
-                    res.append(getsetDepartamentoLinea(item[0], item[1], item[2], item[3], item[4], 2, obe.Encrypt("2")))
+                    departamentosLineas.append(getsetDepartamentoLinea(item[0], item[1], item[2], item[3], item[4], 2, Encriptacion.Encrypt("2")))
             CURSOR.close()
             self.desconectar_mysql()
 
@@ -523,11 +523,11 @@ class MySQL:
         except Exception as error:
             print("ERROR ObtenerDepartamentos: ", error)
 
-        return res
+        return departamentosLineas
 
     def ObtenerDepartamentoMarca(self, idDepartamento, tipo=1):
-        obe = Encriptacion()
-        res = []
+
+        departamentoMarcas = []
         if self.CONNECTION is None:
             self.conectar_mysql()
         try:
@@ -538,7 +538,7 @@ class MySQL:
             for row in CURSOR.stored_results():
                 items = row.fetchall()
                 for item in items:
-                    res.append(getsetDepartamentoMarca(item[0], item[1], item[2], item[3], item[4], 1, obe.Encrypt("1")))
+                    res.append(getsetDepartamentoMarca(item[0], item[1], item[2], item[3], item[4], 1, Encriptacion.Encrypt("1")))
             CURSOR.close()
             self.desconectar_mysql()
 
@@ -547,7 +547,7 @@ class MySQL:
         except Exception as error:
             print("ERROR ObtenerDepartamentoMarca: ", error)
 
-        return res
+        return departamentoMarcas
 
     def ObtenerComentarioUsuario(self, idUsuario, idComentario="-1", activo=True):
         comentarios = []

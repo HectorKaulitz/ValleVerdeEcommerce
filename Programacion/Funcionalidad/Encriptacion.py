@@ -5,7 +5,7 @@ from cryptography.fernet import Fernet
 
 class Encriptacion:
 
-    def Encrypt(self, clearText):
+    def Encrypt( clearText):
         # generate a key for encryption and decryption
         key = b"MAKV2SPBNI99212MAKV2SPBNI9921299"
 
@@ -15,7 +15,7 @@ class Encriptacion:
 
         return encMessage
 
-    def Decrypt(self, cipherText):
+    def Decrypt(cipherText):
         decMessage = "-2"
         try:
             # generate a key for encryption and decryption
