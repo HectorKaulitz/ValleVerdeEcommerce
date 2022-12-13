@@ -17,13 +17,16 @@ class Utileria:
     def ObtenerUsuarioDeLaSesionActual(self, request):
         cookie: bytearray = request.cookies.get('SesionUsuario')
 
-        b = bytearray()
-        b.extend(map(ord, cookie))
+        if( cookie is not None):
+            b = bytearray()
+            b.extend(map(ord, cookie))
 
-        mySql = MySQL();
-        datosUsuario:getsetUsuarioRegistrado = mySql.ObtenerUsuarioPorToken(b);
+            mySql = MySQL();
+            datosUsuario:getsetUsuarioRegistrado = mySql.ObtenerUsuarioPorToken(b);
 
-        return datosUsuario
+            return datosUsuario
+        else:
+            return None
 
     def EliminarCookie(self, template):
         resp = make_response(render_template(template))

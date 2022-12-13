@@ -51,7 +51,7 @@ def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True):
         totalCarrito = getsetTotalesCarrito()
         totalesBadgeFlotantes = getsetBadgeFlotante(0, 0, 0)
         if datosUsuario is None:
-            #Utileria().EliminarCookie(template)
+            # Utileria().EliminarCookie(template)
             intd = 4
         else:
             productosCarrito = mySql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
@@ -134,7 +134,7 @@ def promociones():
 
 @app.route('/iniciarSesion')
 def iniciarSesion():
-    informacionCabecera = LlenarCabecera(True,'')
+    informacionCabecera = LlenarCabecera(True, '')
     return render_template('iniciarSesion.html', informacionCabecera=informacionCabecera)
 
 
@@ -171,7 +171,13 @@ def comentarios():
 
 
 @app.route('/carritoUsuario')
-def carrito():
+def carrito(Favoritos=False):
+    mysql = MySQL();
+    objetoCarrito = None;
+    datosUsuario: getsetUsuarioRegistrado = Utileria().ObtenerUsuarioDeLaSesionActual(request);
+    if datosUsuario is not None:
+        productosCarritos = mysql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
+
     return render_template('carritoUsuario.html', EsParaFavoritos=False)
 
 
@@ -351,26 +357,25 @@ def validarDatosInicioSesion():
 
     return jsonify({"resultado": res, "idSesion": "", "token": "", "fechaExpiracion": ""})
 
+
 @app.route('/validarUsuarioInicioSesion/', methods=['POST', 'GET'])
 def validarUsuarioInicioSesion():
-
     usuario = request.form['usuario'];
 
     res = _validarUsuarioInicioSesion(usuario);
 
-    return jsonify({"resultado": res.resultado, "idSesion": res.idSesion, "token": res.token, "fechaExpiracion": res.fechaExpiracion})
+    return jsonify({"resultado": res.resultado, "idSesion": res.idSesion, "token": res.token,
+                    "fechaExpiracion": res.fechaExpiracion})
+
 
 @app.route('/validarContrasenaInicioSesion/', methods=['POST', 'GET'])
 def validarContrasenaInicioSesion():
-
     contrasena = request.form['contrasena'];
 
     res = _validarContrasenaInicioSesion(contrasena);
 
     return jsonify({"resultado": res.resultado, "idSesion": res.idSesion, "token": res.token,
                     "fechaExpiracion": res.fechaExpiracion})
-
-
 
 #
 # if __name__ == '__main__':
