@@ -1,4 +1,4 @@
-{% macro carouselProductos(titulo, informacionCarousel, esMovil) %}
+{% macro carouselProductos(titulo, informacionCarousel, esMovil,contador) %}
 <div class="contenedor-principal-carousel">
 	<div class="contenedor-leyenda-carousel">
 		{#@if(@informacionCarousel!=null && @informacionCarousel.productosCarousel.Count>0)#}
@@ -21,12 +21,12 @@
 
 			<!-- Carousel controls -->
 			<div class="contenedor-botones">
-				<button class=" btn-prev-carousel" data-bs-target="#myCarousel" data-bs-slide="prev">
+				<button class=" btn-prev-carousel" data-bs-target="#myCarousel{{contador}}" data-bs-slide="prev">
 					<i class="fa fa-angle-left"></i>
 				</button>
 			</div>
 
-			<div id="myCarousel" class="carousel contenedor-carousel slide" data-bs-interval="false">
+			<div id="myCarousel{{contador}}" class="carousel contenedor-carousel slide" data-bs-interval="false">
 				<div class="carousel-inner">
 					{#@if(informacionCarousel!=null)#}
 					{% if informacionCarousel is not none %}
@@ -125,7 +125,7 @@
 
 			<!-- Carousel controls -->
 			<div class="contenedor-botones">
-				<button class=" btn-next-carousel" data-bs-target="#myCarousel" data-bs-slide="next">
+				<button class=" btn-next-carousel" data-bs-target="#myCarousel{{contador}}" data-bs-slide="next">
 					<i class="fa fa-angle-right"></i>
 				</button>
 			</div>
