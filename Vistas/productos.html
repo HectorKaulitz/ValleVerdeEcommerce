@@ -2,6 +2,7 @@
 {% from 'carouselProductos.html' import carouselProductos with context %}
 {% from 'pieInformacion.html' import pieInformacion with context %}
 {% from 'filtrosAcordeon.html' import filtrosAcordeon with context %}
+{% from 'filtrosEspeciales.html' import filtrosEspeciales with context %}
 {% from 'productosBusqueda.html' import productosBusqueda with context %}
 <!DOCTYPE html>
 <html lang="en">
@@ -39,18 +40,20 @@
 <body>
 
 <header>
-       {{cabecera('bdbhdbd',true,true,true)}}
+   {{cabecera(informacionCabecera)}}
+    {% set patch = url_for(request.endpoint) %}
+    <h1>{{patch}}</h1>
 </header>
 
 
 <div class="container Contenedor-principal-pag">
     <a id="botonFiltros" class="btn btn-primary" data-bs-toggle="collapse" href="#panelFiltros" role="button" aria-expanded="false" aria-controls="panelFiltros"><i class="fa-solid fa-filter" style="margin-top: 4px; margin-right: 4px;"></i>Filtros<i class="fa-solid fa-chevron-down" style="margin-top: 4px; margin-left: 4px;"></i></a>
 
-    {# if (@Filtros.Count > 0) #}
-    {% if (true) %}
+    {# if (Filtros.Count > 0) #}
+    {% if (informacion.Filtros|length) %}
 
         <div id="panelFiltros" class="contenedor-1-pag col-md-3 col-12 collapse dont-collapse-sm">
-            {{filtrosAcordeon('223')}}
+            {{filtrosAcordeon(informacion.Filtros[0])}}
         </div>
 
     {% else %}
