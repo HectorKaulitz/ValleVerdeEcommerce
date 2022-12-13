@@ -4,13 +4,17 @@ from Programacion.Funcionalidad.Encriptacion import Encriptacion
 from Programacion.getset import getsetUsuarioRegistrado
 from Programacion.getset.getsetCategoria import getsetCategoria
 from Programacion.getset.getsetComentario import getsetComentario
+from Programacion.getset.getsetConfiguracionWeb import getsetConfiguracionWeb
 from Programacion.getset.getsetDireccion import getsetDireccion
 from Programacion.getset.getsetPreguntaAyuda import getsetPreguntaAyuda
 from Programacion.getset.getsetProducto import getsetProducto
+from Programacion.getset.getsetProductoFavorito import getsetProductoFavorito
 from Programacion.getset.getsetProductoPromocionPorCategoria import getsetProductoPromocionPorCategoria
 from Programacion.getset.getsetRespuestaAyuda import getsetRespuestaAyuda
 from Programacion.getset.getsetRespuestaComentario import getsetRespuestaComentario
 from Programacion.getset.getsetTemaAyuda import getsetTemaAyuda
+from Programacion.getset.getsetTotalesCarrito import getsetTotalesCarrito
+from Programacion.getset.getsetVenta import getsetVenta
 
 
 class MySQL:
@@ -205,7 +209,7 @@ class MySQL:
         return producto
 
     def ObtenerUsuarioPorToken(self, token):
-        usuario:getsetUsuarioRegistrado = None;
+        usuario: getsetUsuarioRegistrado = None;
         if self.CONNECTION is None:
             self.conectar_mysql()
         try:
@@ -504,7 +508,7 @@ class MySQL:
         return res
 
     def AgregarSesionUsuario(self, usuario):
-        res = ["-3","",""];
+        res = ["-3", "", ""];
         if self.CONNECTION is None:
             self.conectar_mysql()
         try:
@@ -515,7 +519,7 @@ class MySQL:
             for row in CURSOR.stored_results():
                 items = row.fetchall()
                 for item in items:
-                    res = [item[0],item[1].decode('utf-8'),item[2].strftime('%Y-%m-%d')]
+                    res = [item[0], item[1].decode('utf-8'), item[2].strftime('%Y-%m-%d')]
 
             self.CONNECTION.commit()
             CURSOR.close()
@@ -527,3 +531,120 @@ class MySQL:
             print("ERROR: ", error)
 
         return res
+
+    def ObtenerTotalesCarritoUsuario(self, idUsuario):
+        totalCarrito = getsetTotalesCarrito();
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idUsuario]
+            CURSOR.callproc('ObtenerTotalesCarritoUsuario', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    totalCarrito = getsetTotalesCarrito(item[0], item[1], item[2], item[3], item[4], item[5], item[6])
+
+            self.CONNECTION.commit()
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+        return totalCarrito
+
+    def ObtenerConfiguracionWeb(self):
+        configuracion: getsetConfiguracionWeb() = None;
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = []
+            CURSOR.callproc('ObtenerConfiguracionWeb', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    configuracion = getsetConfiguracionWeb(item[0])
+
+            self.CONNECTION.commit()
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+        return configuracion
+
+    def ObtenerProductosFavoritos(self, idUsuario):
+        productosFavoritos = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idUsuario]
+            CURSOR.callproc('ObtenerProductosFavoritos', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                ind = 0
+                for item in items:
+                    interaccionConUsuario = False
+                    if item[10]:
+                        interaccionConUsuario = True
+
+                    idProductoFavorito = item[0]
+                    imagenes = self.ObtenerImagenesProducto(item[1])
+
+                    productosFavoritos.append(
+                        getsetProductoFavorito(ind, item[0], item[1], item[2], item[3], item[4], item[5], item[6],
+                                               item[7], item[8], item[9], item[10], item[11], imagenes,
+                                               idProductoFavorito,
+                                               interaccionConUsuario))
+                    ind = ind + 1
+
+            self.CONNECTION.commit()
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+        return productosFavoritos
+
+    def ObtenerVentasUsuario(self, idUsuario, filtrar=False, cancelada=False):
+        ventas = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idUsuario, filtrar, cancelada]
+            CURSOR.callproc('ObtenerVentasUsuario', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                ind = 0
+                for item in items:
+                    res = item[0]
+                    ventas.append(getsetVenta(res,
+                                              item[1], item[2], item[3], item[4], item[5], item[6], item[7],
+                                              item[8], item[9], item[10], Encriptacion.Encrypt(res), item[11], item[12]))
+
+            self.CONNECTION.commit()
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+        return ventas

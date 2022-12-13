@@ -9,9 +9,13 @@ from Programacion.getset.getsetBadgeFlotante import getsetBadgeFlotante
 from Programacion.getset.getsetInformacionCabecera import getsetInformacionCabecera
 from Programacion.getset.getsetInformacionCarousel import getsetInformacionCarousel
 from Programacion.getset.getsetObjetoAyuda import getsetObjetoAyuda
+from Programacion.getset.getsetObjetoCarrito import getsetObjetoCarrito
+from Programacion.getset.getsetObjetoCarritoUsuario import getsetObjetoCarritoUsuario
 from Programacion.getset.getsetObjetoComentario import getsetObjetoComentario
+from Programacion.getset.getsetObjetoHistorialCompra import getsetObjetoHistorialCompra
 from Programacion.getset.getsetObjetoPaginaInicio import getsetObjetoPaginaInicio
 from Programacion.getset.getsetObjetoProducto import getsetObjetoProducto
+from Programacion.getset.getsetObjetoProductosFavoritos import getsetObjetoProductosFavoritos
 from Programacion.getset.getsetObjetoPromociones import getsetObjetoPromociones
 from Programacion.getset.getsetResultado import getsetResultado
 from Programacion.getset.getsetTotalesCarrito import getsetTotalesCarrito
@@ -98,7 +102,14 @@ def productos():
 
 @app.route('/historialCompras')
 def historialCompras():
-    return render_template('historialCompras.html')
+    mysql = MySQL()
+    usuarioActual = Utileria().ObtenerUsuarioDeLaSesionActual(request)
+    ventas = []
+    if usuarioActual is not None:
+        ventas = mysql.ObtenerVentasUsuario(usuarioActual.IDUsuarioRegistrado, True, False)
+
+    objetoHistorialCompras = getsetObjetoHistorialCompra(None, ventas)
+    return render_template('historialCompras.html', objetoHistorialCompras=objetoHistorialCompras)
 
 
 @app.route('/promociones')
@@ -177,8 +188,15 @@ def carrito(Favoritos=False):
     datosUsuario: getsetUsuarioRegistrado = Utileria().ObtenerUsuarioDeLaSesionActual(request);
     if datosUsuario is not None:
         productosCarritos = mysql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
+        totalCarrito = mysql.ObtenerTotalesCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
+        productosCarousel = mysql.ObtenerProductosCarouselPorCategoria(2)
+        objCarritoUsuario = getsetObjetoCarritoUsuario(None, "", productosCarousel, productosCarritos, datosUsuario, totalCarrito,
+                                                       False, None, mysql.ObtenerConfiguracionWeb());
+        productosFavoritos = mysql.ObtenerProductosFavoritos(datosUsuario.IDUsuarioRegistrado);
+        objFavoritos = getsetObjetoProductosFavoritos(productosFavoritos, datosUsuario)
+        objetoCarrito = getsetObjetoCarrito(objCarritoUsuario, objFavoritos, Favoritos)
 
-    return render_template('carritoUsuario.html', EsParaFavoritos=False)
+    return render_template('carritoUsuario.html', objetoCarrito)
 
 
 @app.route('/favorito')
