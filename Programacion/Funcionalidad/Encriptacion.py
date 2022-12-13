@@ -16,7 +16,7 @@ class Encriptacion:
 
     def Decrypt(self, cipherText):
         # generate a key for encryption and decryption
-        key = "MAKV2SPBNI99212".encode()
+        key = b"MAKV2SPBNI99212MAKV2SPBNI9921299"
 
         # Instance the Fernet class with the key
         fernet = Fernet(base64.urlsafe_b64encode(key))
