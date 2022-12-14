@@ -708,8 +708,8 @@ class MySQL:
             self.conectar_mysql()
         try:
             CURSOR = self.CONNECTION.cursor()
-            args = [numerPagina, productosPagina, idMarca , idLinea, idFabricante, idDepartamento,
-                         busqueda, idSubLinea]
+            args = [numerPagina, productosPagina, idMarca , idLinea,idSubLinea, idFabricante, idDepartamento,
+                         busqueda]
             CURSOR.callproc('ObtenerProductos', args)
 
             for row in CURSOR.stored_results():
