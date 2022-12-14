@@ -5,7 +5,8 @@ function ActualizarCarritoVisual() {
     //    $('#contenedor-carrito-flotante').html(data.getElementById("contenedor-carrito-flotante"));
     //});
 
-    $('#contenedor-carrito-flotante').load('/Inicio/ObtenerCarritoFlotante');
+    //$('#contenedor-carrito-flotante').load('/Inicio/ObtenerCarritoFlotante');
+    window.location.reload();
     
 
 }
@@ -24,7 +25,7 @@ function AgregarAcarrito(idProd, idUsu,urlImagen, nombre)
     if (idUsu != null) {
         $.ajax({
             async: false,
-            url: "/ValidacionVenta/AgregarProductoCarrito/",
+            url: "/AgregarProductoCarrito/",
             data:
             {
                 idUsuario: idUsu,

@@ -11,6 +11,7 @@ from Programacion.getset.getsetDepartamentoLinea import getsetDepartamentoLinea
 from Programacion.getset.getsetDepartamentoMarca import getsetDepartamentoMarca
 from Programacion.getset.getsetDireccion import getsetDireccion
 from Programacion.getset.getsetFiltros import getsetFiltros
+from Programacion.getset.getsetInformacionProductoCarrito import getsetInformacionProductoCarrito
 from Programacion.getset.getsetPreguntaAyuda import getsetPreguntaAyuda
 from Programacion.getset.getsetProducto import getsetProducto
 from Programacion.getset.getsetProductoFavorito import getsetProductoFavorito
@@ -107,7 +108,7 @@ class MySQL:
                     items = row.fetchall()
                     for item in items:
                         resultados.append(
-                            getsetCategoria(item[0], item[1], item[2], Encriptacion().Encrypt(str(item[2]))))
+                            getsetCategoria(item[0], item[1], item[2], item[2]))
 
         except mysql.connector.errors.ProgrammingError as e:
             print("Error en el procedimiento ObtenerCategoria: ", e)
@@ -178,7 +179,9 @@ class MySQL:
             CURSOR.callproc('ObtenerImagenesProducto', args)
 
             for row in CURSOR.stored_results():
-                rutasImagenes.append(row.fetchall())
+                items = row.fetchall()
+                for item in items:
+                    rutasImagenes.append(item[0])
 
             CURSOR.close()
             self.desconectar_mysql()
@@ -540,7 +543,7 @@ class MySQL:
             for row in CURSOR.stored_results():
                 items = row.fetchall()
                 for item in items:
-                    res.append(getsetDepartamentoMarca(item[0], item[1], item[2], item[3], item[4], 1, Encriptacion.Encrypt("1")))
+                    departamentoMarcas.append(getsetDepartamentoMarca(item[0], item[1], item[2], item[3], item[4], 1, Encriptacion.Encrypt("1")))
             CURSOR.close()
             self.desconectar_mysql()
 
@@ -919,5 +922,82 @@ class MySQL:
             print("Error en el procedimiento ", e)
         except Exception as error:
             print("ERROR: ", error)
+
+        return res
+
+    def AgregarProductoCarritoUsuario(self, idUsuario, idProducto, cantidad):
+        res = ["-2", "Error metodo"]
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idUsuario, idProducto, cantidad]
+            CURSOR.callproc('AgregarProductoCarritoUsuario', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = [str(item[0]), str(item[1])]
+
+            self.CONNECTION.commit()
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento AgregarProductoCarritoUsuario: ", e)
+        except Exception as error:
+            print("ERROR AgregarProductoCarritoUsuario: ", error)
+
+        return res
+
+    def ActualizarCantidadProductoCarrito(self, idProductoCarrito, cantidad, tipo):
+        res = getsetInformacionProductoCarrito("","","",0,0,0,0,0,0)
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idProductoCarrito, cantidad, tipo]
+            CURSOR.callproc('ActualizarCantidadProductoCarrito', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = getsetInformacionProductoCarrito(item[0], item[1], item[2], item[3], item[4], item[5],
+                                                           item[6], item[7],item[8])
+            self.CONNECTION.commit()
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ActualizarCantidadProductoCarrito: ", e)
+        except Exception as error:
+            print("ERROR ActualizarCantidadProductoCarrito: ", error)
+
+        return res
+
+    def EliminarProductoCarrito(self, idProductoCarrito):
+        res = -1
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idProductoCarrito]
+            CURSOR.callproc('EliminarProductoCarrito', args)
+            self.CONNECTION.commit()
+
+            res = 1
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento EliminarProductoCarrito: ", e)
+        except Exception as error:
+            print("ERROR EliminarProductoCarrito: ", error)
+
+        return res
+
+    def ObtenerExistenciaTotalProducto(self, codigoBarras):
+        res = 400
 
         return res

@@ -92,9 +92,9 @@
 										{% endif %}
 										{#@if(@usuario!=null)#}
 										{% if informacionCarousel.usuario is not none %}
-											<button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito({{producto.idProducto}},{{informacionCarousel.usuario.IDUsuarioRegistrado}},'{{producto.urlsImagenes[0]}}','{{producto.nombreProducto}}')">Añadir al carrito</button>
+											<button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito({{producto.idProducto}},{{informacionCarousel.usuario.IDUsuarioRegistrado}},'http://bodegavalleverde.ddns.net/Imagenes/Productos/{{producto.codigoBarras}}.png','{{producto.nombreProducto}}')">Añadir al carrito</button>
 										{% else %}
-											<button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito({{producto.idProducto}}, null, '{{producto.urlsImagenes[0]}}','{{producto.nombreProducto}}')">Añadir al carrito</button>
+											<button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito({{producto.idProducto}}, null, 'http://bodegavalleverde.ddns.net/Imagenes/Productos/{{producto.codigoBarras}}.png','{{producto.nombreProducto}}')">Añadir al carrito</button>
 										{% endif %}
 									</div>
 								</div>
