@@ -45,7 +45,7 @@ def create_app():
 app = create_app()
 
 
-def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True):
+def LlenarCabecera(mostrar: bool, busqueda: str ="", mostrarCarrito=True):
     informacion = None
     cookieSesion = None
     datosUsuario = None
@@ -258,9 +258,12 @@ def procesoCompra():
 @app.route('/ayuda')
 def ayuda():
     mysql = MySQL()
+    # cabecera-----------------------------
+    informacionCabecera = LlenarCabecera(True)
+    # ----------------------------
     temas = mysql.ObtenerTemasAyuda();
     objetoAyuda = getsetObjetoAyuda(None, "", temas);
-    return render_template('ayuda.html', temas)
+    return render_template('ayuda.html', objetoAyuda=objetoAyuda, informacionCabecera=informacionCabecera)
 
 
 @app.route('/perfilUsuario')

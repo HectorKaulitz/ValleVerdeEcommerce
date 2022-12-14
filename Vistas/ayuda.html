@@ -37,58 +37,60 @@
 {% set contador ={'value':0} %}
 <div class="contenedor-principal-temas">
      <section class="seccion-temas"  >
-         {#@foreach(getsetTemaAyuda tema in temas)#}
-         {% for x in range(3) %}
+         {#@foreach(getsetTemaAyuda tema in objetoAyuda.temas)#}
+         {% for tema in objetoAyuda.temas %}
              {%if(contador.value==0)%}
-
-
                      <div class="row">
-
                 {% set itemAbierto=true %}
              {% endif %}
 
                 <div class="col-12" >
                     <div class="card text-white color-oscuro mb-4"  style="margin: 5px !important" >
-                        <div class="card-body div-card-body" data-bs-toggle="collapse" data-bs-target="#{{identificador}}{{x}}" aria-expanded="false" aria-controls="{{identificador}}{{x}}" onclick="Colapse('btnColapseT',{{x}})">
-                            <h5 class="card-title col-11" style="margin: 0 !important;">Tema {{x}}</h5>
+                        <div class="card-body div-card-body" data-bs-toggle="collapse" data-bs-target="#{{identificador}}{{tema.idTema}}" aria-expanded="false" aria-controls="{{identificador}}{{tema.idTema}}" onclick="Colapse('btnColapseT',{{tema.idTema}})">
+                            <h5 class="card-title col-11" style="margin: 0 !important;">{{tema.tema}}</h5>
                             <div class="div-btn-collapse col-md col-1">
                                 <button class="btn " type="button" >
-                                    <i class="fa-regular fa-square-caret-down" id="btnColapseT {{x}}"></i>
+                                    <i class="fa-regular fa-square-caret-down" id="btnColapseT {{tema.idTema}}"></i>
                                 </button>
                             </div>
                              </div>
-                        <div class="collapse" id="{{identificador}}{{x}}">
+                        <div class="collapse" id="{{identificador}}{{tema.idTema}}">
                               <div class="card card-body">
-                                {#@foreach (getsetPreguntaAyuda pregunta in tema.preguntas)#}
-                                {% for i in range(2) %}
+                                    {% if tema.preguntas|length>0 %}
+                                        {% for pregunta in tema.preguntas %}
 
 
-                                     <div class="row" style="margin-top: 5px; margin-bottom:5px;">
-                                        <div class="col-12"  style="padding: 0;" >
-                                            <div class="card text-white color-oscuro mb-4" style="margin: 0 !important" >
-                                                <div class="card-body div-card-body" data-bs-toggle="collapse" data-bs-target="#{{identificadorR}}{{i}}" aria-expanded="false" aria-controls="{{identificadorR}}{{i}}" onclick="Colapse('btnColapseP',{{i}})">
-                                                    <h5 class="card-title col-11" style="margin: 0 !important;">Pregunta {{i}}</h5>
-                                                    <div class="div-btn-collapse col-md col-1">
-                                                        <button class="btn " type="button" >
-                                                            <i class="fa-regular fa-square-caret-down" id="btnColapseP {{i}}"></i>
-                                                        </button>
-                                                    </div>
+                                                 <div class="row" style="margin-top: 5px; margin-bottom:5px;">
+                                                    <div class="col-12"  style="padding: 0;" >
+                                                        <div class="card text-white color-oscuro mb-4" style="margin: 0 !important" >
+                                                            <div class="card-body div-card-body" data-bs-toggle="collapse" data-bs-target="#{{identificadorR}}{{pregunta.idPreguntaAyuda}}" aria-expanded="false" aria-controls="{{identificadorR}}{{pregunta.idPreguntaAyuda}}" onclick="Colapse('btnColapseP',{{pregunta.idPreguntaAyuda}})">
+                                                                <h5 class="card-title col-11" style="margin: 0 !important;">{{pregunta.pregunta}}</h5>
+                                                                <div class="div-btn-collapse col-md col-1">
+                                                                    <button class="btn " type="button" >
+                                                                        <i class="fa-regular fa-square-caret-down" id="btnColapseP {{pregunta.idPreguntaAyuda}}"></i>
+                                                                    </button>
+                                                                </div>
 
-                                                </div>
-                                                <div class="collapse" id="{{identificadorR}}{{i}}">
-                                                        <div class="card card-body">
-                                                        {#@foreach (getsetRespuestaAyuda respuesta in pregunta.respuestas)#}
-                                                        {%for r in range(2)%}
-                                                            <p class="txt-ayuda"> Respuesta: Some dummy text to make up the card's content. You can replace it anytime.</p>
-                                                        {% endfor %}
+                                                            </div>
+                                                            <div class="collapse" id="{{identificadorR}}{{pregunta.idPreguntaAyuda}}">
+                                                                    <div class="card card-body">
+                                                                    {#@foreach (getsetRespuestaAyuda respuesta in pregunta.respuestas)#}
+                                                                    {% if pregunta.respuestas|length>0 %}
+                                                                        {%for respuesta in pregunta.respuestas %}
+                                                                            <p class="txt-ayuda"> {{respuesta.Respuesta}}</p>
+                                                                        {% endfor %}
+                                                                    {% else %}
+                                                                        <p class="txt-ayuda"> Sin respuesta(s)</p>
+                                                                    {% endif %}
+                                                                    </div>
+                                                            </div>
                                                         </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                {% endfor%}
+                                            {% endfor %}
+                                    {% else %}
+                                        <p class="txt-ayuda"> Sin Pregunta(s)</p>
+                                    {% endif %}
                               </div>
                         </div>
                     </div>
