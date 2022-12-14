@@ -262,7 +262,11 @@ def carrito(Favoritos=False):
 
 @app.route('/favorito')
 def favorito():
-    return render_template('carritoUsuario.html', EsParaFavoritos=True)
+    # cabecera-----------------------------
+    informacionCabecera = LlenarCabecera(True, "")
+    datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
+    # ----------------------------
+    return render_template('carritoUsuario.html', EsParaFavoritos=True, informacionCabecera=informacionCabecera)
 
 
 @app.route('/procesoCompra')
