@@ -38,8 +38,8 @@
 
                     <div class="btn-group contenedor-carrito" id="contenedor-carrito-flotante" name="contenedor-carrito-flotante">
                         {# @if (productosCarrito.Count < 100) #}
-                        {% if informacionCabecera.productosCarrito|length < 100 %}
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">{{informacionCabecera.productosCarrito|length}}</span>
+                        {% if informacionCabecera.listaProductosCarrito|length < 100 %}
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">{{informacionCabecera.listaProductosCarrito|length}}</span>
 
                         {% else %}
 
