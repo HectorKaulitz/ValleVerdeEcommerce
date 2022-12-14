@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, render_template, Blueprint, request, jsonify
 from flask_cors import CORS
 
@@ -9,6 +11,7 @@ from Programacion.getset.getsetBadgeFlotante import getsetBadgeFlotante
 from Programacion.getset.getsetInformacionCabecera import getsetInformacionCabecera
 from Programacion.getset.getsetInformacionCarousel import getsetInformacionCarousel
 from Programacion.getset.getsetInformacionGeneralProducto import getsetInformacionGeneralProducto
+from Programacion.getset.getsetInformacionProductoCarrito import getsetInformacionProductoCarrito
 from Programacion.getset.getsetObjetoAyuda import getsetObjetoAyuda
 from Programacion.getset.getsetObjetoCarrito import getsetObjetoCarrito
 from Programacion.getset.getsetObjetoCarritoUsuario import getsetObjetoCarritoUsuario
@@ -229,20 +232,24 @@ def comentarios():
 
 @app.route('/carritoUsuario')
 def carrito(Favoritos=False):
-    mysql = MySQL();
-    objetoCarrito = None;
-    datosUsuario: getsetUsuarioRegistrado = Utileria().ObtenerUsuarioDeLaSesionActual(request);
+    mysql = MySQL()
+    objetoCarrito = None
+    datosUsuario: getsetUsuarioRegistrado = Utileria().ObtenerUsuarioDeLaSesionActual(request)
+    # cabecera-----------------------------
+
+    # ----------------------------
     if datosUsuario is not None:
         productosCarritos = mysql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
         totalCarrito = mysql.ObtenerTotalesCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
         productosCarousel = mysql.ObtenerProductosCarouselPorCategoria(2)
         objCarritoUsuario = getsetObjetoCarritoUsuario(None, "", productosCarousel, productosCarritos, datosUsuario, totalCarrito,
-                                                       False, None, mysql.ObtenerConfiguracionWeb());
-        productosFavoritos = mysql.ObtenerProductosFavoritos(datosUsuario.IDUsuarioRegistrado);
+                                                       False, None, mysql.ObtenerConfiguracionWeb())
+        productosFavoritos = mysql.ObtenerProductosFavoritos(datosUsuario.IDUsuarioRegistrado)
         objFavoritos = getsetObjetoProductosFavoritos(productosFavoritos, datosUsuario)
         objetoCarrito = getsetObjetoCarrito(objCarritoUsuario, objFavoritos, Favoritos)
 
-    return render_template('carritoUsuario.html', objetoCarrito)
+
+    return render_template('carritoUsuario.html', objetoCarrito=objetoCarrito)
 
 
 @app.route('/favorito')
@@ -480,6 +487,52 @@ def obtenerSugerenciasBusqueda():
 
     return jsonify(sugerencias)
 
+
+@app.route('/AgregarProductoCarrito/', methods=['POST', 'GET'])
+def AgregarProductoCarrito():
+    idUsuario = request.form['idUsuario']
+    idProducto = request.form['idProducto']
+    cantidad = request.form['cantidad']
+
+    mySql = MySQL()
+    res = mySql.AgregarProductoCarritoUsuario(idUsuario, idProducto, cantidad)
+
+    return jsonify({"resultado":res[0], "mensaje":res[1]})
+
+@app.route('/ActualizarCantidadProductoCarrito/', methods=['POST', 'GET'])
+def ActualizarCantidadProductoCarrito():
+    idProductoCarrito = request.form['idProductoCarrito']
+    cantidad = request.form['cantidad']
+    tipo = request.form['tipo']
+    idUsuario = request.form['idUsuario']
+
+    mySql = MySQL()
+
+    res:getsetInformacionProductoCarrito = mySql.ActualizarCantidadProductoCarrito(idProductoCarrito, cantidad, tipo);
+    totalCarrito:getsetTotalesCarrito = mySql.ObtenerTotalesCarritoUsuario(idUsuario)
+
+
+    return jsonify({"resultado": json.dumps(res.__dict__), "total": json.dumps(totalCarrito.__dict__)})
+
+@app.route('/EliminarProductoDelCarrito/', methods=['POST', 'GET'])
+def EliminarProductoDelCarrito():
+    idProductoCarrito = request.form['idProductoCarrito']
+
+    mySql = MySQL()
+
+    res = mySql.EliminarProductoCarrito(idProductoCarrito)
+
+    return jsonify({"resultado":res})
+
+@app.route('/ValidarExistenciaProducto/', methods=['POST', 'GET'])
+def ValidarExistenciaProducto():
+    codigoBarras = request.form['codigoBarras']
+
+    mySql = MySQL()
+
+    res = mySql.ObtenerExistenciaTotalProducto(codigoBarras)
+
+    return jsonify({"resultado":res})
 #
 # if __name__ == '__main__':
 #     print(__name__)

@@ -54,7 +54,7 @@
                         <div class="dropdown-menu dropdown-menu-right drop-div-carrito gradient-custom-carrito " >
 
                             {#@(await Component.InvokeAsync("Carrito",new {prod=@productosCarrito,totales=@totalCarrito,datosUsuario=@usuario}))#}
-                            {{carrito()}}
+                            {{carrito(informacionCabecera.listaProductosCarrito, informacionCabecera.totalCarrito, informacionCabecera.usuario)}}
                         </div>
                     </div>
                 {% endif %}

@@ -1,28 +1,29 @@
-{% macro totalesCarrito(fuentePequena) %}
+{% macro totalesCarrito(totalCarrito) %}
 
-{% if(fuentePequena) %}
- {% set  fuente = "font-size: 0.75rem;" %}
+{% if(totalCarrito.fuentePequena) %}
+    {% set  fuente = "font-size: 0.75rem;" %}
 {%else%}
-  {% set  fuente = "font-size: 1.25rem;" %}
+    {% set  fuente = "font-size: 1.25rem;" %}
 {% endif %}
+
 <table class="table blockquote text-center">
-    {# @if (totalesCarrito.descuento>0)#}
-    {% if(true) %}
+    {# @if (totalCarrito.descuento>0)#}
+    {% if totalCarrito.descuento > 0 %}
         <tr>
             <th class="text-end" style="{{fuente}}">Subtotal sin descuento:</th>
-            <td class="col-4" style="{{fuente}}">$22.70</td>
+            <td class="col-4" style="{{fuente}}">${{totalCarrito.subtotalSinDescuento}}</td>
         </tr>
         <tr>
             <th class="text-end" style="{{fuente}}">Descuento(s):</th>
-            <td class="col-4" style="{{fuente}}">$04.71</td>
+            <td class="col-4" style="{{fuente}}">${{totalCarrito.descuento}}</td>
         </tr>
     {% endif %}
     <tr>
         <th class="text-end" style="{{fuente}}">SubTotal:</th>
-        <td class="col-4" style="{{fuente}}">$17.99</td>
+        <td class="col-4" style="{{fuente}}">${{totalCarrito.subtotal}}</td>
     </tr>
-    {#@if (!totalesCarrito.enviarDomicilio)#}
-    {% if(true)%}
+    {#@if (!totalCarrito.enviarDomicilio)#}
+    {% if not totalCarrito.enviarDomicilio %}
         <tr>
             <th class="text-end" style="{{fuente}}">Entrega:</th>
             <td class="col-4" style="{{fuente}}">Entrega en tienda</td>
@@ -32,25 +33,25 @@
 
         <tr>
             <th class="text-end" style="{{fuente}}">Costo envio:</th>
-            <td class="col-4" style="{{fuente}}">$10.00</td>
+            <td class="col-4" style="{{fuente}}">${{totalCarrito.envio}}</td>
         </tr>
     {% endif %}
-    {#@if (totalesCarrito.comision > 0)#}
-    {% if(true) %}
+    {#@if (totalCarrito.comision > 0)#}
+    {% if totalCarrito.comision > 0 %}
         <tr>
             <th class="text-end" style="{{fuente}}">Comision:</th>
-            <td class="col-4" style="{{fuente}}">$02.00</td>
+            <td class="col-4" style="{{fuente}}">${{totalCarrito.comision}}</td>
         </tr>
     {% endif %}
     <tr>
         <th class="text-end" style="{{fuente}}">Total:</th>
-        <td class="col-4" style="{{fuente}}">$29.99</td>
+        <td class="col-4" style="{{fuente}}">${{totalCarrito.total}}</td>
     </tr>
-    {#@if (totalesCarrito.totalSurtido>=0 && totalesCarrito.mostrarTotalSurtido && totalesCarrito.total!=totalesCarrito.totalSurtido)#}
-    {% if(true==false) %}
+    {#@if (totalCarrito.totalSurtido>=0 && totalCarrito.mostrarTotalSurtido && totalCarrito.total!=totalCarrito.totalSurtido)#}
+    {% if(totalCarrito.totalSurtido>=0 and totalCarrito.mostrarTotalSurtido and totalCarrito.total!=totalCarrito.totalSurtido) %}
         <tr>
             <th class="text-end" style="{{fuente}}">Total surtido:</th>
-            <td class="col-4" style="{{fuente}}">@totalesCarrito.totalSurtido.ToString("C")</td>
+            <td class="col-4" style="{{fuente}}">${{totalCarrito.totalSurtido}}</td>
         </tr>
     {% endif %}
 
