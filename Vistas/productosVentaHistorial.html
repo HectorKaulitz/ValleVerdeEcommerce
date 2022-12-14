@@ -1,3 +1,4 @@
+{% from 'totalesCarrito.html' import totalesCarrito with context %}
 {% set totalSurtido = totalesVenta.comision + totalesVenta.envio%}
 {# @foreach(getsetProductoVenta productoVenta in productosVentas) #}
 {% for productoVenta in detalles.productosVenta %}
@@ -78,8 +79,7 @@
                 {#    set totalesVenta.mostrarTotalSurtido = true #}
                 {# endif #}
 
-            @(await Component.InvokeAsync("TotalesCarrito",totalesVenta))
-
+            {{totalesCarrito(totalesVenta)}}
         </div>
     </div>
 </div>
