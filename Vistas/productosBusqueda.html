@@ -1,5 +1,5 @@
 {% from 'itemProductoBusqueda.html' import itemProductoBusqueda with context %}
-{% macro productosBusqueda(productosResultado) %}
+{% macro productosBusqueda(productosResultado,numeroPagina,informacion) %}
 
 
 <div class="contenedor-principal-productos-busqueda">
@@ -10,7 +10,7 @@
             {# @foreach (getsetProducto producto in objetoProductos.productosResultado) #}
             {% for producto in productosResultado %}
 
-                {{itemProductoBusqueda(loop.index, producto.nombreProducto, producto.descripcionProducto,producto.precioOriginal,producto.precioDescuento,producto.idProducto, producto.codigoBarras)}}
+                {{itemProductoBusqueda(loop.index, producto.nombreProducto, producto.descripcion,producto.precioOriginal,producto.precioDescuento,producto.idProducto, producto.codigoBarras)}}
 
            {% endfor %}
 
@@ -22,30 +22,30 @@
 <ul class="pagination row">
 
         {# @if(numeDiaAct>1) #}
-        {% set numeDiaAct = 5 %}
+        {% set numeDiaAct = numeroPagina  %}
         {% if(numeDiaAct>1) %}
 
-            <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+{{numeDiaAct}},"$"+({{numeDiaAct}}-1))">Anterior</a></li>
-            <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+{{numeDiaAct}},"$1")">1</a></li>
+            <li class="page-item col-auto"><a class="page-link paginacion" href="{{modify_query(numeroPagina=numeroPagina-1) }}">Anterior</a></li>
+            <li class="page-item col-auto"><a class="page-link paginacion" href="{{modify_query(numeroPagina=1) }}">1</a></li>
         {% endif %}
 
         {# @for(int ant=@numeDiaAct-@numCuadros;ant<@numeDiaAct ;ant++) #}
         {% set numCuadros = 4 %}
         {% set ant = (numeDiaAct-numCuadros) %}
         {% set cont = 0 %}
-        {%  for i  in range(numeDiaAct) if i < numeDiaAct %}
+        {%  for i  in range(numeDiaAct) if i >= ant %}
             {% if (i > 1) %}
 
-                {% if(numeDiaAct-numCuadros==ant and ant>2) %}
+                {% if(numeDiaAct-numCuadros==ant and i>2) %}
 
                      <li class="page-item col-auto"><a class="page-link paginacion" href="">...</a></li>
                 {% endif %}
-                <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+{{numeDiaAct}},"$"+{{ant}})">{{i}}</a></li>
+                <li class="page-item col-auto"><a class="page-link paginacion" href="{{ modify_query(numeroPagina=i) }}">{{i}}</a></li>
             {% endif %}
             {% set cont = (cont+1) %}
         {% endfor %}
 
-         <li class="page-item col-auto active"><a class="page-link paginacion" href="@urlDireccion"> {{numeDiaAct}}</a></li>
+         <li class="page-item col-auto active"><a class="page-link paginacion" href="{{ modify_query(numeroPagina=numeroPagina) }}"> {{numeDiaAct}}</a></li>
 
         {# @for(int ant=@numeDiaAct+1;ant<=@numeDiaAct+@numCuadros;ant++) #}
 
@@ -54,12 +54,12 @@
         {%  for i  in range((numeDiaAct+numCuadros)) if i+ant-1 < (numeDiaAct+numCuadros) %}
 
             {# if (@ant < @objetoProductos.Informacion.NumeroTotalProductos) #}
-            {% if (i+ant < 1200) %}
+            {% if (i+ant < informacion.Informacion.NumeroTotalProductos) %}
 
-                 <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+@numeDiaAct,"$"+ant)">{{i+ant}}</a></li>
+                 <li class="page-item col-auto"><a class="page-link paginacion" href="{{ modify_query(numeroPagina=i+ant) }}">{{i+ant}}</a></li>
 
                 {# if(@numeDiaAct+@numCuadros==@ant && ant<@objetoProductos.Informacion.NumeroTotalProductos-1) #}
-                {% if((numeDiaAct+numCuadros)==i+ant and i+ant<(1200-1)) %}
+                {% if((numeDiaAct+numCuadros)==i+ant and i+ant<(informacion.Informacion.NumeroTotalProductos-1)) %}
 
                      <li class="page-item col-auto"><a class="page-link paginacion" href="">...</a></li>
                 {% endif %}
@@ -68,10 +68,10 @@
         {% endfor %}
 
         {# @if (numeDiaAct < objetoProductos.Informacion.NumeroTotalProductos) #}
-        {% if (numeDiaAct < 1200) %}
+        {% if (numeDiaAct < informacion.Informacion.NumeroTotalProductos) %}
 
-            <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+@numeDiaAct,"$"+@objetoProductos.Informacion.NumeroTotalProductos)">1200</a></li>
-            <li class="page-item col-auto"><a class="page-link paginacion" href="@urlDireccion.Replace("$"+@numeDiaAct,"$"+(@numeDiaAct+1))" >Siguiente</a></li>
+            <li class="page-item col-auto"><a class="page-link paginacion" href="{{ modify_query(numeroPagina=informacion.Informacion.NumeroTotalProductos) }}">{{informacion.Informacion.NumeroTotalProductos}}</a></li>
+            <li class="page-item col-auto"><a class="page-link paginacion" href="{{ modify_query(numeroPagina=numeroPagina+1) }}" >Siguiente</a></li>
         {% endif %}
 
 </ul>

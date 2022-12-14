@@ -41,8 +41,6 @@
 
 <header>
    {{cabecera(informacionCabecera)}}
-    {% set patch = url_for(request.endpoint) %}
-    <h1>{{patch}}</h1>
 </header>
 
 
@@ -67,20 +65,14 @@
         <div>
             <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
               <ol class="breadcrumb">
-                  {# @for(int i=0;i<@patch.Length;i++) #}
-                  {% set breadcrums = ["Casa", "Limpieza", "Cocina"] %}
-                  {%    for i in breadcrums %}
+                   {% for p in patch %}
 
-                        {# if (i == @patch.Length - 1) #}
-                        {% if (i == "Cocina") %}
-
-                            <li class="breadcrumb-item active" aria-current="page">{{i}}</li>
-
-                        {% else %}
-
-                             <li class="breadcrumb-item"><a href="#">{{i}}</a></li>
-                        {% endif %}
-                  {% endfor %}
+                    {% if loop.index == patch|length %}
+                        <li class="breadcrumb-item active" aria-current="page">{{p}}</li>
+                    {% else %}
+                        <li class="breadcrumb-item"><a href="#">{{p}}></a></li>
+                    {% endif %}
+                {% endfor %}
               </ol>
             </nav>
         </div>
@@ -92,7 +84,7 @@
             {% endif %}
         </div>
         <div class="contenedor-productosBus-pag">
-            {{productosBusqueda(informacion.productosResultado)}}
+            {{productosBusqueda(informacion.productosResultado,numeroPagina,informacion)}}
         </div>
     </div>
 </div>
