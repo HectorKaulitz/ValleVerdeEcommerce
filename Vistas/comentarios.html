@@ -16,16 +16,25 @@
      <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosComentarios.css' ) }}">
 
       <script src="https://kit.fontawesome.com/1e636cb0f6.js" crossorigin="anonymous"></script>
-    <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 
 </head>
 <header>
+ <style>
 
-{{cabecera('bdbhdbd',true,true,true)}}
+        :root {
+            --colorOscuro: rgb(116,196,102);
+            --colorMasOscuro: rgb(35, 61, 31);
+            --colorClaro: rgb(206,234,201);
+            --colorExtraClaro: rgb(243,250,242));
+            --colorBlanco: white;
+        }
+   </style>
+{{cabecera(informacionCabecera)}}
 </header>
 <body>
+{% set identificador = "iden" %}
 <div class="contenedor-principal-comentarios">
 
         <div class="alert alert-warning div-alerta-uso" role="alert">
@@ -39,55 +48,55 @@
 
 
                                     {#@if (comentarios.Count > 0)#}
-                                    {%if(true)%}
+                                    {%if objetoComentario.comentarios|length>0 %}
                                        {# @foreach (getsetComentario comentario in comentarios)#}
-                                        {%if(true)%}
+                                        {% for comentario in objetoComentario.comentarios%}
                                             <div class="card text-dark mb-4">
                                                 <div class="card-body p-4">
                                                 <div class="d-flex flex-start">
                                                     <div class="col-12">
                                                         <h5>Tema comentario:</h5>
-                                                        <h6 class="fw-bold mb-1">Tema comentario 1</h6>
+                                                        <h6 class="fw-bold mb-1">{{comentario.tema}}</h6>
                                                         <div class="d-flex align-items-center mb-3 row">
                                                             <div class="div-fecha-estatus col-md-auto col-12">
                                                                 <p class="mb-0 fecha-comentario ms-3">
-                                                                    fecha creacion del comentario
+                                                                    {{comentario.fechaCreacion}}
                                                                 </p>
 
                                                             </div>
                                                             <div class="div-aaciones-comentario col-md-auto col-4">
-                                                                <a  class="link-muted" data-bs-toggle="modal" data-bs-target="#staticBackdropCOM" onclick="EditarComentario(@comentario.idComentario,@usuario.IDUsuarioRegistrado)"><i class="fas fa-pencil-alt ms-2"></i></a>
-                                                                <a  class="link-muted" onclick="EliminarComentario(@comentario.idComentario)"><i class="fa-regular fa-trash-can ms-2"></i></a>
+                                                                <a  class="link-muted" data-bs-toggle="modal" data-bs-target="#staticBackdropCOM" onclick="EditarComentario({{comentario.idComentario}},{{objetoComentario.usuario.IDUsuarioRegistrado}})"><i class="fas fa-pencil-alt ms-2"></i></a>
+                                                                <a  class="link-muted" onclick="EliminarComentario({{comentario.idComentario}})"><i class="fa-regular fa-trash-can ms-2"></i></a>
 
                                                             </div>
                                                             <div class="div-btn-collapse col-md col-8">
-                                                                <button class="btn " type="button" data-bs-toggle="collapse" data-bs-target="#@identificador@comentario.idComentario" aria-expanded="false" aria-controls="collapseExample" onclick="Colapse(@comentario.idComentario)">
-                                                                    <i class="fa-regular fa-square-caret-down" id="btnColapse @comentario.idComentario"></i>
+                                                                <button class="btn " type="button" data-bs-toggle="collapse" data-bs-target="#{{identificador}}{{comentario.idComentario}}" aria-expanded="false" aria-controls="collapseExample" onclick="Colapse({{comentario.idComentario}})">
+                                                                    <i class="fa-regular fa-square-caret-down" id="btnColapse {{comentario.idComentario}}"></i>
                                                                 </button>
                                                             </div>
                                                         </div>
-                                                        {#<div id="@identificador@comentario.idComentario" class="collapse">#}
-                                                        <div id="1" class="collapse">
+                                                        <div id="{{identificador}}{{comentario.idComentario}}" class="collapse">
+
                                                            <hr>
                                                            <h5>Comentario:</h5>
                                                             <p class="mb-0">
-                                                               comentario
+                                                               {{comentario.comentario}}
                                                             </p>
                                                                 {#@if (comentario.respuestas.Count>0)#}
-                                                                {% if(true) %}
+                                                                {% if comentario.respuestas|length>0 %}
                                                                      <div>
                                                                          <hr>
                                                                         <h5  style="text-align:end;" >Respuesta(s):</h5>
                                                                      </div>
                                                                     {#foreach (getsetRespuestaComentario resp in comentario.respuestas)#}
-                                                                    {% for x in range(3) %}
+                                                                    {% for resp in comentario.respuestas %}
                                                                         <div>
 
                                                                             <p class="mb-0" style="text-align:end; margin-top:3px;">
-                                                                                fecha ultima modificacion
+                                                                                {{resp.fechaUltimaModificacion}}
                                                                             </p>
                                                                             <p class="mb-0" style="text-align:end; margin-bottom:3px;">
-                                                                                respuesta
+                                                                                {{resp.respuesta}}
                                                                             </p>
                                                                          </div>
                                                                      {% endfor %}
@@ -105,7 +114,7 @@
                                             </div>
 
                                             </div>
-                                        {% endif %}
+                                        {% endfor %}
 
 
                                     {%else%}
@@ -196,6 +205,8 @@
   </div>
 </div>
 <script src="{{ url_for('static', filename='wwwroot/lib/jquery/dist/jquery.min.js' ) }}"></script>
+<script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='wwwroot/js/site.js' ) }}" asp-append-version="true"></script>
  <script src="{{ url_for('static', filename='wwwroot/js/ScriptComentario.js' ) }}" asp-append-version="true"></script>
 
 </html>

@@ -29,7 +29,7 @@
    </style>
 </head>
 <header>
-    {{cabecera('bdbhdbd',true,true,true)}}
+    {{cabecera(informacionCabecera)}}
 </header>
 <body>
 
@@ -210,7 +210,7 @@
                       <h6 class="mb-0">Nombre completo</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <h6>Usuario1</h6>
+                      <h6>{{objetoPerfilUsuario.usuario.Nombre}} {{objetoPerfilUsuario.usuario.Apellido}}</h6>
                     </div>
 
                   </div>
@@ -223,7 +223,7 @@
                       <h6 class="mb-0">Codigo area</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <h6>+52</h6>
+                      <h6>{{objetoPerfilUsuario.usuario.codigoArea}}</h6>
                     </div>
 
                   </div>
@@ -236,7 +236,7 @@
                       <h6 class="mb-0">Telefono</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <h6>3541033211</h6>
+                      <h6>3541033212</h6>
                     </div>
 
                   </div>
@@ -249,7 +249,7 @@
                       <h6 class="mb-0">Correo</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <h6>correo1@gmail.com</h6>
+                      <h6>{{objetoPerfilUsuario.usuario.Correo}}</h6>
                     </div>
 
                   </div>
@@ -279,7 +279,7 @@
                       <h6 class="mb-0">Usuario</h6>
                     </div>
                     <div class="col-sm-7 text-secondary">
-                      <h6>Usuario1</h6>
+                      <h6>{{objetoPerfilUsuario.usuario.Usuario}}</h6>
                     </div>
                      <div class="col-sm-2 div-opcion-editar">
                       <a class="btn color-oscuro"  data-bs-toggle="modal" data-bs-target="#staticBackdropPU"><i class="fa-solid fa-pen-to-square"></i></a>
@@ -311,7 +311,7 @@
                       <h6 class="mb-0">Fecha registro</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <h6>20/11/2022</h6>
+                      <h6>{{objetoPerfilUsuario.usuario.FechaRegistro}}</h6>
                     </div>
 
                   </div>
@@ -533,7 +533,7 @@
                                 </div>
 
                                 <div class="div-contenido-input-item">
-                                    <input value="@usuario.Nombre" name="inputNombre" id="inputNombre" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                    <input value="{{objetoPerfilUsuario.usuario.Nombre}}" name="inputNombre" id="inputNombre" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
                                 </div>
                            </div>
                         </div>
@@ -553,7 +553,7 @@
                                 </div>
 
                                 <div class="div-contenido-input-item">
-                                    <input value="@usuario.Apellido" name="inputApellido" id="inputApellido" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                    <input value="{{objetoPerfilUsuario.usuario.Apellido}}" name="inputApellido" id="inputApellido" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
                                 </div>
 
                             </div>
@@ -573,7 +573,7 @@
                                 </div>
 
                                 <div class="div-contenido-input-item">
-                                    <input value="@usuario.Correo" name="inputCorreo" id="inputCorreo" type="email" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                    <input value="{{objetoPerfilUsuario.usuario.Correo}}" name="inputCorreo" id="inputCorreo" type="email" class="input-txt-item" placeholder="Campo obligatorio" required/>
                                 </div>
 
                             </div>
@@ -616,7 +616,7 @@
                                 </div>
 
                                 <div class="div-contenido-input-item">
-                                    <input value="@usuario.Telefono" name="inputTelefono" id="inputTelefono" type="tel" class="input-txt-item" placeholder="Campo opcional"/>
+                                    <input value="3541033212" name="inputTelefono" id="inputTelefono" type="tel" class="input-txt-item" placeholder="Campo opcional"/>
                                 </div>
 
                             </div>
@@ -750,7 +750,7 @@
                                 </div>
 
                                 <div class="div-contenido-input-item">
-                                    <input value="@usuario.Usuario" id="inputUsuario" name="inputUsuario" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                    <input value="{{objetoPerfilUsuario.usuario.Usuario}}" id="inputUsuario" name="inputUsuario" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
                                 </div>
 
                             </div>

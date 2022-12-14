@@ -19,6 +19,7 @@ from Programacion.getset.getsetObjetoCarritoUsuario import getsetObjetoCarritoUs
 from Programacion.getset.getsetObjetoComentario import getsetObjetoComentario
 from Programacion.getset.getsetObjetoHistorialCompra import getsetObjetoHistorialCompra
 from Programacion.getset.getsetObjetoPaginaInicio import getsetObjetoPaginaInicio
+from Programacion.getset.getsetObjetoPerfilUsuario import getsetObjetoPerfilUsuario
 from Programacion.getset.getsetObjetoProducto import getsetObjetoProducto
 from Programacion.getset.getsetObjetoProductos import getsetObjetoProductos
 from Programacion.getset.getsetObjetoProductosFavoritos import getsetObjetoProductosFavoritos
@@ -225,12 +226,16 @@ def producto(tipo=-1, busqueda="", idProducto=""):
 @app.route('/comentarios')
 def comentarios():
     mysql = MySQL()
-    usuario: getsetUsuarioRegistrado = None  # falta obtener el usuario
+    objetoComentario = None
+    usuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
     comentarios = []
     if usuario is not None:
         comentarios = mysql.ObtenerComentarioUsuario(usuario.IDUsuarioRegistrado)
         objetoComentario = getsetObjetoComentario(None, "", comentarios, usuario)
-    return render_template('comentarios.html', objetoComentario=objetoComentario)
+        # cabecera-----------------------------
+    informacionCabecera = LlenarCabecera(True, "", False)
+    # ----------------------------
+    return render_template('comentarios.html', objetoComentario=objetoComentario, informacionCabecera=informacionCabecera)
 
 
 @app.route('/carritoUsuario')
@@ -278,7 +283,12 @@ def ayuda():
 
 @app.route('/perfilUsuario')
 def perfilUsuario():
-    return render_template('perfilUsuario.html')
+    # cabecera-----------------------------
+    informacionCabecera = LlenarCabecera(True, "")
+    datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
+    # ----------------------------
+    informacionUsuario = getsetObjetoPerfilUsuario(datosUsuario)
+    return render_template('perfilUsuario.html', objetoPerfilUsuario=informacionUsuario, informacionCabecera=informacionCabecera)
 
 
 def _validarUsuarioInicioSesion(usuario):

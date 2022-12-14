@@ -560,7 +560,7 @@ class MySQL:
             self.conectar_mysql()
         try:
             CURSOR = self.CONNECTION.cursor()
-            args = [idUsuario, idComentario, activo]
+            args = [idUsuario, idComentario, activo, None , None]
             CURSOR.callproc('ObtenerComentarioUsuario', args)
 
             for row in CURSOR.stored_results():
