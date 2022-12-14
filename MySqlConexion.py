@@ -17,6 +17,7 @@ from Programacion.getset.getsetProducto import getsetProducto
 from Programacion.getset.getsetProductoFavorito import getsetProductoFavorito
 from Programacion.getset.getsetProductoCarrito import getsetProductoCarrito
 from Programacion.getset.getsetProductoPromocionPorCategoria import getsetProductoPromocionPorCategoria
+from Programacion.getset.getsetProductoVenta import getsetProductoVenta
 from Programacion.getset.getsetRespuestaAyuda import getsetRespuestaAyuda
 from Programacion.getset.getsetRespuestaComentario import getsetRespuestaComentario
 from Programacion.getset.getsetTemaAyuda import getsetTemaAyuda
@@ -867,7 +868,7 @@ class MySQL:
                     res = item[0]
                     ventas.append(getsetVenta(res,
                                               item[1], item[2], item[3], item[4], item[5], item[6], item[7],
-                                              item[8], item[9], item[10], Encriptacion.Encrypt(res), item[11], item[12]))
+                                              item[8], item[9], item[10], res, item[11], item[12]))
 
             self.CONNECTION.commit()
             CURSOR.close()
@@ -999,5 +1000,84 @@ class MySQL:
 
     def ObtenerExistenciaTotalProducto(self, codigoBarras):
         res = 400
+
+        return res
+
+    def ObtenerProductosVenta(self, idVenta):
+        productos = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idVenta]
+            CURSOR.callproc('ObtenerProductosVenta', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                ind: int = 0
+                for item in items:
+                    productos.append(getsetProductoVenta(ind,item[0], item[1], item[2],
+                                                                                  item[3], item[4], item[5], item[6],
+                                                                                  item[7], item[8], item[9], item[10]
+                                                                                  , item[11], item[12]))
+                    ind = ind+1
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ", e)
+        except Exception as error:
+            print("ERROR: ", error)
+
+        return productos
+
+    def ObtenerTotalesVenta(self, idVenta):
+        res = None
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idVenta]
+            CURSOR.callproc('ObtenerTotalesVenta', args)
+            self.CONNECTION.commit()
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = getsetTotalesCarrito(item[0],item[1],item[2],item[3],item[4],item[5],item[6])
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento EliminarProductoCarrito: ", e)
+        except Exception as error:
+            print("ERROR EliminarProductoCarrito: ", error)
+
+        return res
+
+    def ObtenerVenta(self, idVenta):
+        res = None
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idVenta]
+            CURSOR.callproc('ObtenerVenta', args)
+            self.CONNECTION.commit()
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = getsetVenta(item[0],item[1],item[2],item[3],item[4],item[5],item[6],item[7],item[8],item[9],item[10],item[0],item[11],item[12])
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento EliminarProductoCarrito: ", e)
+        except Exception as error:
+            print("ERROR EliminarProductoCarrito: ", error)
 
         return res

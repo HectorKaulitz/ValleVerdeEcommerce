@@ -17,6 +17,7 @@ from Programacion.getset.getsetObjetoAyuda import getsetObjetoAyuda
 from Programacion.getset.getsetObjetoCarrito import getsetObjetoCarrito
 from Programacion.getset.getsetObjetoCarritoUsuario import getsetObjetoCarritoUsuario
 from Programacion.getset.getsetObjetoComentario import getsetObjetoComentario
+from Programacion.getset.getsetObjetoDetallesVentaHistorial import getsetObjetoDetallesVentaHistorial
 from Programacion.getset.getsetObjetoHistorialCompra import getsetObjetoHistorialCompra
 from Programacion.getset.getsetObjetoPaginaInicio import getsetObjetoPaginaInicio
 from Programacion.getset.getsetObjetoProducto import getsetObjetoProducto
@@ -54,7 +55,7 @@ def LlenarCabecera(mostrar: bool, busqueda: str ="", mostrarCarrito=True):
     cookieSesion = None
     datosUsuario = None
     token = None
-    sNum = Encriptacion.Encrypt(clearText="10")
+    sNum = "10"
     if mostrar:
         mySql = MySQL()
         datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
@@ -157,17 +158,19 @@ def historialCompras():
         ventas = mysql.ObtenerVentasUsuario(usuarioActual.IDUsuarioRegistrado, True, False)
 
     objetoHistorialCompras = getsetObjetoHistorialCompra(None, ventas)
-    return render_template('historialCompras.html', objetoHistorialCompras=objetoHistorialCompras)
+    informacionCabecera = LlenarCabecera(True)
+
+    return render_template('historialCompras.html', objetoHistorialCompras=objetoHistorialCompras,informacionCabecera=informacionCabecera)
 
 
-@app.route('/promociones')
+@app.route('/promociones', methods=['POST', 'GET'])
 def promociones():
     mySql = MySQL()
-    productosPagEnc = 10
-    numeroPagina = 0
+    productosPag = request.args.get('productosPag', 10)
+    numeroPagina:int = int(request.args.get('numeroPagina',0))-1
 
-    if (productosPagEnc == -2):
-        productosPagEnc = 10
+    if (productosPag == -2):
+        productosPag = 10
 
     numeroCuadrosPagina = 5
 
@@ -176,19 +179,19 @@ def promociones():
 
     productosPromocion = mySql.ObtenerProductosDePromocionPorCategoria(2);
 
-    productosPromocionIndividuales = mySql.ObtenerProductosDePromocionPorCategoria(-1, numeroPagina, productosPagEnc);
+    productosPromocionIndividuales = mySql.ObtenerProductosDePromocionPorCategoria(-1, numeroPagina, productosPag);
 
-    NumeroTotalProductos = mySql.ObtenerNumeroPaginasProductosDePromocionPorCategoria(-1, productosPagEnc);
+    NumeroTotalProductos = mySql.ObtenerNumeroPaginasProductosDePromocionPorCategoria(-1, productosPag);
     datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request);
 
     informacionCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(2), datosUsuario);
     informacionCabecera: getsetInformacionCabecera = LlenarCabecera(True,"");
     objetoPromociones = getsetObjetoPromociones("", informacionCarousel, productosPromocion,
                                                 productosPromocionIndividuales,
-                                                numeroPagina, productosPagEnc, numeroCuadrosPagina,
+                                                numeroPagina, productosPag, numeroCuadrosPagina,
                                                 NumeroTotalProductos,informacionCabecera);
 
-    return render_template('promociones.html', objetoPromociones=objetoPromociones)
+    return render_template('promociones.html', objetoPromociones=objetoPromociones,numeroPagina=numeroPagina)
 
 
 @app.route('/iniciarSesion')
@@ -552,3 +555,18 @@ def ValidarExistenciaProducto():
 # if __name__ == '__main__':
 #     print(__name__)
 #     app.run()
+
+@app.route('/productosVentaHistorial/', methods=['POST', 'GET'])
+def productosVentaHistorial():
+    idVentaEncriptado = request.args['idVentaEncriptado']
+    idVenta: str = idVentaEncriptado;
+
+    mySql = MySQL()
+
+    productosVenta = mySql.ObtenerProductosVenta(idVenta);
+    totalesVenta: getsetTotalesCarrito=mySql.ObtenerTotalesVenta(idVenta);
+    totalesVenta.fuentePequena = True;
+    detalles:getsetObjetoDetallesVentaHistorial = getsetObjetoDetallesVentaHistorial(productosVenta,totalesVenta, mySql.ObtenerVenta(idVenta).estatusVenta);
+
+
+    return render_template('productosVentaHistorial.html', detalles=detalles,totalesVenta=totalesVenta)

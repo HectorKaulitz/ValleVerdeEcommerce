@@ -13,8 +13,8 @@ class getsetVenta:
         self.idPreferenciaMercadoPago = idPreferenciaMercadoPago
         self.enviarADomicilio = enviarADomicilio
         self.subtotal = Utileria().RedondeoDouble(subtotal)
-        self.costoEnvio = Utileria.RedondeoDouble(costoEnvio)
-        self.total = Utileria.RedondeoDouble(total)
+        self.costoEnvio = Utileria().RedondeoDouble(costoEnvio)
+        self.total = Utileria().RedondeoDouble(total)
         self.estatusVenta = estatusVenta
         self.idTipoPago = idTipoPago
         self.idVentaEncriptada = idVentaEncriptada

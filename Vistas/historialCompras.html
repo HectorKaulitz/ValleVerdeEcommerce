@@ -41,7 +41,7 @@
 <body>
 
 <header>
-       {{cabecera('bdbhdbd',true,true,true)}}
+       {{cabecera(informacionCabecera)}}
 </header>
 
 <div class="container p-md-5 p-1">
@@ -64,8 +64,7 @@
             {% set targetId = "target" %}
             {% set idBtnVerProductos = "verProductos" %}
 
-            {% set ventas = [[3,100,1,true,2,"-1","-1"], [2,100,2,false,0,"ddffgEvsdvWerts","-1"], [1,100,3,true,4,"-1","EFce3frgERG54ref"]] %}
-            {% for venta in ventas %}
+            {% for venta in objetoHistorialCompras.ventas %}
 
                 <div class="card col-12 py-2 my-2" style="border-radius: 16px;">
                     <div class="card-stepper text-black row">
@@ -74,40 +73,40 @@
                            <div>
                                <h2>Detalles:</h2>
 
-                               <h4 class="text-center p-4" style="align-self: center;"><strong>Total:</strong><br />{{"${:,.2f}".format(venta[totalVenta])}}</h4>
+                               <h4 class="text-center p-4" style="align-self: center;"><strong>Total:</strong><br />{{"${:,.2f}".format(venta.total)}}</h4>
                             </div>
                             <div>
                                {#@*Si no esta pagada poner boton para retomar el pago*@#}
-                                {% if((venta[idTipoPago] == 2 or venta[idTipoPago] == 3) and venta[pagada] == false) %}
+                                {% if((venta.idTipoPago == 2 or venta.idTipoPago == 3) and venta.pagada == false) %}
 
                                     <h3 class="text-danger text-center">Pago pendiente</h3>
-                                    {% if(venta[estatusVenta]<=1) %}
+                                    {% if(venta.estatusVenta<=1) %}
 
                                          <button class="btn btn-danger col-12 m-2" type="button" onclick="CancelarVenta('{{venta[idVenta]}}')">Cancelar compra</button>
                                     {% endif %}
                                     <button class="btn btn-warning col-12 m-2" type="button" onclick="RetomarPago({{venta[idVenta]}}')">Retomar pago</button>
                                 {% else %}
-                                    {% if((venta[idTipoPago] == 1) or  ((venta[idTipoPago] == 2 and venta[pagada] and (venta[idPagoMercadoPago]!= null and venta[idPagoMercadoPago]|length>0 and venta[idPagoMercadoPago]!="")) or (venta[idTipoPago] == 3 and venta[pagada] and (venta[idCargoOpenpay]!= null and venta[idCargoOpenpay]|length>0 and venta[idCargoOpenpay]!="")))) %}
+                                    {% if((venta.idTipoPago == 1) or  ((venta.idTipoPago == 2 and venta.pagada and (venta.idPagoMercadoPago!= null and venta.idPagoMercadoPago|length>0 and venta.idPagoMercadoPago!="")) or (venta.idTipoPago == 3 and venta.pagada and (venta.idCargoOpenpay!= null and venta.idCargoOpenpay|length>0 and venta.idCargoOpenpay!="")))) %}
 
                                        {# @*Obtener comprobante por que ya esta pagada*@ #}
-                                         {% if(venta[estatusVenta]<=1) %}
+                                         {% if(venta.estatusVenta<=1) %}
 
                                              <button class="btn btn-danger col-12 m-2" type="button" onclick="CancelarVenta('{{venta[idVenta]}}')">Cancelar compra</button>
                                          {% endif %}
-                                        <a class="btn btn-primary col-12 m-2" type="button" asp-controller="Venta" asp-action="PagoAprobado" asp-route-external_reference="{{venta[idVenta]}}" asp-route-payment_id="{{venta[idPagoMercadoPago]}}">Obtener comprobante</a>
+                                        <a class="btn btn-primary col-12 m-2" type="button" asp-controller="Venta" asp-action="PagoAprobado" asp-route-external_reference="{{venta.idVenta}}" asp-route-payment_id="{{venta.idPagoMercadoPago}}">Obtener comprobante</a>
                                     {% else %}
-                                         {% if(venta[idTipoPago] == 4 and venta[pagada]==false and (venta[idCargoOpenpay]!= null and venta[idCargoOpenpay]|length>0 and venta[idCargoOpenpay]!="")) %}
+                                         {% if(venta.idTipoPago == 4 and venta.pagada==false and (venta.idCargoOpenpay!= none and venta.idCargoOpenpay|length>0 and venta.idCargoOpenpay!="")) %}
 
                                             {#@*Obtener comprobante por que ya esta pagada*@#}
-                                             {% if(venta[estatusVenta]<=1) %}
+                                             {% if(venta.estatusVenta<=1) %}
 
-                                                 <button class="btn btn-danger col-12 m-2" type="button" onclick="CancelarVenta('{{venta[idVenta]}}')">Cancelar compra</button>
+                                                 <button class="btn btn-danger col-12 m-2" type="button" onclick="CancelarVenta('{{venta.idVenta}}')">Cancelar compra</button>
                                             {% endif %}
-                                            <a class="btn btn-primary col-12 m-2" type="button" asp-controller="Venta" asp-action="PagoAprobado" asp-route-external_reference="{{venta[idVenta]}}" >Obtener instrucciones de pago</a>
+                                            <a class="btn btn-primary col-12 m-2" type="button" asp-controller="Venta" asp-action="PagoAprobado" asp-route-external_reference="{{venta.idVenta}}" >Obtener instrucciones de pago</a>
                                         {% endif %}
                                     {% endif %}
                                 {% endif %}
-                                <button id="{{idBtnVerProductos}}{{venta[idVenta]}}" class="btn btn-outline-primary col-12 m-2 d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#{{targetId}}{{venta[idVenta]}}" onclick="ObtenerProductosVenta('{{venta[idVenta]}}','{{targetId}}{{venta[idVenta]}}','{{idBtnVerProductos}}{{venta[idVenta]}}')"><span>Ver detalles compra</span><i class="fa-solid fa-chevron-down"></i></button>
+                                <button id="{{idBtnVerProductos}}{{venta.idVenta}}" class="btn btn-outline-primary col-12 m-2 d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#{{targetId}}{{venta.idVenta}}" onclick="ObtenerProductosVenta('{{venta.idVenta}}','{{targetId}}{{venta.idVenta}}','{{idBtnVerProductos}}{{venta.idVenta}}')"><span>Ver detalles compra</span><i class="fa-solid fa-chevron-down"></i></button>
                             </div>
                        </div>
 
@@ -115,23 +114,23 @@
 
                             <div class="d-flex justify-content-between align-items-center mb-5">
                                 <div>
-                                    <h5 class="mb-0">COMPRA <span class="text-primary font-weight-bold">#{{venta[idVenta]}}</span></h5>
+                                    <h5 class="mb-0">COMPRA <span class="text-primary font-weight-bold">#{{venta.idVenta}}</span></h5>
                                 </div>
                                 <div class="text-end">
-                                    {% if (venta[idTipoPago] == 1) %}
+                                    {% if (venta.idTipoPago == 1) %}
                                         <p class="mb-0">Pagaras al momento de recoger en tienda</p>
                                     {% else %}
-                                        {% if (venta[idTipoPago] == 2) %}
+                                        {% if (venta.idTipoPago == 2) %}
 
                                             <p class="mb-0">Pago con Mercado Pago</p>
-                                            {% if(venta[idPagoMercadoPago]!="") %}
+                                            {% if(venta.idPagoMercadoPago!="") %}
 
-                                                <p class="mb-0">Pago <span class="font-weight-bold">#{{venta[idPagoMercadoPago]}}</span></p>
+                                                <p class="mb-0">Pago <span class="font-weight-bold">#{{venta.idPagoMercadoPago}}</span></p>
                                             {% endif %}
                                         {% else %}
-                                            {% if (venta[idTipoPago] == 3 or venta[idTipoPago] == 4) %}
+                                            {% if (venta.idTipoPago == 3 or venta.idTipoPago == 4) %}
 
-                                                {%if (venta[idTipoPago] == 3) %}
+                                                {%if (venta.idTipoPago == 3) %}
 
                                                     <p class="mb-0">Pago con Openpay - Tarjeta</p>
 
@@ -140,9 +139,9 @@
                                                     <p class="mb-0">Pago con Openpay - Transferencia</p>
                                                  {% endif %}
 
-                                                {%if (venta[idCargoOpenpay] != "") %}
+                                                {%if (venta.idCargoOpenpay != "") %}
 
-                                                    <p class="mb-0">Pago <span class="font-weight-bold">#{{venta[idCargoOpenpay]}}</span></p>
+                                                    <p class="mb-0">Pago <span class="font-weight-bold">#{{venta.idCargoOpenpay}}</span></p>
                                                  {% endif %}
                                             {% endif %}
                                         {% endif %}
@@ -151,7 +150,7 @@
                             </div>
 
                             <ul id="progressbar-2" class="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2">
-                                {% if venta[estatusVenta] == 0 %} {#Procesando#}
+                                {% if venta.estatusVenta == 0 %} {#Procesando#}
                                         <li class="step0 active text-center" id="step1"></li>
                                         <li class="step0 text-muted text-center" id="step2"></li>
                                         <li class="step0 text-muted text-center" id="step3"></li>
@@ -162,7 +161,7 @@
                                         {% set clasePaso3 = "text-muted" %}
                                         {% set clasePaso4 = "text-muted" %}
 
-                                {% elif venta[estatusVenta] == 2 %} {#Surtiendo#}
+                                {% elif venta.estatusVenta == 2 %} {#Surtiendo#}
                                         <li class="step0 active text-center" id="step1"></li>
                                         <li class="step0 active text-center" id="step2"></li>
                                         <li class="step0 text-muted text-center" id="step3"></li>
@@ -172,7 +171,7 @@
                                         {% set clasePaso2 = "text-warning" %}
                                         {% set clasePaso3 = "text-muted" %}
                                         {% set clasePaso4 = "text-muted" %}
-                                {% elif venta[estatusVenta] == 3 %} {#Listo para recoger/Enviado#}
+                                {% elif venta.estatusVenta == 3 %} {#Listo para recoger/Enviado#}
                                         <li class="step0 active text-center" id="step1"></li>
                                         <li class="step0 active text-center" id="step2"></li>
                                         <li class="step0 active text-center" id="step3"></li>
@@ -182,7 +181,7 @@
                                         {% set clasePaso2 = "text-warning" %}
                                         {% set clasePaso3 = "text-success" %}
                                         {% set clasePaso4 = "text-muted" %}
-                                {% elif venta[estatusVenta] == 4 %} {#Entregado#}
+                                {% elif venta.estatusVenta == 4 %} {#Entregado#}
 
                                         <li class="step0 active text-center" id="step1"></li>
                                         <li class="step0 active text-center" id="step2"></li>
@@ -212,15 +211,15 @@
                                 <div class="d-lg-flex align-items-center">
                                     <i class="fas fa-clipboard-list fa-3x me-lg-4 mb-3 mb-lg-0 {{clasePaso1}}"></i>
                                     <div>
-                                        {% if (venta[idTipoPago] == 1) %}
+                                        {% if (venta.idTipoPago == 1) %}
 
                                             <p class="fw-bold mb-1">Pedido</p>
                                             <p class="fw-bold mb-0">Procesado</p>
 
                                         {% else %}
-                                            {% if (venta[idTipoPago] == 2) %}
+                                            {% if (venta.idTipoPago == 2) %}
 
-                                                {% if (venta[pagada]) %}
+                                                {% if (venta.pagada) %}
 
                                                     <p class="fw-bold mb-1">Pedido</p>
                                                     <p class="fw-bold mb-0">Procesado</p>
@@ -244,7 +243,7 @@
                                 <div class="d-lg-flex align-items-center">
                                     <i class="fas fa-shipping-fast fa-3x me-lg-4 mb-3 mb-lg-0 {{clasePaso3}}"></i>
                                     <div>
-                                        {% if (venta[enviarADomicilio]) %}
+                                        {% if (venta.enviarADomicilio) %}
 
                                             <p class="fw-bold mb-1">Pedido</p>
                                             <p class="fw-bold mb-0">Enviado</p>
@@ -268,7 +267,7 @@
                         </div>
 
                         {#@*Productos*@#}
-                        <div id="{{targetId}}{{venta[idVenta]}}" class="col-12 collapse order-md-3 order-3" style="">
+                        <div id="{{targetId}}{{venta.idVenta}}" class="col-12 collapse order-md-3 order-3" style="">
                             <div id="cargando" class="text-center">
                                 <hr>
                                 <div class="spinner-border text-success" role="status">
