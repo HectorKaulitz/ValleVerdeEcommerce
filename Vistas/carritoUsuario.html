@@ -44,7 +44,7 @@
 <div class="contenedor-principal-carritoC">
 
     {#@if (!@objetoCarrito.EsParaFavoritos)#}
-    {% if objetoCarrito.EsParaFavoritos %}
+    {% if not objetoCarrito.EsParaFavoritos %}
         <ul class="nav nav-tabs ul-tab-carrito-usuario" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="carrito-tab" data-bs-toggle="tab" data-bs-target="#carrito" type="button" role="tab" aria-controls="carrito" aria-selected="true">Carrito</button>
