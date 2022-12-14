@@ -19,3 +19,4 @@ class getsetObjetoCarritoUsuario:
         self.datosUsuario = datosUsuario
         self.totalesCarrito = totalesCarrito
         self.paqueteriaHabilitada = paqueteriaHabilitada
+        self.configuracionWeb = configuracionWeb

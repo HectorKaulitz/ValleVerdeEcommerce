@@ -1,4 +1,5 @@
 from Programacion.getset import getsetBadgeFlotante
+from Programacion.getset.getsetUsuarioRegistrado import getsetUsuarioRegistrado
 
 
 class getsetContenedorUsuario:

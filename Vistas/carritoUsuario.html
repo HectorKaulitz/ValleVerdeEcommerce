@@ -37,14 +37,14 @@
 
 </head>
 <header>
-    {{cabecera('',true,true,false)}}
+    {{cabecera(informacionCabecera)}}
 </header>
 <body>
 
 <div class="contenedor-principal-carritoC">
 
     {#@if (!@objetoCarrito.EsParaFavoritos)#}
-    {% if(EsParaFavoritos==False) %}
+    {% if objetoCarrito.EsParaFavoritos %}
         <ul class="nav nav-tabs ul-tab-carrito-usuario" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="carrito-tab" data-bs-toggle="tab" data-bs-target="#carrito" type="button" role="tab" aria-controls="carrito" aria-selected="true">Carrito</button>
@@ -57,13 +57,13 @@
 
             <div class="tab-pane fade show active" id="carrito" name="carrito" role="tabpanel" aria-labelledby="carrito-tab">
                {# @(await Component.InvokeAsync("CarritoCompleto",@objetoCarritoUsuario))#}
-                {{carritoCompleto()}}
+                {{carritoCompleto(objetoCarrito.objetoCarritoUsuario)}}
             </div>
 
 
             <div class="tab-pane fade" id="favoritos" name="favoritos" role="tabpanel" aria-labelledby="favoritos-tab">
                 {@(await Component.InvokeAsync("ProductosFavoritos",@objFavoritos))}
-                {{productosFavoritos()}}
+                {{productosFavoritos(objetoCarrito.objFavoritos)}}
             </div>
 
             </div>
@@ -81,13 +81,13 @@
 
             <div class="tab-pane fade" id="carrito" name="carrito" role="tabpanel" aria-labelledby="carrito-tab">
                {# @(await Component.InvokeAsync("CarritoCompleto",@objetoCarritoUsuario))#}
-                {{carritoCompleto()}}
+                {{carritoCompleto(objetoCarrito.objetoCarritoUsuario)}}
             </div>
 
 
             <div class="tab-pane fade show active" id="favoritos" name="favoritos" role="tabpanel" aria-labelledby="favoritos-tab">
                 {#@(await Component.InvokeAsync("ProductosFavoritos",@objFavoritos))#}
-                {{productosFavoritos()}}
+                {{productosFavoritos(objetoCarrito.objFavoritos)}}
             </div>
 
             </div>
@@ -98,18 +98,21 @@
     <div class="contenedor-carousel-en-productos">
         <div class="contenedor-carousel-pag">
             {#@if (@objetoCarritoUsuario.informacionCarousel.productosCarousel.Count > 0)#}
-            {% if(true==false) %}
+            {% if objetoCarrito.objetoCarritoUsuario.informacionCarousel.productosCarousel|length > 0 %}
                 {#@(await Component.InvokeAsync("CarouselProductos",@objetoCarritoUsuario.informacionCarousel))#}
-                {{carouselProductos('Destacados')}}
+                {{carouselProductos('Destacados', objetoCarrito.objetoCarritoUsuario.informacionCarousel, False, 1)}}
             {% endif %}
         </div>
     </div>
 
 </div>
-
+<div id="alertas" class="toast-container fixed-top top-0 end-0 p-3" style="z-index: 110;left:auto">
+</div>
 <script src="{{ url_for('static', filename='wwwroot/lib/jquery/dist/jquery.min.js' ) }}"></script>
  <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
-
+<script src="{{ url_for('static', filename='wwwroot/js/ScriptProductoBusqueda.js' ) }}" ></script>
+<script src="{{ url_for('static', filename='wwwroot/js/ScriptCarritoFlotante.js' ) }}" ></script>
+<script src="{{ url_for('static', filename='wwwroot/js/ScriptCarritoUsuario.js' ) }}" ></script>
 </body>
 
 <footer>

@@ -85,7 +85,7 @@ function ObtenerExistencia(codigoB) {
     var exis = 0;
     $.ajax({
         async: false,
-        url: "/ValidacionVenta/ValidarExistenciaProducto/",
+        url: "/ValidarExistenciaProducto/",
         data:
         {
             codigoBarras: codigoB
@@ -113,7 +113,7 @@ function ObtenerExistencia(codigoB) {
 function EliminarProductoCarrito(idProductoCar) {
     $.ajax({
         async: false,
-        url: "/ValidacionVenta/EliminarProductoDelCarrito/",
+        url: "/EliminarProductoDelCarrito/",
         data:
         {
             idProductoCarrito: idProductoCar
@@ -141,7 +141,7 @@ function EliminarProductoCarrito(idProductoCar) {
 function ActualizarCantidadBD(idProductoC,cant,tip,ind,idUs) {
     $.ajax({
         async: false,
-        url: "/ValidacionVenta/ActualizarCantidadProductoCarrito/",
+        url: "/ActualizarCantidadProductoCarrito/",
         data:
         {
             idProductoCarrito: idProductoC,
@@ -179,14 +179,18 @@ function ActualizarCantidadBD(idProductoC,cant,tip,ind,idUs) {
     
 }
 function ActualizarCarritoCompletoVisualC() {
-    $('#carrito').load('/Venta/ObtenerCarritoUsuario')
+    //$('#carrito').load('/Venta/ObtenerCarritoUsuario')
+    window.location.reload();
 }
 function ActualizarFavoritosVisualC() {
-    $('#favoritos').load('/Venta/ObtenerFavoritosUsuario')
+    //$('#favoritos').load('/Venta/ObtenerFavoritosUsuario')
+    window.location.reload();
 }
 function ActualizarTotalesC() {
     //alert("entro");
-    $('#totalesC').load('/Venta/ObtenerTotalesCarrito');
+    //$('#totalesC').load('/Venta/ObtenerTotalesCarrito');
+
+    window.location.reload();
 }
 $(document).ready(function ()
 {

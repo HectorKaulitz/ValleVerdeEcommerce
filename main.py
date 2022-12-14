@@ -20,6 +20,7 @@ from Programacion.getset.getsetObjetoComentario import getsetObjetoComentario
 from Programacion.getset.getsetObjetoDetallesVentaHistorial import getsetObjetoDetallesVentaHistorial
 from Programacion.getset.getsetObjetoHistorialCompra import getsetObjetoHistorialCompra
 from Programacion.getset.getsetObjetoPaginaInicio import getsetObjetoPaginaInicio
+from Programacion.getset.getsetObjetoPerfilUsuario import getsetObjetoPerfilUsuario
 from Programacion.getset.getsetObjetoProducto import getsetObjetoProducto
 from Programacion.getset.getsetObjetoProductos import getsetObjetoProductos
 from Programacion.getset.getsetObjetoProductosFavoritos import getsetObjetoProductosFavoritos
@@ -67,7 +68,7 @@ def LlenarCabecera(mostrar: bool, busqueda: str ="", mostrarCarrito=True):
             intd = 4
         else:
             productosCarrito = mySql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
-            totalCarrito = mySql.ObtenerTotalesCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
+            totalCarrito = mySql.ObtenerTotalesCarritoUsuario(productosCarrito)
             totalesBadgeFlotantes = mySql.ObtenerTotalesParaBadgeFlotantes(datosUsuario.IDUsuarioRegistrado)
 
         categorias = mySql.ObtenerCategoria()
@@ -228,12 +229,16 @@ def producto(tipo=-1, busqueda="", idProducto=""):
 @app.route('/comentarios')
 def comentarios():
     mysql = MySQL()
-    usuario: getsetUsuarioRegistrado = None  # falta obtener el usuario
+    objetoComentario = None
+    usuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
     comentarios = []
     if usuario is not None:
         comentarios = mysql.ObtenerComentarioUsuario(usuario.IDUsuarioRegistrado)
         objetoComentario = getsetObjetoComentario(None, "", comentarios, usuario)
-    return render_template('comentarios.html', objetoComentario=objetoComentario)
+        # cabecera-----------------------------
+    informacionCabecera = LlenarCabecera(True, "", False)
+    # ----------------------------
+    return render_template('comentarios.html', objetoComentario=objetoComentario, informacionCabecera=informacionCabecera)
 
 
 @app.route('/carritoUsuario')
@@ -242,11 +247,11 @@ def carrito(Favoritos=False):
     objetoCarrito = None
     datosUsuario: getsetUsuarioRegistrado = Utileria().ObtenerUsuarioDeLaSesionActual(request)
     # cabecera-----------------------------
-
+    informacionCabecera = LlenarCabecera(True, "")
     # ----------------------------
     if datosUsuario is not None:
         productosCarritos = mysql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
-        totalCarrito = mysql.ObtenerTotalesCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
+        totalCarrito = mysql.ObtenerTotalesCarritoUsuario(productosCarritos)
         productosCarousel = mysql.ObtenerProductosCarouselPorCategoria(2)
         objCarritoUsuario = getsetObjetoCarritoUsuario(None, "", productosCarousel, productosCarritos, datosUsuario, totalCarrito,
                                                        False, None, mysql.ObtenerConfiguracionWeb())
@@ -255,12 +260,16 @@ def carrito(Favoritos=False):
         objetoCarrito = getsetObjetoCarrito(objCarritoUsuario, objFavoritos, Favoritos)
 
 
-    return render_template('carritoUsuario.html', objetoCarrito=objetoCarrito)
+    return render_template('carritoUsuario.html', objetoCarrito=objetoCarrito, informacionCabecera=informacionCabecera)
 
 
 @app.route('/favorito')
 def favorito():
-    return render_template('carritoUsuario.html', EsParaFavoritos=True)
+    # cabecera-----------------------------
+    informacionCabecera = LlenarCabecera(True, "")
+    datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
+    # ----------------------------
+    return render_template('carritoUsuario.html', EsParaFavoritos=True, informacionCabecera=informacionCabecera)
 
 
 @app.route('/procesoCompra')
@@ -281,7 +290,12 @@ def ayuda():
 
 @app.route('/perfilUsuario')
 def perfilUsuario():
-    return render_template('perfilUsuario.html')
+    # cabecera-----------------------------
+    informacionCabecera = LlenarCabecera(True, "")
+    datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
+    # ----------------------------
+    informacionUsuario = getsetObjetoPerfilUsuario(datosUsuario)
+    return render_template('perfilUsuario.html', objetoPerfilUsuario=informacionUsuario, informacionCabecera=informacionCabecera)
 
 
 def _validarUsuarioInicioSesion(usuario):
@@ -527,7 +541,7 @@ def ActualizarCantidadProductoCarrito():
     mySql = MySQL()
 
     res:getsetInformacionProductoCarrito = mySql.ActualizarCantidadProductoCarrito(idProductoCarrito, cantidad, tipo);
-    totalCarrito:getsetTotalesCarrito = mySql.ObtenerTotalesCarritoUsuario(idUsuario)
+    totalCarrito:getsetTotalesCarrito = mySql.ObtenerTotalesCarritoUsuario([])
 
 
     return jsonify({"resultado": json.dumps(res.__dict__), "total": json.dumps(totalCarrito.__dict__)})

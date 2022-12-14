@@ -30,7 +30,7 @@
                     <div class="contenedor-login" id="contenedor-login" name="contenedor-login">
 
                        {#@Html.Partial("~/Views/Sesion/ContenedorUsuario.cshtml",@contenedorUsuario)#}
-                        {{contenedorUsuario(informacionCabecera.usuario)}}
+                        {{contenedorUsuario(informacionCabecera.usuario, informacionCabecera.totalesBadgeFlotantes)}}
 
                     </div>
                     {# @if (informacion.mostrarCarrito) #}
@@ -116,7 +116,7 @@
                                             <div class="contenedor-login" id="contenedor-loginF" name="contenedor-loginF">
 
                                               {# @Html.Partial("~/Views/Sesion/ContenedorUsuario.cshtml",@contenedorUsuario) #}
-                                                {{contenedorUsuario(informacionCabecera.usuario)}}
+                                                {{contenedorUsuario(informacionCabecera.usuario, informacionCabecera.totalesBadgeFlotantes)}}
 
                                             </div>
                                      {# @if (informacion.mostrarCarrito) #}
