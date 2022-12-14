@@ -199,9 +199,10 @@ class MySQL:
             CURSOR.callproc('ObtenerProducto', args)
 
             for row in CURSOR.stored_results():
-                imagenes = self.ObtenerImagenesProducto(idProducto)
+
                 interaccionConUsuario = False;
                 items = row.fetchall()
+                imagenes = self.ObtenerImagenesProducto(idProducto)
                 for item in items:
                     if (item[4] > 0):
                         interaccionConUsuario = True

@@ -3,7 +3,6 @@ from Programacion.Funcionalidad.Encriptacion import Encriptacion
 
 
 class getsetProducto:
-    oben = Encriptacion()
 
     def __init__(self, idProducto, codigoBarras, nombreProducto, descripcionProducto, urlsImagenes,
                  mostrarEstrellas, puntuacion, precioOriginal, precioDescuento, costoEnvio, tieneEnvio,
@@ -22,5 +21,5 @@ class getsetProducto:
         self.tituloProductos = tituloProductos
         self.existencia = existencia
         self.estaEnProductoFavorito = estaEnProductoFavorito
-        self.idProductoEncriptado = self.oben.Encrypt(str(idProducto))
+        self.idProductoEncriptado =idProducto
         self.mostrarInteraccion = mostrarInteraccion

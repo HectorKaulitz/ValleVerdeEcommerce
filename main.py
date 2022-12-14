@@ -201,7 +201,7 @@ def producto(tipo=-1, busqueda="", idProducto=""):
     patch = request.endpoint.split("/")
     idProducto = request.args['idProducto'];
     mySql = MySQL();
-    idProductoDes = Encriptacion().Decrypt(idProducto);
+
     productosCarousel = mySql.ObtenerProductosCarouselPorCategoria(3, idProducto);
     productoSeleccionado = mySql.ObtenerProducto(idProducto);
     token = Utileria().VerificarCookie("SesionUsuario");
