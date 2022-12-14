@@ -28,7 +28,7 @@ from Programacion.getset.getsetTotalesCarrito import getsetTotalesCarrito
 
 class MySQL:
 
-    def __init__(self, host="192.168.0.118", user="usuario1", pws="cotija20", bd="valleverdeecommerce"):
+    def __init__(self, host="bodegavalleverde.ddns.net", user="usuario1", pws="cotija20", bd="valleverdeecommerce"):
         self.HOST = host
         self.USER = user
         self.PASSWORD = pws
@@ -43,7 +43,8 @@ class MySQL:
                 host=self.HOST,
                 user=self.USER,
                 password=self.PASSWORD,
-                database=self.DATABASE)
+                database=self.DATABASE,
+                port=1600)
             conecto = True
         except Exception as error:
             conecto = False
