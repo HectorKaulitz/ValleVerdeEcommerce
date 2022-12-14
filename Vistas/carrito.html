@@ -1,6 +1,6 @@
 {% from 'totalesCarrito.html' import totalesCarrito with context %}
 
-{% macro carrito() %}
+{% macro carrito(productosCarrito, totalCarrito, datosUsuario) %}
 
  <section class="h-100  seccion-carta-carrito">
 
@@ -12,47 +12,48 @@
         <div class="div-carta-carrito-items ">
             <div class="dropdown-divider"></div>
             {#@if(@productosCarrito.Count>0)#}
-            {%if(true)%}
+            {% if productosCarrito|length > 0 %}
                 {#@foreach (getsetProductoCarrito producto in productosCarrito)#}
-                {% if(true) %}
+                {% for producto in productosCarrito %}
                       <div style="" class="div-carta-carrito-item">
 
                           <div class="contenedor-1-item">
                               <div class="contenedor-imagen-item m-2">
-                                  <img src="../static/wwwroot/Resources/Productos/089826001415.png" class="item-imagen-producto"/>
+                                  <img src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{producto.codigoBarras}}.png" class="item-imagen-producto"/>
                               </div>
                           </div>
 
                           <div class="contenedor-2-item">
-                              <p class="item-informacion-parrafos"><strong>DURAZNO LATA 355 ML</strong></p>
+                              <p class="item-informacion-parrafos"><strong>{{producto.nombre}}</strong></p>
 
-                              <p class="item-informacion-parrafos">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+                              <p class="item-informacion-parrafos">{{producto.descripcion}}</p>
                           </div>
 
                           <div class="contenedor-3-item">
 
                               <div class="contenedor-item-precio">
                                     {#@if (@producto.precioOriginal != @producto.precioPromocion)#}
-                                      {% if(true) %}
-                                          <p class="item-informacion-parrafos leyenda-precio-total"><strike >$22.70</strike></p>
+                                      {% if (producto.precioOriginal != producto.precioPromocion) %}
+                                          <p class="item-informacion-parrafos leyenda-precio-total"><strike >${{producto.precioOriginal}}</strike></p>
                                       {% endif %}
-                                  <p class="item-informacion-parrafos leyenda-precio-total" ><strong > $17.99</strong></p>
+                                  <p class="item-informacion-parrafos leyenda-precio-total"><strong>${{producto.precioPromocion}}</strong></p>
                               </div>
 
                               <div class="contenedor-cantidad-input-botones">
                                   <div class="contenedor-restar">
-                                      <button class="botones-cantidad-izq " onclick="RestarCantidadC(@producto.indice,@producto.codigoBarras,@producto.idProducto_Carrito,@datosUsuario.IDUsuarioRegistrado)"> <i class="fas fa-minus"></i> </button >
+
+                                      <button class="botones-cantidad-izq " onclick="RestarCantidadC({{producto.indice}},{{producto.codigoBarras}},{{producto.idProducto_Carrito}},{{datosUsuario.IDUsuarioRegistrado}})"><i class="fas fa-minus"></i></button >
                                   </div>
                                   <div class="contenedor-input-cantidad">
-                                      <input id="cantidadCF @producto.indice" name="cantidadCF @producto.indice" class="input-cantidad" type="number" value=1 min="0" onkeyup="ValidarCantidadIngresadaC(@producto.indice,@producto.codigoBarras,event.keyCode,@producto.idProducto_Carrito,@datosUsuario.IDUsuarioRegistrado)"/>
+                                      <input id="cantidadCF {{producto.indice}}" name="cantidadCF {{producto.indice}}" class="input-cantidad" type="number" value="{{producto.cantidad}}" min="0" onkeyup="ValidarCantidadIngresadaC({{producto.indice}},{{producto.codigoBarras}},event.keyCode,{{producto.idProducto_Carrito}},{{datosUsuario.IDUsuarioRegistrado}})"/>
                                   </div>
                                   <div class="contenedor-sumar">
-                                      <button  class="botones-cantidad-der"> <i class="fas fa-plus" onclick="AumentarCantidadC(@producto.indice,@producto.codigoBarras,@producto.idProducto_Carrito,@datosUsuario.IDUsuarioRegistrado)"> </i></button>
+                                      <button  class="botones-cantidad-der"> <i class="fas fa-plus" onclick="AumentarCantidadC({{producto.indice}},{{producto.codigoBarras}},{{producto.idProducto_Carrito}},{{datosUsuario.IDUsuarioRegistrado}})"> </i></button>
                                   </div>
                               </div>
                                <div class="contenedor-item-precio">
                                     <h6  class="precio-total" style="">Total: </h6>
-                                    <p class="item-informacion-parrafos leyenda-precio-total" ><strong id="precioTC @producto.indice"> $17.99</strong></p>
+                                    <p class="item-informacion-parrafos leyenda-precio-total" ><strong id="precioTC {{producto.indice}}">${{producto.precioPromocion}}</strong></p>
                               </div>
 
 
@@ -60,13 +61,13 @@
                       <div class="contenedor-4-item">
 
                           <div class="contenedor-item-botones-eliminar">
-                              <i class="fa-solid fa-trash-can boton-eliminar-producto" onclick="EliminarProductoCarritoC(@producto.idProducto_Carrito)"></i>
+                              <i class="fa-solid fa-trash-can boton-eliminar-producto" onclick="EliminarProductoCarritoC({{producto.idProducto_Carrito}})"></i>
                           </div>
                       </div>
 
                   </div>
                   <div class="dropdown-divider"></div>
-              {%endif%}
+              {%endfor%}
         {%else%}
 
             <div class="jumbotron jumbotron-fluid">
@@ -80,19 +81,18 @@
 
         <div  class="div-carta-carrito-total" >
              <div id="totales" name="totales" >
-                {#@(await Component.InvokeAsync("TotalesCarrito",@obj.totalesCarrito))#}
-                 {{totalesCarrito(true)}}
+                {#@(await Component.InvokeAsync("TotalesCarrito",@obj.totalCarrito))#}
+                 {{totalesCarrito(totalCarrito)}}
             </div>
 
             {#if(@datosUsuario!=null)#}
-            {% if(true) %}
+            {% if datosUsuario is not none %}
 
                 <a name="btnVerCarritoCompleto" id="btnVerCarritoCompleto" type="button" class="btn btn-primary btn-carrito-completo" asp-controller="Venta" href="carritoUsuario">Ir a carrito</a>
             {%else%}
 
                 <a name="btnVerCarritoCompleto" id="btnVerCarritoCompleto" type="button" class="btn btn-primary btn-carrito-completo" asp-controller="Sesion" href="iniciarSesion">Ir a carrito</a>
             {% endif %}
-
         </div>
     </section>
 

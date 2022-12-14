@@ -81,7 +81,7 @@ function ObtenerExistenciaC(codigoB) {
     var exis = 0;
     $.ajax({
         async: false,
-        url: "/ValidacionVenta/ValidarExistenciaProducto/",
+        url: "/ValidarExistenciaProducto/",
         data:
         {
             codigoBarras: codigoB
@@ -111,7 +111,7 @@ function ObtenerExistenciaC(codigoB) {
 function EliminarProductoCarritoC(idProductoCar) {
     $.ajax({
         async: false,
-        url: "/ValidacionVenta/EliminarProductoDelCarrito/",
+        url: "/EliminarProductoDelCarrito/",
         data:
         {
             idProductoCarrito: idProductoCar
@@ -137,7 +137,7 @@ function EliminarProductoCarritoC(idProductoCar) {
 function ActualizarCantidadBDC(idProductoC, cant, tip, ind, idUs) {
     $.ajax({
         async: false,
-        url: "/ValidacionVenta/ActualizarCantidadProductoCarrito/",
+        url: "/ActualizarCantidadProductoCarrito/",
         data:
         {
             idProductoCarrito: idProductoC,
@@ -173,5 +173,6 @@ function ActualizarCantidadBDC(idProductoC, cant, tip, ind, idUs) {
 }
 
 function ActualizarTotales() {
-    $('#totales').load('/Venta/ObtenerTotalesCarrito?fuente=true');
+    // $('#totales').load('/Venta/ObtenerTotalesCarrito?fuente=true');
+    window.location.reload();
 }

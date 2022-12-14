@@ -23,9 +23,9 @@ class getsetProductoCarrito:
         self.idCarrito = idCarrito;
         self.idProducto_Carrito = idProducto_Carrito;
         self.cantidad = cantidad;
-        self.precioAgrego = obu.RedondeoDouble(precioAgrego + "");
-        self.importeProducto = obu.RedondeoDouble(importeProducto + "");
-        self.importeOriginalProducto = obu.RedondeoDouble(precioOriginal * cantidad + "");
+        self.precioAgrego = obu.RedondeoDouble(str(precioAgrego));
+        self.importeProducto = obu.RedondeoDouble(str(importeProducto));
+        self.importeOriginalProducto = obu.RedondeoDouble(str(precioOriginal * cantidad));
         self.urlsImagenes = urlsImagenes;
         self.existencia = existencia;
         self.codigoBarras = codigoBarras;
