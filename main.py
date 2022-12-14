@@ -66,7 +66,7 @@ def LlenarCabecera(mostrar: bool, busqueda: str ="", mostrarCarrito=True):
             intd = 4
         else:
             productosCarrito = mySql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
-            totalCarrito = mySql.ObtenerTotalesCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
+            totalCarrito = mySql.ObtenerTotalesCarritoUsuario(productosCarrito)
             totalesBadgeFlotantes = mySql.ObtenerTotalesParaBadgeFlotantes(datosUsuario.IDUsuarioRegistrado)
 
         categorias = mySql.ObtenerCategoria()
@@ -239,11 +239,11 @@ def carrito(Favoritos=False):
     objetoCarrito = None
     datosUsuario: getsetUsuarioRegistrado = Utileria().ObtenerUsuarioDeLaSesionActual(request)
     # cabecera-----------------------------
-
+    informacionCabecera = LlenarCabecera(True, "")
     # ----------------------------
     if datosUsuario is not None:
         productosCarritos = mysql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
-        totalCarrito = mysql.ObtenerTotalesCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
+        totalCarrito = mysql.ObtenerTotalesCarritoUsuario(productosCarritos)
         productosCarousel = mysql.ObtenerProductosCarouselPorCategoria(2)
         objCarritoUsuario = getsetObjetoCarritoUsuario(None, "", productosCarousel, productosCarritos, datosUsuario, totalCarrito,
                                                        False, None, mysql.ObtenerConfiguracionWeb())
@@ -252,7 +252,7 @@ def carrito(Favoritos=False):
         objetoCarrito = getsetObjetoCarrito(objCarritoUsuario, objFavoritos, Favoritos)
 
 
-    return render_template('carritoUsuario.html', objetoCarrito=objetoCarrito)
+    return render_template('carritoUsuario.html', objetoCarrito=objetoCarrito, informacionCabecera=informacionCabecera)
 
 
 @app.route('/favorito')
@@ -524,7 +524,7 @@ def ActualizarCantidadProductoCarrito():
     mySql = MySQL()
 
     res:getsetInformacionProductoCarrito = mySql.ActualizarCantidadProductoCarrito(idProductoCarrito, cantidad, tipo);
-    totalCarrito:getsetTotalesCarrito = mySql.ObtenerTotalesCarritoUsuario(idUsuario)
+    totalCarrito:getsetTotalesCarrito = mySql.ObtenerTotalesCarritoUsuario([])
 
 
     return jsonify({"resultado": json.dumps(res.__dict__), "total": json.dumps(totalCarrito.__dict__)})

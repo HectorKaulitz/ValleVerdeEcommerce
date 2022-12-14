@@ -436,27 +436,27 @@ class MySQL:
             print("ERROR ObtenerProductosCarritoUsuario: ", error)
         return res
 
-    def ObtenerTotalesCarritoUsuario(self, IDUsuarioRegistrado):
-        res = getsetTotalesCarrito()
-        if self.CONNECTION is None:
-            self.conectar_mysql()
-        try:
-            CURSOR = self.CONNECTION.cursor()
-            args = [IDUsuarioRegistrado]
-            CURSOR.callproc('ObtenerTotalesCarritoUsuario', args)
-
-            for row in CURSOR.stored_results():
-                items = row.fetchall()
-                for item in items:
-                    res = getsetTotalesCarrito(item[0], item[1], item[2], item[3], item[4], item[5], item[6])
-            CURSOR.close()
-            self.desconectar_mysql()
-
-        except mysql.connector.errors.ProgrammingError as e:
-            print("Error en el procedimiento ObtenerTotalesCarritoUsuario: ", e)
-        except Exception as error:
-            print("ERROR ObtenerTotalesCarritoUsuario: ", error)
-        return res
+    # def ObtenerTotalesCarritoUsuario(self, IDUsuarioRegistrado):
+    #     res = getsetTotalesCarrito()
+    #     if self.CONNECTION is None:
+    #         self.conectar_mysql()
+    #     try:
+    #         CURSOR = self.CONNECTION.cursor()
+    #         args = [IDUsuarioRegistrado]
+    #         CURSOR.callproc('ObtenerTotalesCarritoUsuario', args)
+    #
+    #         for row in CURSOR.stored_results():
+    #             items = row.fetchall()
+    #             for item in items:
+    #                 res = getsetTotalesCarrito(item[0], item[1], item[2], item[3], item[4], item[5], item[6])
+    #         CURSOR.close()
+    #         self.desconectar_mysql()
+    #
+    #     except mysql.connector.errors.ProgrammingError as e:
+    #         print("Error en el procedimiento ObtenerTotalesCarritoUsuario: ", e)
+    #     except Exception as error:
+    #         print("ERROR ObtenerTotalesCarritoUsuario: ", error)
+    #     return res
 
     def ObtenerTotalesParaBadgeFlotantes(self, IDUsuarioRegistrado):
         res = getsetBadgeFlotante(0, 0, 0)
@@ -763,29 +763,40 @@ class MySQL:
 
         return paginas
 
-    def ObtenerTotalesCarritoUsuario(self, idUsuario):
-        totalCarrito = getsetTotalesCarrito();
-        if self.CONNECTION is None:
-            self.conectar_mysql()
-        try:
-            CURSOR = self.CONNECTION.cursor()
-            args = [idUsuario]
-            CURSOR.callproc('ObtenerTotalesCarritoUsuario', args)
+    # def ObtenerTotalesCarritoUsuario(self, idUsuario):
+    #     totalCarrito = getsetTotalesCarrito();
+    #     if self.CONNECTION is None:
+    #         self.conectar_mysql()
+    #     try:
+    #         CURSOR = self.CONNECTION.cursor()
+    #         args = [idUsuario]
+    #         CURSOR.callproc('ObtenerTotalesCarritoUsuario', args)
+    #
+    #         for row in CURSOR.stored_results():
+    #             items = row.fetchall()
+    #             for item in items:
+    #                 totalCarrito = getsetTotalesCarrito(item[0], item[1], item[2], item[3], item[4], item[5], item[6])
+    #
+    #         self.CONNECTION.commit()
+    #         CURSOR.close()
+    #         self.desconectar_mysql()
+    #
+    #     except mysql.connector.errors.ProgrammingError as e:
+    #         print("Error en el procedimiento ", e)
+    #     except Exception as error:
+    #         print("ERROR: ", error)
+    #
+    #     return totalCarrito
 
-            for row in CURSOR.stored_results():
-                items = row.fetchall()
-                for item in items:
-                    totalCarrito = getsetTotalesCarrito(item[0], item[1], item[2], item[3], item[4], item[5], item[6])
-
-            self.CONNECTION.commit()
-            CURSOR.close()
-            self.desconectar_mysql()
-
-        except mysql.connector.errors.ProgrammingError as e:
-            print("Error en el procedimiento ", e)
-        except Exception as error:
-            print("ERROR: ", error)
-
+    def ObtenerTotalesCarritoUsuario(self, productos):
+        subtotal = float(0)
+        for producto in productos:
+            subtotal += float(producto.precioPromocion) * float(producto.cantidad)
+        envio = float(0)
+        comision = float(5)
+        descuento = float(0)
+        total = float(subtotal)
+        totalCarrito = getsetTotalesCarrito(subtotal, envio, comision, descuento, total, False, 1)
         return totalCarrito
 
     def ObtenerConfiguracionWeb(self):

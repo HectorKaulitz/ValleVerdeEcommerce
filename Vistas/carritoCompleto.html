@@ -1,31 +1,31 @@
 {% from 'totalesCarrito.html' import totalesCarrito with context %}
 
-{% macro carritoCompleto() %}
+{% macro carritoCompleto(objetoCarritoUsuario) %}
   <section class="h-100  seccion-carta-carritoC">
         <div class="subdiv-carta-carrito">
 
             <div class="div-carta-carrito-itemsC">
                {# @if (productosCarrito.Count > 0)#}
-                {% if(true) %}
+                {% if(objetoCarritoUsuario.productosCarritos|length) %}
                     {#@foreach (getsetProductoCarrito productoCarrito in productosCarrito)#}
-                    {% if(true)%}
+                    {% for productoCarrito in objetoCarritoUsuario.productosCarritos %}
                         <div style="" class="div-carta-carrito-itemC row">
                             <div class="contenedor-1-itemC col-md-2 col-4">
                                 <div class="contenedor-imagen-itemC">
-                                    <img src="../static/wwwroot/Resources/Productos/089826001415.png"  class="item-imagen-productoC"/>
+                                    <img src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{productoCarrito.codigoBarras}}.png"  class="item-imagen-productoC"/>
                                 </div>
                             </div>
 
                             <div class="contenedor-2-itemC col-md-7 col-8">
-                                <p class="item-informacion-parrafosC"><strong>DURAZNO LATA 355 ML</strong></p>
+                                <p class="item-informacion-parrafosC"><strong>{{productoCarrito.nombre}}</strong></p>
                                  <div class="contenedor-precion-subio-bajo">
                                     {#@if(productoCarrito.DiferenciaConPrecioActual>0)//el precio subio#}
-                                    {% if(true) %}
+                                    {% if productoCarrito.DiferenciaConPrecioActual > 0 %}
                                         <p class="parrafo-diferencia-precio text-danger">El precio subio $01.50 desde que se agrego </p>
                                     {% endif %}
                                     {#@if(productoCarrito.DiferenciaConPrecioActual<0)//el precio bajo#}
-                                    {% if(true==false)%}
-                                       <p class="parrafo-diferencia-precio text-success">El precio bajo @productoCarrito.DiferenciaConPrecioActual.ToString("C") desde que se agrego </p>
+                                    {% if productoCarrito.DiferenciaConPrecioActual<0 %}
+                                       <p class="parrafo-diferencia-precio text-success">El precio bajo ${{productoCarrito.DiferenciaConPrecioActual}}desde que se agrego </p>
                                     {% endif %}
                                 </div>
                                 <p class="item-informacion-parrafosC">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley</p>
@@ -35,37 +35,37 @@
 
                                 <div class="contenedor-item-precioC">
                                 {#@if (@productoCarrito.precioOriginal != @productoCarrito.precioPromocion)#}
-                                {% if(true) %}
-                                    <p class="item-informacion-parrafosC leyenda-precio-totalC"><strike >$22.70</strike></p>
+                                {% if productoCarrito.precioOriginal != productoCarrito.precioPromocion %}
+                                    <p class="item-informacion-parrafosC leyenda-precio-totalC"><strike >${{productoCarrito.precioOriginal}}</strike></p>
                                 {% endif %}
-                                <p class="item-informacion-parrafosC leyenda-precio-totalC"><strong >$19.49</strong></p>
+                                <p class="item-informacion-parrafosC leyenda-precio-totalC"><strong >${{productoCarrito.precioPromocion}}</strong></p>
                                 </div>
 
                                 <div class="contenedor-cantidad-input-botonesC">
                                     <div class="contenedor-restarC">
-                                        <button class="botones-cantidad-izqC" onclick="RestarCantidad(@productoCarrito.indice,@productoCarrito.codigoBarras,@productoCarrito.idProducto_Carrito,@datosUsuario.IDUsuarioRegistrado)"> <i class="fas fa-minus"></i> </button >
+                                        <button class="botones-cantidad-izqC" onclick="RestarCantidad({{productoCarrito.indice}},{{productoCarrito.codigoBarras}},{{productoCarrito.idProducto_Carrito}},{{objetoCarritoUsuario.datosUsuario.IDUsuarioRegistrado}})"> <i class="fas fa-minus"></i> </button >
                                     </div>
                                     <div class="contenedor-input-cantidadC">
-                                        <input id="cantidadC @productoCarrito.indice" name="cantidadC @productoCarrito.indice" class="input-cantidadC" type="number" value="1" min="0" onkeyup="ValidarCantidadIngresada(@productoCarrito.indice,@productoCarrito.codigoBarras,event.keyCode,@productoCarrito.idProducto_Carrito,@datosUsuario.IDUsuarioRegistrado)"/>
+                                        <input id="cantidadC {{productoCarrito.indice}}" name="cantidadC {{productoCarrito.indice}}" class="input-cantidadC" type="number" value="{{productoCarrito.cantidad}}" min="0" onkeyup="ValidarCantidadIngresada({{productoCarrito.indice}},{{productoCarrito.codigoBarras}},event.keyCode,{{productoCarrito.idProducto_Carrito}},{{objetoCarritoUsuario.datosUsuario.IDUsuarioRegistrado}})"/>
                                     </div>
 
                                     <div class="contenedor-sumarC">
-                                        <button   class="botones-cantidad-derC" onclick="AumentarCantidad(@productoCarrito.indice,@productoCarrito.codigoBarras,@productoCarrito.idProducto_Carrito,@datosUsuario.IDUsuarioRegistrado)"> <i class="fas fa-plus"> </i></button>
+                                        <button   class="botones-cantidad-derC" onclick="AumentarCantidad({{productoCarrito.indice}},{{productoCarrito.codigoBarras}},{{productoCarrito.idProducto_Carrito}},{{objetoCarritoUsuario.datosUsuario.IDUsuarioRegistrado}})"> <i class="fas fa-plus"> </i></button>
                                     </div>
 
                                 </div>
 
                                 <div class="contenedor-item-precioC">
                                     <h6  class="precio-totalc" style="">Total: </h6>
-                                    <p class="item-informacion-parrafosC leyenda-precio-totalC"><strong id="precioT @productoCarrito.indice">$19.49</strong></p>
+                                    <p class="item-informacion-parrafosC leyenda-precio-totalC"><strong id="precioT {{productoCarrito.indice}}">${{productoCarrito.precioPromocion|float * productoCarrito.cantidad|float}}</strong></p>
                                 </div>
-                                <div class="alert alert-danger div-alert-input" role="alert" id="divAlert @productoCarrito.indice" name="divAlert @productoCarrito.indice" >
+                                <div class="alert alert-danger div-alert-input" role="alert" id="divAlert {{productoCarrito.indice}}" name="divAlert {{productoCarrito.indice}}" >
                                     {#@if (@productoCarrito.existencia < 0)#}
-                                    {% if(true==false) %}
-                                        <label class="label-alert-input" id="labelAlert @productoCarrito.indice" name="labelAlert @productoCarrito.indice">Existencia: 0</label>
+                                    {% if productoCarrito.existencia < 0 %}
+                                        <label class="label-alert-input" id="labelAlert {{productoCarrito.indice}}" name="labelAlert {{productoCarrito.indice}}">Existencia: 0</label>
 
                                     {% else %}
-                                       <label class="label-alert-input" id="labelAlert @productoCarrito.indice" name="labelAlert @productoCarrito.indice">Existencia: 15</label>
+                                       <label class="label-alert-input" id="labelAlert {{productoCarrito.indice}}" name="labelAlert {{productoCarrito.indice}}">Existencia: {{productoCarrito.existencia}}</label>
 
                                     {% endif %}
                                 </div>
@@ -74,13 +74,13 @@
                             <div class="contenedor-4-itemC col-md-1 col-12">
 
                                 <div class="contenedor-item-boton-eliminarC">
-                                    <i class="fa-solid fa-trash-can icon-eliminarC" onclick="EliminarProductoCarrito(@productoCarrito.idProducto_Carrito)"></i>
+                                    <i class="fa-solid fa-trash-can icon-eliminarC" onclick="EliminarProductoCarrito({{productoCarrito.idProducto_Carrito}})"></i>
                                 </div>
                             </div>
 
                         </div>
                         <div class="dropdown-divider"></div>
-                    {% endif %}
+                    {% endfor %}
 
                 {%else%}
 
@@ -95,19 +95,19 @@
 
             <div  class="div-carta-carrito-totalC">
                 {#@if (productosCarrito.Count > 0)#}
-              {% if(true) %}
+              {% if objetoCarritoUsuario.productosCarritos|length %}
                   <div id="totalesC" name="totalesC" >
                     {#@(await Component.InvokeAsync("TotalesCarrito",@objCarritoUsuario.totalesCarrito))#}
-                    {{totalesCarrito(false)}}
+                    {{totalesCarrito(objetoCarritoUsuario.totalesCarrito)}}
 
                   </div>
 
 
                   <div class="div-btn-continuar">
                       {#@if(configuracionWeb!=null)#}
-                      {% if(true) %}
+                      {% if(objetoCarritoUsuario.configuracionWeb is not none) %}
                           {#if(@configuracionWeb.ventasHabilitadas)#}
-                          {%if(true)%}
+                          {%if(objetoCarritoUsuario.configuracionWeb.ventasHabilitadas)%}
                           <a class="btn btn-primary btn-sm me-1 mb-2 btn-continuar-compra" asp-controller="Venta" href="procesoCompra">
                                   Continuar a compra
                           </a>
