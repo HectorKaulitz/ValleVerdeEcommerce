@@ -114,11 +114,11 @@ def productos():
     idDepartamento = request.args.get('idDepartamento','-1')
     idSubLinea = request.args.get('idSubLinea','-1')
 
-    productosPagEnc = int(oben.Decrypt(productosPag))
+    productosPagEnc = productosPag
     if productosPagEnc == -2:
         productosPagEnc = 10
 
-    tipoEnc = int(oben.Decrypt(tipo))
+    tipoEnc = tipo
     if tipoEnc == -2:
         tipoEnc = -1
 
