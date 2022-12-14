@@ -1,0 +1,85 @@
+{% from 'totalesCarrito.html' import totalesCarrito with context %}
+{% set totalSurtido = totalesVenta.comision + totalesVenta.envio%}
+{# @foreach(getsetProductoVenta productoVenta in productosVentas) #}
+{% for productoVenta in detalles.productosVenta %}
+
+    <div style="" class="row">
+       {# @*INFORMACION DEL PRODUCTO*@ #}
+        <div class="col-12 row">
+            <a class="col-md-9 col-12 row" asp-controller="Inicio" href="/producto?idProducto={{productoVenta.idProductoEncriptado}}">
+               {# @*IMAGEN ITEM PRODUCTO*@ #}
+                <div class="col-md-3 col-4 d-flex flex-wrap align-items-center mx-auto d-block imagen-producto-venta-historial">
+                    <img src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{productoVenta.idProducto}}.png"  onerror="this.src='http://bodegavalleverde.ddns.net/Imagenes/icono.png';"  class="img-fluid"/>
+                </div>
+                {#@*INFORMACION*@ #}
+                <div class="col-md-9 col-8">
+                    <p class="col"><strong>{{productoVenta.nombre}}</strong></p>
+                    <p class="col descripcion-producto">{{productoVenta.descripcion}}</p>
+                </div>
+            </a>
+            {#@*CANTIDADES PEDIDAS*@ #}
+            <div class="col-md-3 col-12 row">
+                <div class="row">
+                    {% if (detalles.estatusVenta >= 3 and  productoVenta.cantidadPedida != productoVenta.cantidadSurtida)%}
+
+                        <h6 class="col-12 mb-3">Piezas pedidas:</h6>
+                    {% endif %}
+                    <div class="col-12 d-flex justify-content-between align-items-center">
+                        <p class="">{{productoVenta.cantidadPedida}}</p>
+                        <p>X</p>
+                        <div class="position-relative">
+                            {% if (productoVenta.precioAlMomentoVenta != productoVenta.precioCobrado)%}
+
+                                <p class="position-absolute precio-descuento"><strike> {{productoVenta.precioAlMomentoVenta}}</strike></p>
+
+                            {%endif%}
+                            <p class=""> {{productoVenta.precioCobrado}}</p>
+                        </div>
+                        <p>=</p>
+                        <p class=""><strong>{% set importe = (productoVenta.cantidadPedida * productoVenta.precioCobrado)%} {{importe}}</strong></p>
+                    </div>
+                </div>
+                {%if (detalles.estatusVenta >= 3 and  productoVenta.cantidadPedida != productoVenta.cantidadSurtida)%}
+
+
+                    <div class="row">
+                        <h6 class="col-12 mb-3">Piezas surtidas:</h6>
+                        <div class="col-12 d-flex justify-content-between align-items-center">
+                            <p class="">{{productoVenta.cantidadSurtida}}</p>
+                            <p>X</p>
+                            <div class="position-relative">
+                                {%if (productoVenta.precioAlMomentoVenta != productoVenta.precioCobrado)%}
+
+                                    <p class="position-absolute precio-descuento"><strike> {{productoVenta.precioAlMomentoVenta}}</strike></p>
+
+                                {%endif%}
+                                <p class=""> {{productoVenta.precioCobrado}}</p>
+                            </div>
+                            <p>=</p>
+                            <p class=""><strong>{% set importe = (productoVenta.cantidadSurtida * productoVenta.precioCobrado)%} {{importe}}</strong></p>
+                        </div>
+                    </div>
+                {%endif%}
+                {% set totalSurtido = totalSurtido + (productoVenta.cantidadSurtida * productoVenta.precioCobrado)%}
+            </div>
+        </div>
+
+    </div>
+    <div class="dropdown-divider"></div>
+{% endfor %}
+
+{# @*TABLAS TOLALES*@ #}
+<div class="col-12 row">
+   {# @*TOTAL*@ #}
+    <div  class="div-totales-tab">
+        <div id="totalesC" name="totalesC" >
+
+                {# set totalesVenta.totalSurtido = totalSurtido #}
+                {# if(detalles.estatusVenta>=3) #}
+                {#    set totalesVenta.mostrarTotalSurtido = true #}
+                {# endif #}
+
+            {{totalesCarrito(totalesVenta)}}
+        </div>
+    </div>
+</div>

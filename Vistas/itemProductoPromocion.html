@@ -2,25 +2,15 @@
 
 {% macro itemProductoPromocion(producto) %}
 
-{% set nombreProducto = 0 %}
-{% set descripcion = 1 %}
-{% set precio = 2 %}
-{% set precioPromocion = 3 %}
-{% set tieneEnvio = 4 %}
-{% set costoEnvio = 5 %}
-{% set mostrarInteraccion = 6 %}
-{% set estaEnProductoFavorito = 7 %}
-{% set urlImagen = 8 %}
-{% set idProducto = 9 %}
 
 <div class="row p-2 bg-white border rounded contenedor-producto-item">
-    <a class="enlace-producto col-md-9" asp-controller="Inicio" href="producto?idProducto='{{producto[idProducto]}}'">
-        <div class="col-md-3 col-4 mt-1 div-imagen-producto d-flex flex-wrap align-items-center"><img class="img-fluid mx-auto d-block rounded product-image" src="{{producto[urlImagen]}}"></div>
+    <a class="enlace-producto col-md-9" asp-controller="Inicio" href="producto?idProducto={{producto.idProducto}}">
+        <div class="col-md-3 col-4 mt-1 div-imagen-producto d-flex flex-wrap align-items-center"><img class="img-fluid mx-auto d-block rounded product-image" src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{producto.codigoBarras}}.png"  onerror="this.src='http://bodegavalleverde.ddns.net/Imagenes/icono.png';"></div>
 
 
         <div class="col-md-9 col mt-1 div-informacion-prod">
             <div class="div-nombre-producto">
-                    <h5 class="texto-h5">{{producto[nombreProducto]}}</h5>
+                    <h5 class="texto-h5">{{producto.nombreProducto}}</h5>
             </div>
 
             <div class="d-flex flex-row div-principal-estrellas">
@@ -42,29 +32,29 @@
             </div>
 
             <div class="div-descripcion-producto">
-                <p class="text-justify mb-0 descripcion-prod">{{producto[descripcion]}}<br><br></p>
+                <p class="text-justify mb-0 descripcion-prod">{{producto.descripcion}}<br><br></p>
             </div>
         </div>
     </a>
     <div class="align-items-center align-content-center col-md-3 border-left mt-1 div-informacion-compra">
         <div class="d-flex flex-row align-items-center div-precios-prod">
-            {% if(producto[precio]==producto[precioPromocion]) %}
+            {% if(producto.precio==producto.PrecioPromocion) %}
 
 
-                {% if(producto[precio]<=0) %}
+                {% if(producto.precio<=0) %}
 
                       <h4 class="mr-1 txt-precio">Sin precio</h4>
 
                 {% else %}
 
-                    <h4 class="mr-1 txt-precio">Precio: {{"${:,.2f}".format(producto[precio])}} </h4>
+                    <h4 class="mr-1 txt-precio">Precio: {{"${:,.2f}".format(producto.precio)}} </h4>
                 {% endif %}
 
             {% else %}
 
                  <div class="position-relative">
-                      <span class="strike-text precio-descuento">{{"${:,.2f}".format(producto[precio])}}</span>
-                    <h4 class="mr-1 txt-precio">{{"${:,.2f}".format(producto[precioPromocion])}}</h4>
+                      <span class="strike-text precio-descuento">{{"${:,.2f}".format(producto.precio)}}</span>
+                    <h4 class="mr-1 txt-precio">{{"${:,.2f}".format(producto.PrecioPromocion)}}</h4>
 
                  </div>
             {% endif %}
@@ -73,7 +63,7 @@
             {% if (producto[tieneEnvio]) %}
 
                 {% if (producto[costoEnvio] > 0) %}
-                    <h6 class="text-success txt-envio text-center">Costo envio: {{"${:,.2f}".format(producto[costoEnvio])}}</h6>
+                    <h6 class="text-success txt-envio text-center">Costo envio: {{"${:,.2f}".format(producto.costoEnvio)}}</h6>
                 {% else %}
                     <h6 class="text-success txt-envio text-center">Envio gratis</h6>
                  {% endif %}
@@ -88,11 +78,11 @@
             {# if(@usuario!=null) #}
             {% if(true) %}
 
-                {% if(producto[mostrarInteraccion]) %}
+                {% if(producto.mostrarInteraccion) %}
 
                 <button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito('@producto.IDProducto','@usuario.IDUsuarioRegistrado', '@producto.imagenes[0]','@producto.nombreProducto')"><i class="fa-solid fa-plus"></i> Añadir al carrito</button>
                 {% endif %}
-                {% if(producto[estaEnProductoFavorito]) %}
+                {% if(producto.estaEnProductoFavorito) %}
 
                     <button class="btn btn-outline-primary btn-sm mt-2 " type="button" onclick="AgregarFavoritos('@producto.IDProducto','@usuario.IDUsuarioRegistrado','@producto.imagenes[0]','@producto.nombreProducto')"><i id="'@cad@producto.IDProducto'" name="'@cad@producto.IDProducto'" class="fa-solid fa-heart estaFavorito"></i> Favoritos</button>
                 {% else %}
@@ -100,11 +90,11 @@
 
                 {% endif %}
             {% else %}
-                {% if (producto[mostrarInteraccion]) %}
+                {% if (producto.mostrarInteraccion) %}
 
                     <button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito('@producto.IDProducto',null, '@producto.imagenes[0]','@producto.nombreProducto')"><i class="fa-solid fa-plus" ></i> Añadir al carrito</button>
                 {% endif %}
-                {% if (producto[estaEnProductoFavorito]) %}
+                {% if (producto.estaEnProductoFavorito) %}
 
                     <button class="btn btn-outline-primary btn-sm mt-2 " type="button" onclick="AgregarFavoritos('@producto.IDProducto',null, '@producto.imagenes[0]','@producto.nombreProducto')"><i id="'@cad@producto.IDProducto'" name="'@cad@producto.IDProducto'" class="fa-solid fa-heart estaFavorito"></i> Favoritos</button>
                 {% else %}

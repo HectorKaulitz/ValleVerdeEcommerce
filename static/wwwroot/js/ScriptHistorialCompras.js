@@ -9,7 +9,7 @@ function ObtenerProductosVenta(idVenta, idContenedor, idBoton) {
     var boton = document.getElementById(idBoton)
 
     if (contenedorCargando != null) {
-        $('#' + idContenedor).load('/Venta/ProductosVentaHistorial?idVentaEncriptado=' + idVenta)
+        $('#' + idContenedor).load('/productosVentaHistorial?idVentaEncriptado=' + idVenta)
     }
   
     //Ver si esta expandido o no
@@ -23,7 +23,7 @@ function ObtenerProductosVenta(idVenta, idContenedor, idBoton) {
 
 function CancelarVenta(idVent) {
     $.ajax({
-        url: "/ValidacionVenta/CancelarVentaUsuario/",
+        url: "/cancelarVentaUsuario/",
         data:
         {
             idVenta:idVent
