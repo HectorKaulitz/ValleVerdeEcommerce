@@ -1,7 +1,6 @@
-import json
-
 from flask import Flask, render_template, Blueprint, request, jsonify
 from flask_cors import CORS
+from werkzeug.urls import url_encode
 
 from MySqlConexion import MySQL
 from Programacion.Funcionalidad.Encriptacion import Encriptacion
@@ -48,7 +47,7 @@ def create_app():
 app = create_app()
 
 
-def LlenarCabecera(mostrar: bool, busqueda: str, mostrarCarrito=True):
+def LlenarCabecera(mostrar: bool, busqueda: str ="", mostrarCarrito=True):
     informacion = None
     cookieSesion = None
     datosUsuario = None
@@ -108,7 +107,7 @@ def productos():
     mySql = MySQL()
 
     busqueda: str = request.args.get('busqueda','')
-    numeroPagina = request.args.get('numeroPagina',0)
+    numeroPagina:int = int(request.args.get('numeroPagina',0))
     productosPag = request.args.get('productosPag',10)
     tipo = request.args.get('tipo','-1')
     idMarca = request.args.get('idMarca','-1')
@@ -142,7 +141,9 @@ def productos():
         tipoEnc, productosPagEnc,numeroCuadrosPagina), "productos", busqueda, datosUsuario, "Escritorio")
 
     informacionCabecera = LlenarCabecera(True, busqueda)
-    return render_template('productos.html',informacionCabecera=informacionCabecera, informacion=informacion)
+    patch = request.endpoint.split("/")
+
+    return render_template('productos.html',informacionCabecera=informacionCabecera, informacion=informacion,patch=patch,numeroPagina=numeroPagina)
 
 
 @app.route('/historialCompras')
@@ -265,9 +266,12 @@ def procesoCompra():
 @app.route('/ayuda')
 def ayuda():
     mysql = MySQL()
+    # cabecera-----------------------------
+    informacionCabecera = LlenarCabecera(True)
+    # ----------------------------
     temas = mysql.ObtenerTemasAyuda();
     objetoAyuda = getsetObjetoAyuda(None, "", temas);
-    return render_template('ayuda.html', temas)
+    return render_template('ayuda.html', objetoAyuda=objetoAyuda, informacionCabecera=informacionCabecera)
 
 
 @app.route('/perfilUsuario')
@@ -486,6 +490,15 @@ def obtenerSugerenciasBusqueda():
         sugerencias = mySql.ObtenerSugerenciasBusqueda(busqueda);
 
     return jsonify(sugerencias)
+
+@app.template_global()
+def modify_query(**new_values):
+    args = request.args.copy()
+
+    for key, value in new_values.items():
+        args[key] = value
+
+    return '{}?{}'.format(request.path, url_encode(args))
 
 
 @app.route('/AgregarProductoCarrito/', methods=['POST', 'GET'])

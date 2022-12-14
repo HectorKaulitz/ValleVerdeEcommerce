@@ -4,7 +4,7 @@
 
     <li>
         <span class="div-nombre-departamento">
-            <a  href="productos?tipo=-1&numeroPagina=$1&productosPag=10&idDepartamento={{dep.idDepartamento}}" class="txt-nombre-departamento nav-link" >
+            <a  href="productos?tipo=-1&numeroPagina=1&productosPag=10&idDepartamento={{dep.idDepartamento}}" class="txt-nombre-departamento nav-link" >
                     {{dep.nombreDepartamento}}
             </a>
 
@@ -40,7 +40,7 @@
                                 {% endif %}
 
                                 <div class="div-texto">
-                                    <a class="letra-opciones-item nav-link" asp-area="" href="Productos?tipo={{linea.tipoEncritado}}&&numeroPagina=$1&&productosPag={{sNum}}&&idDepartamento={{dep.idDepartamento}}&&idLinea={{linea.idLinea}}">
+                                    <a class="letra-opciones-item nav-link" asp-area="" href="productos?tipo={{linea.tipoEncritado}}&&numeroPagina=1&&productosPag={{sNum}}&&idDepartamento={{dep.idDepartamento}}&&idLinea={{linea.idLinea}}">
                                         <i class="fa-solid fa-circle icon-punto"></i>
                                         {{linea.nombre}}
                                     </a>
@@ -78,7 +78,7 @@
                                 {% endif %}
 
                                 <div class="div-texto">
-                                    <a class="letra-opciones-item nav-link" href="Productos?tipo={{depa.tipoEncritado}}&&numeroPagina=$1&&productosPag={{sNum}}&&idDepartamento={{dep.idDepartamento}}&&idMarca={{depa.idMarca}}">
+                                    <a class="letra-opciones-item nav-link" href="productos?tipo={{depa.tipoEncritado}}&&numeroPagina=1&&productosPag={{sNum}}&&idDepartamento={{dep.idDepartamento}}&&idMarca={{depa.idMarca}}">
                                         <i class="fa-solid fa-circle icon-punto"></i>
                                         {{depa.nombre}}
                                     </a>
