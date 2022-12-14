@@ -742,8 +742,8 @@ class MySQL:
             self.conectar_mysql()
         try:
             CURSOR = self.CONNECTION.cursor()
-            args = [productosPagina, idMarca, idLinea, idFabricante, idDepartamento, busqueda, idSubLinea]
-            CURSOR.callproc('ObtenerProductos', args)
+            args = [productosPagina, idMarca, idLinea,idSubLinea, idFabricante, idDepartamento, busqueda]
+            CURSOR.callproc('ObtenerNumeroPaginasProductos', args)
 
             for row in CURSOR.stored_results():
                 items = row.fetchall()
