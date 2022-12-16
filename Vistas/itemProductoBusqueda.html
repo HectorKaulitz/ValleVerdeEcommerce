@@ -1,5 +1,5 @@
 
-{% macro itemProductoBusqueda(index, nombreProducto, descripcion,precioOriginal,precioDescuento, idProducto, codigoBarras) %}
+{% macro itemProductoBusqueda(index, nombreProducto, descripcion,precioOriginal,precioDescuento, idProducto, codigoBarras,usuario) %}
 
 
 <div class="row p-2 bg-white border rounded contenedor-producto-item">
@@ -84,7 +84,7 @@
                     {# if(producto.mostrarInteraccion) #}
                     {% if(mostrarInteraccion) %}
 
-                        <button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito('@producto.idProducto','@usuario.IDUsuarioRegistrado', '@producto.urlsImagenes[0]','@producto.nombreProducto')"><i  class="fa-solid fa-plus"></i> Añadir al carrito</button>
+                        <button class="btn btn-primary btn-sm agregar-carrito" type="button" onclick="AgregarAcarrito('{{idProducto}}','{{usuario.IDUsuarioRegistrado}}', 'http://bodegavalleverde.ddns.net/Imagenes/Productos/{{codigoBarras}}.png','{{nombreProducto}}')"><i  class="fa-solid fa-plus"></i> Añadir al carrito</button>
                     {% endif %}
                     {# @if(@producto.estaEnProductoFavorito) #}
                     {% if(estaEnProductoFavorito) %}

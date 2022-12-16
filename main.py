@@ -203,7 +203,10 @@ def iniciarSesion():
 
 @app.route('/registrar')
 def registrar():
-    return render_template('registrar.html')
+    # cabecera-----------------------------
+    informacionCabecera = LlenarCabecera(False, "")
+    # ----------------------------
+    return render_template('registrar.html',informacionCabecera=informacionCabecera)
 
 
 @app.route('/producto', methods=['POST', 'GET'])
@@ -260,16 +263,26 @@ def carrito(Favoritos=False):
         objetoCarrito = getsetObjetoCarrito(objCarritoUsuario, objFavoritos, Favoritos)
 
 
-    return render_template('carritoUsuario.html', objetoCarrito=objetoCarrito, informacionCabecera=informacionCabecera)
+    return render_template('carritoUsuario.html', objetoCarrito=objetoCarrito, informacionCabecera=informacionCabecera, EsParaFavoritos=False)
 
 
 @app.route('/favorito')
 def favorito():
+    mysql = MySQL();
     # cabecera-----------------------------
     informacionCabecera = LlenarCabecera(True, "")
     datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
+    if datosUsuario is not None:
+        productosCarritos = mysql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
+        totalCarrito = mysql.ObtenerTotalesCarritoUsuario(productosCarritos)
+        productosCarousel = mysql.ObtenerProductosCarouselPorCategoria(2)
+        objCarritoUsuario = getsetObjetoCarritoUsuario(None, "", productosCarousel, productosCarritos, datosUsuario, totalCarrito,
+                                                       False, None, mysql.ObtenerConfiguracionWeb())
+        productosFavoritos = mysql.ObtenerProductosFavoritos(datosUsuario.IDUsuarioRegistrado)
+        objFavoritos = getsetObjetoProductosFavoritos(productosFavoritos, datosUsuario)
+        objetoCarrito = getsetObjetoCarrito(objCarritoUsuario, objFavoritos, True)
     # ----------------------------
-    return render_template('carritoUsuario.html', EsParaFavoritos=True, informacionCabecera=informacionCabecera)
+    return render_template('carritoUsuario.html', EsParaFavoritos=True, informacionCabecera=informacionCabecera, objetoCarrito=objetoCarrito)
 
 
 @app.route('/procesoCompra')

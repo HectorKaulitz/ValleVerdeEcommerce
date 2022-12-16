@@ -10,7 +10,7 @@
             {# @foreach (getsetProducto producto in objetoProductos.productosResultado) #}
             {% for producto in productosResultado %}
 
-                {{itemProductoBusqueda(loop.index, producto.nombreProducto, producto.descripcion,producto.precioOriginal,producto.precioDescuento,producto.idProducto, producto.codigoBarras)}}
+                {{itemProductoBusqueda(loop.index, producto.nombreProducto, producto.descripcion,producto.precioOriginal,producto.precioDescuento,producto.idProducto, producto.codigoBarras,informacion.usuario)}}
 
            {% endfor %}
 
