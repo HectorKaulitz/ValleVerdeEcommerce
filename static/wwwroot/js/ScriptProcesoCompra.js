@@ -5,7 +5,7 @@
    // alert("" + idVenta + "-" + " " + valor)
     $.ajax({
         async: false,
-        url: "/ValidacionVenta/ActualizarTipoEnvio/",
+        url: "/ActualizarTipoEnvio/",
         data:
         {
             valor: valorR
@@ -36,7 +36,7 @@ function GenerarPagoCompra(idUsuarioEncriptado) {
 
     $.ajax({
         async: false,
-        url: "/ValidacionVenta/CrearVenta/",
+        url: "/CrearVenta/",
         data:
         {
             idUsuarioEncriptado: idUsuarioEncriptado
@@ -71,7 +71,7 @@ function ActualizarTipoPago(idTipoP)
     
     $.ajax({
         async: false,
-        url: "/ValidacionVenta/ActualizarTipoPagoCarrito/",
+        url: "/ActualizarTipoPagoCarrito/",
         data:
         {
             idTipoPago: idTipoP

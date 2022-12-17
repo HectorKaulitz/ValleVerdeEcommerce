@@ -30,7 +30,7 @@
 
 </head>
 <header>
-    {{cabecera('',true,true,false)}}
+    {{cabecera(informacionCabecera)}}
 </header>
 <body>
 
@@ -51,10 +51,10 @@
                         <div class="div-radio-entrega">
                             {#@if(paqueteriaHabilitada)#}
 
-                            {% if(true)%}
+                            {% if(objetoVenta.paqueteriaHabilitada)%}
                                 <div class="form-check margen-derecha-5">
                                     {#@if(Model.envioADomicilioPorDefecto)#}
-                                    {% if(true)%}
+                                    {% if(objetoVenta.envioADomicilioPorDefecto)%}
                                         <input class="form-check-input" type="radio" name="radioP" id="radioPaqueteria" checked onclick="CambiarTipoEnvio(true)">
 
                                     {% else %}
@@ -68,7 +68,7 @@
 
                             <div class="form-check margen-derecha-5">
                                 {#@if(!Model.envioADomicilioPorDefecto)#}
-                                {% if(true==false)%}
+                                {% if(objetoVenta.envioADomicilioPorDefecto==false)%}
                                     <input class="form-check-input" type="radio" name="radioP" id="radioTienda" checked onclick="CambiarTipoEnvio(false)">
 
                                 {% else %}
@@ -82,7 +82,7 @@
                         </div>
 
                         {#@if(!Model.envioADomicilioPorDefecto)#}
-                        {% if(true==false)%}
+                        {% if(objetoVenta.envioADomicilioPorDefecto==false)%}
                             <div class="contenedor-informacion-direccion-envio">
                                 <div class="contenedor-icono-envio">
                                     <span class="span-icono">
@@ -97,11 +97,7 @@
                                         <h6 class="textos">Madero #870,Cotija,Michoacan,México.</h6>
                                     </div>
                                 </div>
-                                @*<div class="contenedor-elegir-opcion-envio">
-                                    <button type="button" class="btn btn-primary btn-sm me-1 mb-2 btn-elejir-opcion" data-mdb-toggle="tooltip" title="" data-mdb-original-title="Proceder a compra" onclick="">
-                                                Elegir otra opcion
-                                        </button>
-                                </div>*@
+
                             </div>
 
                         {%else%}
@@ -147,24 +143,24 @@
                                 <div class="div-carta-itemsPC">
                                     <div class="dropdown-divider"></div>
                                     {#@if (productosCarrito.Count > 0)#}
-                                    {% if(true) %}
+                                    {% if(objetoVenta.productosCarrito | length>0) %}
                                         {#@foreach (getsetProductoCarrito productoCarrito in productosCarrito)#}
-                                        {% if(true) %}
+                                        {% for productoCarrito in  objetoVenta.productosCarrito%}
                                             <div style="" class="div-carta-proceso-compra-itemPC">
 
                                                 <div class="contenedor-imagen-itemPC  d-flex flex-wrap align-items-center">
-                                                    <img src="../static/wwwroot/Resources/Productos/089826001415.png"  class="item-imagen-productoPC img-fluid mx-auto d-block"/>
+                                                    <img src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{productoCarrito.codigoBarras}}.png" onerror="this.src='http://bodegavalleverde.ddns.net/Imagenes/icono.png';"  class="item-imagen-productoPC img-fluid mx-auto d-block"/>
                                                 </div>
 
                                                 <div class="contenedor-2-itemPC">
-                                                    <p class="item-informacion-parrafosPC"><strong> DURAZNO LATA 355 ML </strong></p>
-                                                    <p class="item-informacion-parrafosPC">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since </p>
+                                                    <p class="item-informacion-parrafosPC"><strong> {{productoCarrito.nombre}} </strong></p>
+                                                    <p class="item-informacion-parrafosPC">{{productoCarrito.descripcion}} </p>
                                                 </div>
 
 
                                             </div>
                                             <div class="dropdown-divider"></div>
-                                        {% endif %}
+                                        {% endfor %}
 
                                     {% else %}
                                         <div class="jumbotron jumbotron-fluid">
@@ -194,7 +190,7 @@
 
                     <div  class="div-carta-carrito-totalC">
                        {# @if (@productosCarrito.Count > 0) #}
-                        {% if(true) %}
+                        {% if(objetoVenta.productosCarrito | length>0) %}
 
                             <table class="table blockquote text-center">
                                 <tr>
@@ -204,23 +200,23 @@
                                     <th class="texto-tablaPC">Total en venta</th>
                                 </tr>
                                {# @foreach (getsetProductoCarrito productoCarrito in productosCarrito) #}
-                                {% if(true) %}
+                                {% for productoCarrito in objetoVenta.productosCarrito %}
                                     <tr>
-                                        <td class="texto-tablaPCP">DURAZNO LATA 355 ML</td>
+                                        <td class="texto-tablaPCP">{{productoCarrito.nombre}}</td>
                                         <td class="texto-tablaPCP">1</td>
 
                                        {# @if (productoCarrito.precioOriginal != productoCarrito.precioPromocion)#}
-                                        {% if(true==false)%}
+                                        {% if(productoCarrito.precioOriginal != productoCarrito.precioPromocion)%}
                                             <td class="texto-tablaPCP">
                                                 <div class="position-relative">
-                                                    <p><strike class="strike-text precio-descuento">@productoCarrito.precioOriginal.ToString("C")</strike></p>
-                                                    @productoCarrito.precioPromocion.ToString("C")
+                                                    <p><strike class="strike-text precio-descuento">{{"${:,.2f}".format(productoCarrito.precioOriginal)}}</strike></p>
+                                                    {{"${:,.2f}".format(productoCarrito.precioPromocion)}}
                                                 </div>
                                             </td>
                                             <td class="texto-tablaPCP">
                                                 <div class="position-relative">
-                                                    <p><strike class="strike-text precio-descuento">@productoCarrito.importeOriginalProducto.ToString("C")</strike></p>
-                                                    @productoCarrito.importeProducto.ToString("C")
+                                                    <p><strike class="strike-text precio-descuento">{{"${:,.2f}".format(productoCarrito.importeOriginalProducto)}}</strike></p>
+                                                    {{"${:,.2f}".format(productoCarrito.importeProducto)}}
                                                 </div>
                                             </td>
 
@@ -229,7 +225,7 @@
                                             <td class="texto-tablaPCP">$22</td>
                                         {% endif %}
                                     </tr>
-                                {% endif %}
+                                {% endfor %}
 
                             </table>
                         {% endif %}
@@ -249,30 +245,42 @@
 
                     <div  class="div-carta-carrito-totalC">
                         {#@if (@productosCarrito.Count > 0)#}
-                        {% if(true)%}
+                        {% if(objetoVenta.productosCarrito | length>0)%}
                             {#@(await Component.InvokeAsync("TotalesCarrito",@obj.totalesCarrito))#}
-                            {{totalesCarrito()}}
+                            {{totalesCarrito(objetoVenta.totalesCarrito)}}
                             <div class="col-12 row">
                                 <div class="div-radio-pago col">
                                     {#@foreach (getsetTipoPago pago in obj.tipoPagos)#}
 
                                         {#if (pago.idTipopago == obj.tipoPago+"")#}
-
+                                        {% if objetoVenta.tipoPago == 2 %}
                                             <div class="form-check margen-derecha-5">
-                                                <input class="form-check-input" type="radio" name="idRadioPagar" id="idRadioPagar @pago.idTipopago" onclick="ActualizarTipoPago(@pago.idTipopago)" checked>
+                                                <input class="form-check-input" type="radio" name="idRadioPagar" id="idRadioPagar2" onclick="ActualizarTipoPago(2)"  checked>
                                                 <label class="texto-radio" for="idRadioPagarTienda">
                                                     Mercado Pago
                                                 </label>
                                             </div>
-
-                                        {#else#}
                                             <div class="form-check margen-derecha-5">
-                                                <input class="form-check-input" type="radio" name="idRadioPagar" id="idRadioPagar @pago.idTipopago" onclick="ActualizarTipoPago(@pago.idTipopago)">
+                                                <input class="form-check-input" type="radio" name="idRadioPagar" id="idRadioPagar1" onclick="ActualizarTipoPago(1)">
                                                 <label class="texto-radio" for="idRadioPagarTienda">
                                                    Tienda
                                                 </label>
                                             </div>
-                                        {#endif#}
+
+                                        {%else%}
+                                            <div class="form-check margen-derecha-5">
+                                                <input class="form-check-input" type="radio" name="idRadioPagar" id="idRadioPagar2" onclick="ActualizarTipoPago(2)"  >
+                                                <label class="texto-radio" for="idRadioPagarTienda">
+                                                    Mercado Pago
+                                                </label>
+                                            </div>
+                                            <div class="form-check margen-derecha-5">
+                                                <input class="form-check-input" type="radio" name="idRadioPagar" id="idRadioPagar1" onclick="ActualizarTipoPago(1)" checked>
+                                                <label class="texto-radio" for="idRadioPagarTienda">
+                                                   Tienda
+                                                </label>
+                                            </div>
+                                        {%endif%}
 
 
                                     {# endif #}
@@ -280,7 +288,7 @@
                                 </div>
 
                                 <div class="col-auto" style="margin: 10px;">
-                                    <button type="button" class="btn btn-primary btn-sm me-1 mb-2 btn-continuar-compra" data-mdb-toggle="tooltip" title="" data-mdb-original-title="Proceder" onclick="GenerarPagoCompra('@obj.idUsuarioEncriptado')">
+                                    <button type="button" class="btn btn-primary btn-sm me-1 mb-2 btn-continuar-compra" data-mdb-toggle="tooltip" title="" data-mdb-original-title="Proceder" onclick="GenerarPagoCompra('{{objetoVenta.idUsuarioEncriptado}}')">
                                             Continuar
                                     </button>
                                 </div>
@@ -299,6 +307,7 @@
 <script src="{{ url_for('static', filename='wwwroot/lib/jquery/dist/jquery.min.js' ) }}"></script>
  <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
 <script src="{{ url_for('static', filename='wwwroot/js/ScriptProcesoCompra.js' ) }}"></script>
+
 </body>
 
 <footer>
