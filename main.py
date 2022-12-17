@@ -206,10 +206,15 @@ def iniciarSesion():
 
 @app.route('/registrar')
 def registrar():
+    mySql = MySQL()
+
+    listaCodigosTelefono = mySql.ObtenerCodigoTelefonoPais()
+
     # cabecera-----------------------------
     informacionCabecera = LlenarCabecera(False, "")
     # ----------------------------
-    return render_template('registrar.html',informacionCabecera=informacionCabecera)
+    return render_template('registrar.html',informacionCabecera=informacionCabecera,
+                           listaCodigosTelefono=listaCodigosTelefono)
 
 
 @app.route('/producto', methods=['POST', 'GET'])
@@ -696,3 +701,78 @@ def ActualizarTipoPagoCarrito():
     return jsonify( {"actualizado" : 1});
 
 
+
+
+@app.route('/ValidarNombre/', methods=['POST', 'GET'])
+def ValidarNombre():
+    nombre = request.form['nombre']
+    res = Utileria().ValidarNombreApellidosUsuario(nombre)
+    return jsonify({"resultado":res})
+
+
+@app.route('/ValidarApellidos/', methods=['POST', 'GET'])
+def ValidarApellidos():
+    apellidos = request.form['apellidos']
+    res = Utileria().ValidarNombreApellidosUsuario(apellidos)
+    return jsonify({"resultado":res})
+
+@app.route('/ValidarCorreo/', methods=['POST', 'GET'])
+def ValidarCorreo():
+    correo = request.form['correo']
+    res = Utileria().ValidarCorreoUsuario(correo, False, request)
+    return jsonify({"resultado":res})
+
+@app.route('/ValidarTelefono/', methods=['POST', 'GET'])
+def ValidarTelefono():
+    telefono = request.form['telefono']
+    res = Utileria().ValidarTelefonoUsuario(telefono, False, request)
+    return jsonify({"resultado":res})
+
+@app.route('/ValidarUsuario/', methods=['POST', 'GET'])
+def ValidarUsuario():
+    usuario = request.form['usuario']
+    res = Utileria().ValidarUsuario(usuario, False, request)
+    return jsonify({"resultado":res})
+
+@app.route('/ValidarContraseña/', methods=['POST', 'GET'])
+def ValidarContraseña():
+    contrasena = request.form['contraseña']
+    res = Utileria().ValidarContraseñaUsuario(contrasena)
+    return jsonify({"resultado":res})\
+
+@app.route('/ValidarConfirmarContraseña/', methods=['POST', 'GET'])
+def ValidarConfirmarContraseña():
+    contrasena = request.form['contraseña']
+    contrasenaValidad = request.form['contraseñaconfirmar']
+    res = Utileria().ValidarConfirmarContraseñaUsuario(contrasena, contrasenaValidad)
+    return jsonify({"resultado":res})
+
+@app.route('/CrearCuenta/', methods=['POST', 'GET'])
+def CrearCuenta():
+    nombre = request.form['nombre']
+    apellido = request.form['apellido']
+    correo = request.form['correo']
+    telefono = request.form['telefono']
+    usuario = request.form['usuario']
+    contraseña = request.form['contraseña']
+    contraseñaConf = request.form['contraseñaConf']
+    codigoTelefono = request.form['codigoTelefono']
+
+    mySql = MySQL()
+    resB = None
+    sesion = None
+    try:
+        resB = mySql.AgregarUsuario(nombre, apellido, correo, telefono, usuario, contraseña, contraseñaConf,
+                                  codigoTelefono)
+        sesion = mySql.AgregarSesionUsuario(usuario)
+
+    except Exception as e:
+        pass
+
+    if resB == None:
+        resB = ["-1", "Error Desconocido"]
+    if sesion == None:
+        sesion = ["-1", "Desconocido", "Desconocida"]
+
+    return jsonify({ "resultadoC": resB[0], "resultadoM": resB[1], "token": sesion[1],
+                     "fechaExpiracion": sesion[2] })

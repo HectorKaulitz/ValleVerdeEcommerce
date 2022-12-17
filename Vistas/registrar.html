@@ -9,24 +9,20 @@
     <meta charset="UTF-8">
     <title>index</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
-     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/site.css' ) }}">
-     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosBarraSuperior.css' ) }}">
-     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloCartaCarrito.css' ) }}">
-     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloSubMenuFlotante.css' ) }}">
-     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloSubMenuFlotante.css' ) }}">
-
-  <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosFiltrosAside.css' ) }}">
-     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloFiltrosEspeciales.css' ) }}">
-     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosProductosBusqueda.css' ) }}">
-     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloRegistro.css' ) }}">
-     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloInicioSesion.css' ) }}">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/site.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosBarraSuperior.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloCartaCarrito.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloSubMenuFlotante.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloSubMenuFlotante.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosFiltrosAside.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloFiltrosEspeciales.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosProductosBusqueda.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloRegistro.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloInicioSesion.css' ) }}">
     <script src="https://kit.fontawesome.com/1e636cb0f6.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
      <style>
-
         :root {
             --colorOscuro: rgb(116,196,102);
             --colorMasOscuro: rgb(35, 61, 31);
@@ -38,218 +34,204 @@
 </head>
 <body>
 
-<header>
-       {{cabecera(informacionCabecera)}}
-</header>
+    <header>
+           {{cabecera(informacionCabecera)}}
+    </header>
 
-<section class="section-principal-registro" >
+    <section class="section-principal-registro" >
 
-<form class="formulario-registro" id="formularioRegistro" asp-controller="Home" asp-action="Index">
+    <form class="formulario-registro" id="formularioRegistro">
 
+    <div class="div-titulo-registro">
+        <h3 class="titulo-registro">Crear cuenta</h3>
+    </div>
 
-     <div class="div-titulo-registro">
-            <h3 class="titulo-registro">Crear cuenta</h3>
-     </div>
-
-      <div class="div-interno-registro">
-        <div class="div-registro ">
-            <div class="div-inputs-registro">
-
-                <div class="div-input-item">
-                    <div class="div-icono-item">
-                      <i class="fa-regular fa-user"></i>
-                    </div>
-                    <div class="div-leyenda-input-item">
-                        <div class="div-leyenda-item-horiz">
-                             <label class="label-item-horiz">Nombre</label>
-                        </div>
-
-                        <div class="div-contenido-input-item">
-                            <input name="inputNombre" id="inputNombre" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
-                        </div>
-                   </div>
+    <div class="div-interno-registro">
+    <div class="div-registro ">
+        <div class="div-inputs-registro">
+            <div class="div-input-item">
+                <div class="div-icono-item">
+                  <i class="fa-regular fa-user"></i>
                 </div>
-
-                <div class="alert alert-danger div-alert-input" role="alert" id="divAlertNombre" style="display:none">
-                    <label class="label-alert-input" id="labelAlertNombre"></label>
+                <div class="div-leyenda-input-item">
+                    <div class="div-leyenda-item-horiz">
+                         <label class="label-item-horiz">Nombre</label>
+                    </div>
+                    <div class="div-contenido-input-item">
+                        <input name="inputNombre" id="inputNombre" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                    </div>
+               </div>
+            </div>
+            <div class="alert alert-danger div-alert-input" role="alert" id="divAlertNombre" style="display:none">
+                <label class="label-alert-input" id="labelAlertNombre"></label>
+            </div>
+            <div class="div-input-item">
+                <div class="div-icono-item">
+                  <i class="fa-regular fa-user"></i>
                 </div>
-
-                <div class="div-input-item">
-                    <div class="div-icono-item">
-                      <i class="fa-regular fa-user"></i>
+                <div class="div-leyenda-input-item">
+                    <div class="div-leyenda-item-horiz">
+                         <label class="label-item-horiz">Apellidos</label>
                     </div>
-                    <div class="div-leyenda-input-item">
-                        <div class="div-leyenda-item-horiz">
-                             <label class="label-item-horiz">Apellidos</label>
-                        </div>
 
-                        <div class="div-contenido-input-item">
-                            <input name="inputApellido" id="inputApellido" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
-                        </div>
-
+                    <div class="div-contenido-input-item">
+                        <input name="inputApellido" id="inputApellido" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
                     </div>
-                 </div>
 
-                   <div class="alert alert-danger div-alert-input" role="alert" id="divAlertApellido" style="display:none">
-                    <label class="label-alert-input" id="labelAlertApellido"></label>
                 </div>
+            </div>
+            <div class="alert alert-danger div-alert-input" role="alert" id="divAlertApellido" style="display:none">
+                <label class="label-alert-input" id="labelAlertApellido"></label>
+            </div>
 
-              <div class="div-input-item">
-                    <div class="div-icono-item">
-                      <i class="fa-regular fa-user"></i>
-                    </div>
-                    <div class="div-leyenda-input-item">
-                        <div class="div-leyenda-item-horiz">
-                             <label class="label-item-horiz">Correo</label>
-                        </div>
-
-                        <div class="div-contenido-input-item">
-                            <input name="inputCorreo" id="inputCorreo" type="email" class="input-txt-item" placeholder="Campo obligatorio" required/>
-                        </div>
-
-                    </div>
-                 </div>
-
-                   <div class="alert alert-danger div-alert-input" role="alert" id="divAlertCorreo" style="display:none">
-                    <label class="label-alert-input" id="labelAlertCorreo">This is a danger alert—check it out!</label>
+            <div class="div-input-item">
+                <div class="div-icono-item">
+                    <i class="fa-regular fa-user"></i>
                 </div>
-
-
-                  <div class="div-input-item">
-                    <div class="div-icono-item">
-                      <i class="fa-regular fa-user"></i>
+                <div class="div-leyenda-input-item">
+                    <div class="div-leyenda-item-horiz">
+                        <label class="label-item-horiz">Correo</label>
                     </div>
-                    <div class="div-leyenda-input-item">
-                        <div class="div-leyenda-item-horiz">
-                             <label class="label-item-horiz">Telefono</label>
-                        </div>
-
-                        <div class="div-contenido-input-item">
-                            <select id="inputcodigoTelefono" name="inputcodigoTelefono" class="form form-control input-txt-item form-select" asp-items="@listaCodigosTelefono" required style="text-align: center; ">
-                                 <i class="fa-solid fa-caret-down"></i>
-                             </select>
-
-                        </div>
-
+                    <div class="div-contenido-input-item">
+                        <input name="inputCorreo" id="inputCorreo" type="email" class="input-txt-item" placeholder="Campo obligatorio" required/>
                     </div>
                 </div>
+            </div>
+            <div class="alert alert-danger div-alert-input" role="alert" id="divAlertCorreo" style="display:none">
+                <label class="label-alert-input" id="labelAlertCorreo">This is a danger alert—check it out!</label>
+            </div>
 
-                  <div class="alert alert-danger div-alert-input" role="alert" id="divinputcodigoTelefono" style="display:none">
-                    <label class="label-alert-input" id="labelinputcodigoTelefono"></label>
+
+            <div class="div-input-item">
+                <div class="div-icono-item">
+                    <i class="fa-regular fa-user"></i>
                 </div>
-
-
-              <div class="div-input-item">
-                    <div class="div-icono-item">
-                      <i class="fa-regular fa-user"></i>
+                <div class="div-leyenda-input-item">
+                    <div class="div-leyenda-item-horiz">
+                        <label class="label-item-horiz">Telefono</label>
                     </div>
-                    <div class="div-leyenda-input-item">
-                        <div class="div-leyenda-item-horiz">
-                             <label class="label-item-horiz">Telefono</label>
-                        </div>
-
-                        <div class="div-contenido-input-item">
-                            <input name="inputTelefono" id="inputTelefono" type="tel" class="input-txt-item" placeholder="Campo opcional"/>
-                        </div>
-
-                    </div>
-                </div>
-
-                  <div class="alert alert-danger div-alert-input" role="alert" id="divAlertTelefono" style="display:none">
-                    <label class="label-alert-input" id="labelAlertTelefono"></label>
-                </div>
-
-              <div class="div-input-item">
-                    <div class="div-icono-item">
-                      <i class="fa-regular fa-user"></i>
-                    </div>
-                    <div class="div-leyenda-input-item">
-                        <div class="div-leyenda-item-horiz">
-                             <label class="label-item-horiz">Usuario</label>
-                        </div>
-
-                        <div class="div-contenido-input-item">
-                            <input id="inputUsuario" name="inputUsuario" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
-                        </div>
-
+                    <div class="div-contenido-input-item">
+                        <select id="inputcodigoTelefono" name="inputcodigoTelefono" class="form form-control input-txt-item form-select" required style="text-align: center; ">
+                            {% for item in listaCodigosTelefono %}
+                                {% if (item.CodigoTelefono == "52") %}
+                                    <option value="{{item.IDCodigoTelefonoPais}}" selected>{{item.PaisEspañol ~ ' ' ~ item.CodigoTelefono}}</option>
+                                {% else %}
+                                    <option value="{{item.IDCodigoTelefonoPais}}">{{item.PaisEspañol ~ ' ' ~ item.CodigoTelefono}}</option>
+                                {% endif %}
+                            {% endfor %}
+                            <i class="fa-solid fa-caret-down"></i>
+                        </select>
                     </div>
                 </div>
+            </div>
+            <div class="alert alert-danger div-alert-input" role="alert" id="divinputcodigoTelefono" style="display:none">
+                <label class="label-alert-input" id="labelinputcodigoTelefono"></label>
+            </div>
 
-                  <div class="alert alert-danger div-alert-input" role="alert" id="divAlertUsuario" style="display:none">
-                    <label class="label-alert-input" id="labelAlertUsuario"></label>
+
+            <div class="div-input-item">
+                <div class="div-icono-item">
+                    <i class="fa-regular fa-user"></i>
                 </div>
-
-              <div class="div-input-item">
-                    <div class="div-icono-item">
-                     <i class="fa-solid fa-lock"></i>
+                <div class="div-leyenda-input-item">
+                    <div class="div-leyenda-item-horiz">
+                         <label class="label-item-horiz">Telefono</label>
                     </div>
-                    <div class="div-leyenda-input-item">
-                        <div class="div-leyenda-item-horiz">
-                             <label  class="label-item-horiz">Contraseña</label>
-                        </div>
 
-                        <div class="div-contenido-input-item">
-                            <input name="inputContraseña" id="inputContraseña" type="password" class="input-txt-item" placeholder="Campo obligatorio" required/>
-                        </div>
-
-                    </div>
-                </div>
-
-                  <div class="alert alert-danger div-alert-input" role="alert" id="divAlertContraseña" style="display:none">
-                    <label class="label-alert-input" id="labelAlertContraseña"></label>
-                </div>
-
-              <div class="div-input-item">
-                    <div class="div-icono-item">
-                     <i class="fa-solid fa-lock"></i>
-                    </div>
-                    <div class="div-leyenda-input-item">
-                        <div class="div-leyenda-item-horiz">
-                             <label class="label-item-horiz">Confirmar contraseña</label>
-                        </div>
-
-                        <div class="div-contenido-input-item">
-                            <input name="inputConfirmarContraseña" id="inputConfirmarContraseña" type="password" class="input-txt-item" placeholder="Campo obligatorio" required/>
-                        </div>
-
+                    <div class="div-contenido-input-item">
+                        <input name="inputTelefono" id="inputTelefono" type="tel" class="input-txt-item" placeholder="Campo opcional"/>
                     </div>
                 </div>
+            </div>
+            <div class="alert alert-danger div-alert-input" role="alert" id="divAlertTelefono" style="display:none">
+                <label class="label-alert-input" id="labelAlertTelefono"></label>
+            </div>
 
-                  <div class="alert alert-danger div-alert-input" role="alert" id="divAlertConfirmarContraseña" style="display:none">
-                    <label class="label-alert-input" id="labelAlertConfirmarContraseñae"></label>
+            <div class="div-input-item">
+                <div class="div-icono-item">
+                    <i class="fa-regular fa-user"></i>
                 </div>
-
-              <div class="div-button-registrar">
-                <a href="/">
-                   <input name="btnCrearCuenta" id="btnCrearCuenta" class="btn btn-primary btn-registrar" value="Crear cuenta" >
-                </a>
-
-                 </div>
-                  <div class="alert alert-danger div-alert-input" role="alert" id="divAlertCrearCuenta" style="display:none">
-                    <label class="label-alert-input" name="labelAlertCrearCuenta" id="labelAlertCrearCuenta"></label>
-                </div>
-
-                <div class="div-ir-iniciar-sesion">
-                    <a asp-controller="Sesion" href="iniciarSesion">¿Ya tienes cuenta? Inicia sesion aquí</a>
+                <div class="div-leyenda-input-item">
+                    <div class="div-leyenda-item-horiz">
+                         <label class="label-item-horiz">Usuario</label>
+                    </div>
+                    <div class="div-contenido-input-item">
+                        <input id="inputUsuario" name="inputUsuario" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                    </div>
                 </div>
             </div>
 
+            <div class="alert alert-danger div-alert-input" role="alert" id="divAlertUsuario" style="display:none">
+                <label class="label-alert-input" id="labelAlertUsuario"></label>
+            </div>
+
+            <div class="div-input-item">
+                <div class="div-icono-item">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <div class="div-leyenda-input-item">
+                    <div class="div-leyenda-item-horiz">
+                         <label  class="label-item-horiz">Contraseña</label>
+                    </div>
+                    <div class="div-contenido-input-item">
+                        <input name="inputContraseña" id="inputContraseña" type="password" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-danger div-alert-input" role="alert" id="divAlertContraseña" style="display:none">
+                <label class="label-alert-input" id="labelAlertContraseña"></label>
+            </div>
+
+          <div class="div-input-item">
+                <div class="div-icono-item">
+                 <i class="fa-solid fa-lock"></i>
+                </div>
+                <div class="div-leyenda-input-item">
+                    <div class="div-leyenda-item-horiz">
+                         <label class="label-item-horiz">Confirmar contraseña</label>
+                    </div>
+
+                    <div class="div-contenido-input-item">
+                        <input name="inputConfirmarContraseña" id="inputConfirmarContraseña" type="password" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                    </div>
+
+                </div>
+            </div>
+
+              <div class="alert alert-danger div-alert-input" role="alert" id="divAlertConfirmarContraseña" style="display:none">
+                <label class="label-alert-input" id="labelAlertConfirmarContraseñae"></label>
+            </div>
+
+            <div class="div-button-registrar">
+                <input name="btnCrearCuenta" id="btnCrearCuenta" class="btn btn-primary btn-registrar" value="Crear cuenta" >
+            </div>
+
+            <div class="alert alert-danger div-alert-input" role="alert" id="divAlertCrearCuenta" style="display:none">
+                <label class="label-alert-input" name="labelAlertCrearCuenta" id="labelAlertCrearCuenta"></label>
+            </div>
+
+            <div class="div-ir-iniciar-sesion">
+                <a asp-controller="Sesion" href="iniciarSesion">¿Ya tienes cuenta? Inicia sesion aquí</a>
+            </div>
         </div>
 
-        <div class="div-informacion-extra ">
+    </div>
 
-         <div class="div-registro-ie">
+    <div class="div-informacion-extra ">
 
-         <div class="div-logo-registro">
-        <a class="logo-registro"  tabindex="">
-            Abarrotes Valle Verde
-        </a>
-        </div>
+     <div class="div-registro-ie">
 
-        </div>
+     <div class="div-logo-registro">
+    <a class="logo-registro"  tabindex="">
+        Abarrotes Valle Verde
+    </a>
+    </div>
 
-        </div>
-     </div>
+    </div>
+
+    </div>
+    </div>
 
     <div class="div-politica-registro">
         <h8>Al crear una cuenta,acepta las  <a href="#"> condiciones de uso </a> y el <a href="#"> aviso de privacidad </a>  de Bodegas valle verde</h8>
@@ -257,22 +239,17 @@
     </div>
 
 
-</form>
+    </form>
 
-</section>
+    </section>
 
-
-
-
-
-
-<script src="{{ url_for('static', filename='wwwroot/lib/jquery/dist/jquery.min.js' ) }}"></script>
-<script src="{{ url_for('static', filename='wwwroot/js/ScriptRegistro.js' ) }}" asp-append-version="true"></script>
- <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='wwwroot/lib/jquery/dist/jquery.min.js' ) }}"></script>
+    <script src="{{ url_for('static', filename='wwwroot/js/ScriptRegistro.js' ) }}" asp-append-version="true"></script>
+    <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
 </body>
 
 <footer>
     {#@(await Component.InvokeAsync("PieInformacion"))#}
-{{pieInformacion()}}
+    {{pieInformacion()}}
 </footer>
 </html>
