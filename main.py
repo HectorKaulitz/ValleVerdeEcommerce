@@ -51,7 +51,7 @@ def create_app():
 app = create_app()
 
 
-def LlenarCabecera(mostrar: bool, busqueda: str ="", mostrarCarrito=True):
+def LlenarCabecera(mostrar: bool, busqueda: str = "", mostrarCarrito=True):
     informacion = None
     cookieSesion = None
     datosUsuario = None
@@ -110,15 +110,15 @@ def productos():
     oben = Encriptacion()
     mySql = MySQL()
 
-    busqueda: str = request.args.get('busqueda','')
-    numeroPagina:int = int(request.args.get('numeroPagina',0))
-    productosPag = request.args.get('productosPag',10)
-    tipo = request.args.get('tipo','-1')
-    idMarca = request.args.get('idMarca','-1')
-    idLinea = request.args.get('idLinea','-1')
-    idFabricantes = request.args.get('idFabricantes','-1')
-    idDepartamento = request.args.get('idDepartamento','-1')
-    idSubLinea = request.args.get('idSubLinea','-1')
+    busqueda: str = request.args.get('busqueda', '')
+    numeroPagina: int = int(request.args.get('numeroPagina', 0))
+    productosPag = request.args.get('productosPag', 10)
+    tipo = request.args.get('tipo', '-1')
+    idMarca = request.args.get('idMarca', '-1')
+    idLinea = request.args.get('idLinea', '-1')
+    idFabricantes = request.args.get('idFabricantes', '-1')
+    idDepartamento = request.args.get('idDepartamento', '-1')
+    idSubLinea = request.args.get('idSubLinea', '-1')
 
     productosPagEnc = productosPag
     if productosPagEnc == -2:
@@ -130,24 +130,28 @@ def productos():
 
     filtros = mySql.ObtenerFiltros(tipoEnc)
 
-
     productosResultado = mySql.ObtenerProductos(numeroPagina, productosPagEnc, idMarca, idLinea,
-                                                    idFabricantes, idDepartamento, busqueda, idSubLinea)
+                                                idFabricantes, idDepartamento, busqueda, idSubLinea)
 
-    productosCarousel = mySql.ObtenerProductosCarouselPorCategoria(2,"-1",idLinea,idMarca,idFabricantes,idSubLinea)
+    productosCarousel = mySql.ObtenerProductosCarouselPorCategoria(2, "-1", idLinea, idMarca, idFabricantes, idSubLinea)
 
     datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
 
     numeroCuadrosPagina = 5
 
-    informacion = getsetObjetoProductos(productosResultado, productosCarousel, filtros, getsetInformacionGeneralProducto(
-        mySql.ObtenerNumeroPaginasProductos(productosPagEnc, idMarca, idLinea, idFabricantes, idDepartamento, busqueda, idSubLinea),
-        tipoEnc, productosPagEnc,numeroCuadrosPagina), "productos", busqueda, datosUsuario, "Escritorio")
+    informacion = getsetObjetoProductos(productosResultado, productosCarousel, filtros,
+                                        getsetInformacionGeneralProducto(
+                                            mySql.ObtenerNumeroPaginasProductos(productosPagEnc, idMarca, idLinea,
+                                                                                idFabricantes, idDepartamento, busqueda,
+                                                                                idSubLinea),
+                                            tipoEnc, productosPagEnc, numeroCuadrosPagina), "productos", busqueda,
+                                        datosUsuario, "Escritorio")
 
     informacionCabecera = LlenarCabecera(True, busqueda)
     patch = request.endpoint.split("/")
 
-    return render_template('productos.html',informacionCabecera=informacionCabecera, informacion=informacion,patch=patch,numeroPagina=numeroPagina)
+    return render_template('productos.html', informacionCabecera=informacionCabecera, informacion=informacion,
+                           patch=patch, numeroPagina=numeroPagina)
 
 
 @app.route('/historialCompras')
@@ -161,14 +165,15 @@ def historialCompras():
     objetoHistorialCompras = getsetObjetoHistorialCompra(None, ventas)
     informacionCabecera = LlenarCabecera(True)
 
-    return render_template('historialCompras.html', objetoHistorialCompras=objetoHistorialCompras,informacionCabecera=informacionCabecera)
+    return render_template('historialCompras.html', objetoHistorialCompras=objetoHistorialCompras,
+                           informacionCabecera=informacionCabecera)
 
 
 @app.route('/promociones', methods=['POST', 'GET'])
 def promociones():
     mySql = MySQL()
     productosPag = request.args.get('productosPag', 10)
-    numeroPagina:int = int(request.args.get('numeroPagina',0))-1
+    numeroPagina: int = int(request.args.get('numeroPagina', 0)) - 1
 
     if (productosPag == -2):
         productosPag = 10
@@ -186,13 +191,13 @@ def promociones():
     datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request);
 
     informacionCarousel = getsetInformacionCarousel(None, mySql.ObtenerProductosCarouselPorCategoria(2), datosUsuario);
-    informacionCabecera: getsetInformacionCabecera = LlenarCabecera(True,"");
+    informacionCabecera: getsetInformacionCabecera = LlenarCabecera(True, "");
     objetoPromociones = getsetObjetoPromociones("", informacionCarousel, productosPromocion,
                                                 productosPromocionIndividuales,
                                                 numeroPagina, productosPag, numeroCuadrosPagina,
-                                                NumeroTotalProductos,informacionCabecera);
+                                                NumeroTotalProductos, informacionCabecera);
 
-    return render_template('promociones.html', objetoPromociones=objetoPromociones,numeroPagina=numeroPagina)
+    return render_template('promociones.html', objetoPromociones=objetoPromociones, numeroPagina=numeroPagina)
 
 
 @app.route('/iniciarSesion')
@@ -206,7 +211,7 @@ def registrar():
     # cabecera-----------------------------
     informacionCabecera = LlenarCabecera(False, "")
     # ----------------------------
-    return render_template('registrar.html',informacionCabecera=informacionCabecera)
+    return render_template('registrar.html', informacionCabecera=informacionCabecera)
 
 
 @app.route('/producto', methods=['POST', 'GET'])
@@ -241,7 +246,8 @@ def comentarios():
         # cabecera-----------------------------
     informacionCabecera = LlenarCabecera(True, "", False)
     # ----------------------------
-    return render_template('comentarios.html', objetoComentario=objetoComentario, informacionCabecera=informacionCabecera)
+    return render_template('comentarios.html', objetoComentario=objetoComentario,
+                           informacionCabecera=informacionCabecera)
 
 
 @app.route('/carritoUsuario')
@@ -256,14 +262,15 @@ def carrito(Favoritos=False):
         productosCarritos = mysql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
         totalCarrito = mysql.ObtenerTotalesCarritoUsuario(productosCarritos)
         productosCarousel = mysql.ObtenerProductosCarouselPorCategoria(2)
-        objCarritoUsuario = getsetObjetoCarritoUsuario(None, "", productosCarousel, productosCarritos, datosUsuario, totalCarrito,
+        objCarritoUsuario = getsetObjetoCarritoUsuario(None, "", productosCarousel, productosCarritos, datosUsuario,
+                                                       totalCarrito,
                                                        False, None, mysql.ObtenerConfiguracionWeb())
         productosFavoritos = mysql.ObtenerProductosFavoritos(datosUsuario.IDUsuarioRegistrado)
         objFavoritos = getsetObjetoProductosFavoritos(productosFavoritos, datosUsuario)
         objetoCarrito = getsetObjetoCarrito(objCarritoUsuario, objFavoritos, Favoritos)
 
-
-    return render_template('carritoUsuario.html', objetoCarrito=objetoCarrito, informacionCabecera=informacionCabecera, EsParaFavoritos=False)
+    return render_template('carritoUsuario.html', objetoCarrito=objetoCarrito, informacionCabecera=informacionCabecera,
+                           EsParaFavoritos=False)
 
 
 @app.route('/favorito')
@@ -276,13 +283,15 @@ def favorito():
         productosCarritos = mysql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
         totalCarrito = mysql.ObtenerTotalesCarritoUsuario(productosCarritos)
         productosCarousel = mysql.ObtenerProductosCarouselPorCategoria(2)
-        objCarritoUsuario = getsetObjetoCarritoUsuario(None, "", productosCarousel, productosCarritos, datosUsuario, totalCarrito,
+        objCarritoUsuario = getsetObjetoCarritoUsuario(None, "", productosCarousel, productosCarritos, datosUsuario,
+                                                       totalCarrito,
                                                        False, None, mysql.ObtenerConfiguracionWeb())
         productosFavoritos = mysql.ObtenerProductosFavoritos(datosUsuario.IDUsuarioRegistrado)
         objFavoritos = getsetObjetoProductosFavoritos(productosFavoritos, datosUsuario)
         objetoCarrito = getsetObjetoCarrito(objCarritoUsuario, objFavoritos, True)
     # ----------------------------
-    return render_template('carritoUsuario.html', EsParaFavoritos=True, informacionCabecera=informacionCabecera, objetoCarrito=objetoCarrito)
+    return render_template('carritoUsuario.html', EsParaFavoritos=True, informacionCabecera=informacionCabecera,
+                           objetoCarrito=objetoCarrito)
 
 
 @app.route('/procesoCompra')
@@ -308,7 +317,8 @@ def perfilUsuario():
     datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
     # ----------------------------
     informacionUsuario = getsetObjetoPerfilUsuario(datosUsuario)
-    return render_template('perfilUsuario.html', objetoPerfilUsuario=informacionUsuario, informacionCabecera=informacionCabecera)
+    return render_template('perfilUsuario.html', objetoPerfilUsuario=informacionUsuario,
+                           informacionCabecera=informacionCabecera)
 
 
 def _validarUsuarioInicioSesion(usuario):
@@ -493,9 +503,11 @@ def cerrarSesionUsuario():
 
     mySql.EliminarSesionUsuario(token);
 
-    return jsonify({"res": "Sesion cerrada"})\
+    return jsonify({"res": "Sesion cerrada"}) \
+ \
+           @ app.route('/validarBusqueda/', methods=['POST', 'GET'])
 
-@app.route('/validarBusqueda/', methods=['POST', 'GET'])
+
 def validarBusqueda():
     busqueda = request.form['busqueda'];
 
@@ -503,14 +515,15 @@ def validarBusqueda():
     if (busqueda == None):
         busqueda = "";
 
-    if (busqueda==""):
+    if (busqueda == ""):
         res = -1;
     else:
         res = 1;
 
     tipoEnc = "-1";
     numProductosPagina = "10";
-    return jsonify( { "resultado" : res, "tipo" : tipoEnc, "numero" : numProductosPagina });
+    return jsonify({"resultado": res, "tipo": tipoEnc, "numero": numProductosPagina});
+
 
 @app.route('/obtenerSugerenciasBusqueda/', methods=['POST', 'GET'])
 def obtenerSugerenciasBusqueda():
@@ -522,6 +535,7 @@ def obtenerSugerenciasBusqueda():
         sugerencias = mySql.ObtenerSugerenciasBusqueda(busqueda);
 
     return jsonify(sugerencias)
+
 
 @app.template_global()
 def modify_query(**new_values):
@@ -542,7 +556,8 @@ def AgregarProductoCarrito():
     mySql = MySQL()
     res = mySql.AgregarProductoCarritoUsuario(idUsuario, idProducto, cantidad)
 
-    return jsonify({"resultado":res[0], "mensaje":res[1]})
+    return jsonify({"resultado": res[0], "mensaje": res[1]})
+
 
 @app.route('/ActualizarCantidadProductoCarrito/', methods=['POST', 'GET'])
 def ActualizarCantidadProductoCarrito():
@@ -553,11 +568,11 @@ def ActualizarCantidadProductoCarrito():
 
     mySql = MySQL()
 
-    res:getsetInformacionProductoCarrito = mySql.ActualizarCantidadProductoCarrito(idProductoCarrito, cantidad, tipo);
-    totalCarrito:getsetTotalesCarrito = mySql.ObtenerTotalesCarritoUsuario([])
-
+    res: getsetInformacionProductoCarrito = mySql.ActualizarCantidadProductoCarrito(idProductoCarrito, cantidad, tipo);
+    totalCarrito: getsetTotalesCarrito = mySql.ObtenerTotalesCarritoUsuario([])
 
     return jsonify({"resultado": json.dumps(res.__dict__), "total": json.dumps(totalCarrito.__dict__)})
+
 
 @app.route('/EliminarProductoDelCarrito/', methods=['POST', 'GET'])
 def EliminarProductoDelCarrito():
@@ -567,7 +582,8 @@ def EliminarProductoDelCarrito():
 
     res = mySql.EliminarProductoCarrito(idProductoCarrito)
 
-    return jsonify({"resultado":res})
+    return jsonify({"resultado": res})
+
 
 @app.route('/ValidarExistenciaProducto/', methods=['POST', 'GET'])
 def ValidarExistenciaProducto():
@@ -577,7 +593,9 @@ def ValidarExistenciaProducto():
 
     res = mySql.ObtenerExistenciaTotalProducto(codigoBarras)
 
-    return jsonify({"resultado":res})
+    return jsonify({"resultado": res})
+
+
 #
 # if __name__ == '__main__':
 #     print(__name__)
@@ -591,9 +609,153 @@ def productosVentaHistorial():
     mySql = MySQL()
 
     productosVenta = mySql.ObtenerProductosVenta(idVenta);
-    totalesVenta: getsetTotalesCarrito=mySql.ObtenerTotalesVenta(idVenta);
+    totalesVenta: getsetTotalesCarrito = mySql.ObtenerTotalesVenta(idVenta);
     totalesVenta.fuentePequena = True;
-    detalles:getsetObjetoDetallesVentaHistorial = getsetObjetoDetallesVentaHistorial(productosVenta,totalesVenta, mySql.ObtenerVenta(idVenta).estatusVenta);
+    detalles: getsetObjetoDetallesVentaHistorial = getsetObjetoDetallesVentaHistorial(productosVenta, totalesVenta,
+                                                                                      mySql.ObtenerVenta(
+                                                                                          idVenta).estatusVenta);
+
+    return render_template('productosVentaHistorial.html', detalles=detalles, totalesVenta=totalesVenta)
 
 
-    return render_template('productosVentaHistorial.html', detalles=detalles,totalesVenta=totalesVenta)
+@app.route('/AgregarProductoFavorito/', methods=['POST', 'GET'])
+def AgregarProductoFavorito():
+    idUsuario = request.form['idUsuario']
+    idProducto = request.form['idProducto']
+    mySql = MySQL()
+    res = mySql.AgregarProductoFavorito(idProducto, idUsuario)
+
+    return jsonify({"resultado": res[0], "mensaje": res[1]})
+
+
+@app.route('/ValidarComentario/', methods=['POST', 'GET'])
+def ValidarComentario():
+    res = -3
+    comentario = request.form['comentario']
+    if comentario is None or comentario == "":
+        res = -2
+    else:
+        res = 1
+
+    return jsonify({"resultado": res})
+
+
+@app.route('/ValidarTema/', methods=['POST', 'GET'])
+def ValidarTema():
+    res = -3
+    minimo = 8
+    maximo = 50
+    tema = request.form['tema']
+    if tema is None:
+        res = -2
+    else:
+        if tema == "":
+            res = -2
+        else:
+            if len(tema) < 8:
+                res = -4
+            else:
+                if len(tema) > 50:
+                    res = -5
+                else:
+                    res = 1
+
+    return jsonify({"resultado": res})
+
+
+@app.route('/ModificarComentarioUsuario/', methods=['POST', 'GET'])
+def ModificarComentarioUsuario():
+    res = -1
+    idcomentario = request.form['idcomentario']
+    tema = request.form['tema']
+    comentario = request.form['comentario']
+
+    if tema is None:
+        res = -2
+    else:
+        if tema == "":
+            res = -2
+        else:
+            if len(tema) < 8:
+                res = -4
+            else:
+                if len(tema) > 50:
+                    res = -5
+                else:
+                    if comentario is not None:
+                        if comentario == "":
+                            res = -6
+                        else:
+                            mysql = MySQL()
+                            mysql.ModificarComentario(idcomentario, tema, comentario)
+                            res = 1
+                    else:
+                        res = -6
+
+    return jsonify({"resultado": res})
+
+
+@app.route('/AgregarComentario/', methods=['POST', 'GET'])
+def AgregarComentario():
+    res = -1
+    idcom = -1
+    idUsuario = request.form['idUsuario']
+    tema = request.form['tema']
+    comentario = request.form['comentario']
+
+    if tema is None:
+        res = -2
+    else:
+        if tema == "":
+            res = -2
+        else:
+            if len(tema) < 8:
+                res = -4
+            else:
+                if len(tema) > 50:
+                    res = -5
+                else:
+                    if comentario is not None:
+                        if comentario == "":
+                            res = -6
+                        else:
+                            mysql = MySQL()
+                            idcom = mysql.AgregarComentarioUsuario(idUsuario, tema, comentario)
+                            if idcom > 0:
+                                res = 1
+                    else:
+                        res = -6
+
+    return jsonify({"resultado": res, "idcomentario": idcom})
+
+
+@app.route('/ObtenerInformacionComentario/', methods=['POST', 'GET'])
+def ObtenerInformacionComentario():
+    res = -1
+    idcomentario = request.form['idcomentario']
+    mysql = MySQL()
+    comentarios = mysql.ObtenerComentarioUsuario("-1", idcomentario, True)
+    res = 1
+    return jsonify({"resultado": res, "comentariotema": comentarios[0].tema, "comentario": comentarios[0].comentario})
+
+
+@app.route('/EliminarComentarioUsuario/', methods=['POST', 'GET'])
+def EliminarComentarioUsuario():
+    res = -1
+    idcomentario = request.form['idcomentario']
+    mysql = MySQL()
+    mysql.EliminarComentarioUsuario(idcomentario, 1)
+    res = 1
+    return jsonify({"resultado": res})
+
+def PagoAprobado(external_reference, payment_id="", status="",  comerciante_order_id="",  id =""):
+    mysql = MySQL()
+    idVenta = external_reference;
+    venta = mysql.ObtenerVenta(idVenta);
+    usuarioRegistrado = mysql.ObtenerUsuarioPorID(venta.idUsuario);
+    pagada = False;
+    tipoPago = venta.idTipoPago;
+    enProceso = False;
+    rechazada = False;
+    enviarADomicilio = False;
+    urlCodigoBarras = "";

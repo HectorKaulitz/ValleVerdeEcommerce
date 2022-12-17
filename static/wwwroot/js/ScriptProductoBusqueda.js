@@ -102,11 +102,11 @@ function AgregarAcarrito(idProd, idUsu,urlImagen, nombre)
 }
 
 function AgregarFavoritos(idProduc,idUsua,imagen,nombre) {
-    //alert("entro");
+    alert("entro");
     if (idUsua != null) {
         $.ajax({
             async: false,
-            url: "/ValidacionVenta/AgregarProductoFavorito/",
+            url: "/AgregarProductoFavorito/",
             data:
             {
                 idUsuario: idUsua,

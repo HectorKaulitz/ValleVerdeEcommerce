@@ -48,18 +48,11 @@
     <a id="botonFiltros" class="btn btn-primary" data-bs-toggle="collapse" href="#panelFiltros" role="button" aria-expanded="false" aria-controls="panelFiltros"><i class="fa-solid fa-filter" style="margin-top: 4px; margin-right: 4px;"></i>Filtros<i class="fa-solid fa-chevron-down" style="margin-top: 4px; margin-left: 4px;"></i></a>
 
     {# if (Filtros.Count > 0) #}
-    {% if (informacion.Filtros|length) %}
+    {% if informacion.Filtros|length>0 %}
 
         <div id="panelFiltros" class="contenedor-1-pag col-md-3 col-12 collapse dont-collapse-sm">
-            {{filtrosAcordeon(informacion.Filtros[0])}}
+            {{filtrosAcordeon(informacion.Filtros)}}
         </div>
-
-    {% else %}
-
-         <div id="panelFiltros" class="contenedor-1-pag col-md-3 col-12 collapse dont-collapse-sm">
-             {{filtrosEspeciales('223')}}
-         </div>
-
     {% endif %}
     <div class="contenedor-2-pag col-md-9">
         <div>
@@ -78,9 +71,8 @@
         </div>
         <div class="contenedor-carousel-pag">
             {# @if (@Objeto.informacionCarousel.informacionCarousel.productosCarousel.Count > 0) #}
-            {% if (true) %}
-
-             {{carouselProductos('Destacados',informacion.informacionCarousel.productosCarousel, False,0)}}
+            {% if informacion.informacionCarousel.productosCarousel|length>0 %}
+                {{carouselProductos('Destacados',informacion.informacionCarousel.productosCarousel, False,0)}}
             {% endif %}
         </div>
         <div class="contenedor-productosBus-pag">

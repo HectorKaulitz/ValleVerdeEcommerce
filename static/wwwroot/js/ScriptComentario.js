@@ -4,9 +4,8 @@ var idUsuario = -1;
 
 function EliminarComentario(idCom)
 {
-    
     $.ajax({
-        url: "/Validacion/EliminarComentario/",
+        url: "/EliminarComentarioUsuario/",
         data:
         {
             idcomentario: idCom
@@ -52,7 +51,7 @@ function EditarComentario(idCom,idU)
     setComentario(idCom,idU);
     if (getComentario() != -1) {
         $.ajax({
-            url: "/Validacion/ObtenerInformacionComentario/",
+            url: "/ObtenerInformacionComentario/",
             data:
             {
                 idcomentario: getComentario()
@@ -64,10 +63,11 @@ function EditarComentario(idCom,idU)
                     //alert(JSON.stringify(result));
 
                     switch (result.resultado) {
+
                         case 1:
                             if (result.comentario != null) {
-                                document.getElementById('inputTema').value = result.comentario[0].tema;
-                                document.getElementById('inputComentario').value = result.comentario[0].comentario;
+                                document.getElementById('inputTema').value = result.comentariotema;
+                                document.getElementById('inputComentario').value = result.comentario;
                             }
                             break;
                         case -1:
@@ -124,7 +124,7 @@ $(document).ready(function () {
         if (getComentario() != -1)//modifica
         {
             $.ajax({
-                url: "/Validacion/ModificarComentarioUsuario/",
+                url: "/ModificarComentarioUsuario/",
                 data:
                 {
                     idcomentario: getComentario(),
@@ -179,7 +179,7 @@ $(document).ready(function () {
         else//agrega
         {
             $.ajax({
-                url: "/Validacion/AgregarComentario/",
+                url: "/AgregarComentario/",
                 data:
                 {
                     idUsuario: getUsuario(),
@@ -237,7 +237,7 @@ $(document).ready(function () {
     $("#inputTema").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarTema/",
+            url: "/ValidarTema/",
             data:
             {
                 tema: $("#inputTema").val().toString()
@@ -297,7 +297,7 @@ $(document).ready(function () {
     $("#inputComentario").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarComentario/",
+            url: "/ValidarComentario/",
             data:
             {
                 comentario: $("#inputComentario").val().toString()
