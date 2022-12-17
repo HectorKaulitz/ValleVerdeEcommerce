@@ -8,7 +8,7 @@
         $("#inputNombre").keyup(function(){
            
             $.ajax({
-                url: "/Validacion/ValidarNombre/",
+                url: "/ValidarNombre/",
                 data:
                 {
                     nombre: $("#inputNombre").val().toString()
@@ -56,7 +56,7 @@
         $("#inputApellido").keyup(function () {
 
             $.ajax({
-                url: "/Validacion/ValidarApellidos/",
+                url: "/ValidarApellidos/",
                 data:
                 {
                     apellidos: $("#inputApellido").val().toString()
@@ -103,7 +103,7 @@
         $("#inputCorreo").keyup(function () {
 
             $.ajax({
-                url: "/Validacion/ValidarCorreo/",
+                url: "/ValidarCorreo/",
                 data:
                 {
                     correo: $("#inputCorreo").val().toString()
@@ -138,7 +138,7 @@
                                 $("#inputCorreo").css("background-color", "#ff3c335c");
                                 $("#divAlertCorreo").show("slow");
                                 document.getElementById('labelAlertCorreo').textContent = "Correo ya registrado";
-                                breaK;
+                                break;
                         }
 
                     }
@@ -153,7 +153,7 @@
         $("#inputTelefono").keyup(function () {
 
             $.ajax({
-                url: "/Validacion/ValidarTelefono/",
+                url: "/ValidarTelefono/",
                 data:
                 {
                     telefono: $("#inputTelefono").val().toString()
@@ -203,7 +203,7 @@
         $("#inputUsuario").keyup(function () {
 
             $.ajax({
-                url: "/Validacion/ValidarUsuario/",
+                url: "/ValidarUsuario/",
                 data:
                 {
                     usuario: $("#inputUsuario").val().toString()
@@ -280,7 +280,7 @@
         $("#inputContraseña").keyup(function () {
 
             $.ajax({
-                url: "/Validacion/ValidarContraseña/",
+                url: "/ValidarContraseña/",
                 data:
                 {
                     contraseña: $("#inputContraseña").val().toString()
@@ -346,7 +346,7 @@
         $("#inputContraseña").keyup(function () {
 
             $.ajax({
-                url: "/Validacion/ValidarConfirmarContraseña/",
+                url: "/ValidarConfirmarContraseña/",
                 data:
                 {
                     contraseña: $("#inputContraseña").val().toString(),
@@ -392,7 +392,7 @@
         $("#inputConfirmarContraseña").keyup(function () {
 
             $.ajax({
-                url: "/Validacion/ValidarConfirmarContraseña/",
+                url: "/ValidarConfirmarContraseña/",
                 data:
                 {
                     contraseña: $("#inputContraseña").val().toString(),
@@ -441,7 +441,7 @@
 
             var codigo = document.getElementById("inputcodigoTelefono");
             $.ajax({
-                url: "/Validacion/CrearCuenta/",
+                url: "/CrearCuenta/",
                 data:
                 {
                     //string nombre,string apellido,string correo,string telefono,string usuario,string contraseña,string contraseñaConf
@@ -470,6 +470,7 @@
                                 document.cookie = "SesionUsuario=" + result.token.toString() + "; expires=" + fecha.toUTCString() + ";path=/";
                                 var form = document.getElementById("formularioRegistro");
                                 form.submit();
+                                window.location.href = '/';
                                 
                                 break;
                             default://datos erroneos

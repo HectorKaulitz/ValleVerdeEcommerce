@@ -4,6 +4,7 @@ from Programacion.Funcionalidad.Encriptacion import Encriptacion
 from Programacion.getset import getsetUsuarioRegistrado
 from Programacion.getset.getsetBadgeFlotante import getsetBadgeFlotante
 from Programacion.getset.getsetCategoria import getsetCategoria
+from Programacion.getset.getsetCodigoTelefonoPais import getsetCodigoTelefonoPais
 from Programacion.getset.getsetComentario import getsetComentario
 from Programacion.getset.getsetConfiguracionWeb import getsetConfiguracionWeb
 from Programacion.getset.getsetDepartamento import getsetDepartamento
@@ -1090,5 +1091,128 @@ class MySQL:
             print("Error en el procedimiento EliminarProductoCarrito: ", e)
         except Exception as error:
             print("ERROR EliminarProductoCarrito: ", error)
+
+        return res
+
+    def ObtenerCodigoTelefonoPais(self):
+        res = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = []
+            CURSOR.callproc('ObtenerCodigoTelefonoPais', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res.append(getsetCodigoTelefonoPais(item[0],item[1],item[2],item[3],item[4],item[5]))
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ObtenerCodigoTelefonoPais: ", e)
+        except Exception as error:
+            print("ERROR ObtenerCodigoTelefonoPais: ", error)
+
+        return res
+
+    def ObtenerCodigoTelefonoPais(self):
+        res = []
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = []
+            CURSOR.callproc('ObtenerCodigoTelefonoPais', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res.append(getsetCodigoTelefonoPais(item[0],item[1],item[2],item[3],item[4],item[5]))
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ObtenerCodigoTelefonoPais: ", e)
+        except Exception as error:
+            print("ERROR ObtenerCodigoTelefonoPais: ", error)
+
+        return res
+
+    def ExisteCorreoUsuario(self, correo, idUsuario):
+        res = -2
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [correo, idUsuario]
+            CURSOR.callproc('ExisteCorreoUsuario', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = int(item[0])
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ExisteCorreoUsuario: ", e)
+        except Exception as error:
+            print("ERROR ExisteCorreoUsuario: ", error)
+
+        return res
+
+    def ExisteTelefono(self, telefono, idUsuario):
+        res = -2
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [telefono, idUsuario]
+            CURSOR.callproc('ExisteTelefono', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = int(item[0])
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ExisteTelefono: ", e)
+        except Exception as error:
+            print("ERROR ExisteTelefono: ", error)
+
+        return res
+
+    def AgregarUsuario(self, nombre, apellido, correo, telefono, usuario, contraseña, contraseñaConf,
+                                  codigoTelefono):
+        res = None
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [nombre, apellido, correo, telefono, usuario, contraseña, contraseñaConf,
+                                  codigoTelefono]
+            CURSOR.callproc('AgregarUsuario', args)
+            self.CONNECTION.commit()
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = [item[0], item[1]]
+
+            CURSOR.close()
+            self.desconectar_mysql()
+
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento AgregarUsuario: ", e)
+        except Exception as error:
+            print("ERROR AgregarUsuario: ", error)
 
         return res
