@@ -21,11 +21,11 @@
                                  <div class="contenedor-precion-subio-bajo">
                                     {#@if(productoCarrito.DiferenciaConPrecioActual>0)//el precio subio#}
                                     {% if productoCarrito.DiferenciaConPrecioActual > 0 %}
-                                        <p class="parrafo-diferencia-precio text-danger">El precio subio $01.50 desde que se agrego </p>
+                                        <p class="parrafo-diferencia-precio text-danger">El precio subio $1.50 desde que se agrego </p>
                                     {% endif %}
                                     {#@if(productoCarrito.DiferenciaConPrecioActual<0)//el precio bajo#}
                                     {% if productoCarrito.DiferenciaConPrecioActual<0 %}
-                                       <p class="parrafo-diferencia-precio text-success">El precio bajo ${{productoCarrito.DiferenciaConPrecioActual}}desde que se agrego </p>
+                                       <p class="parrafo-diferencia-precio text-success">El precio bajo {{"${:,.2f}".format(productoCarrito.DiferenciaConPrecioActual)}}desde que se agrego </p>
                                     {% endif %}
                                 </div>
                                 <p class="item-informacion-parrafosC">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley</p>
@@ -36,9 +36,9 @@
                                 <div class="contenedor-item-precioC">
                                 {#@if (@productoCarrito.precioOriginal != @productoCarrito.precioPromocion)#}
                                 {% if productoCarrito.precioOriginal != productoCarrito.precioPromocion %}
-                                    <p class="item-informacion-parrafosC leyenda-precio-totalC"><strike >${{productoCarrito.precioOriginal}}</strike></p>
+                                    <p class="item-informacion-parrafosC leyenda-precio-totalC"><strike >{{"${:,.2f}".format(productoCarrito.precioOriginal)}}</strike></p>
                                 {% endif %}
-                                <p class="item-informacion-parrafosC leyenda-precio-totalC"><strong >${{productoCarrito.precioPromocion}}</strong></p>
+                                <p class="item-informacion-parrafosC leyenda-precio-totalC"><strong >{{"${:,.2f}".format(productoCarrito.precioPromocion)}}</strong></p>
                                 </div>
 
                                 <div class="contenedor-cantidad-input-botonesC">
@@ -57,7 +57,7 @@
 
                                 <div class="contenedor-item-precioC">
                                     <h6  class="precio-totalc" style="">Total: </h6>
-                                    <p class="item-informacion-parrafosC leyenda-precio-totalC"><strong id="precioT {{productoCarrito.indice}}">${{productoCarrito.precioPromocion|float * productoCarrito.cantidad|float}}</strong></p>
+                                    <p class="item-informacion-parrafosC leyenda-precio-totalC"><strong id="precioT {{productoCarrito.indice}}">{{"${:,.2f}".format(productoCarrito.precioPromocion|float * productoCarrito.cantidad|float)}}</strong></p>
                                 </div>
                                 <div class="alert alert-danger div-alert-input" role="alert" id="divAlert {{productoCarrito.indice}}" name="divAlert {{productoCarrito.indice}}" >
                                     {#@if (@productoCarrito.existencia < 0)#}

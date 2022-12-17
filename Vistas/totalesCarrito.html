@@ -11,16 +11,16 @@
     {% if totalCarrito.descuento > 0 %}
         <tr>
             <th class="text-end" style="{{fuente}}">Subtotal sin descuento:</th>
-            <td class="col-4" style="{{fuente}}">${{totalCarrito.subtotalSinDescuento}}</td>
+            <td class="col-4" style="{{fuente}}">{{"${:,.2f}".format(totalCarrito.subtotalSinDescuento)}}</td>
         </tr>
         <tr>
             <th class="text-end" style="{{fuente}}">Descuento(s):</th>
-            <td class="col-4" style="{{fuente}}">${{totalCarrito.descuento}}</td>
+            <td class="col-4" style="{{fuente}}">{{"${:,.2f}".format(totalCarrito.descuento)}}</td>
         </tr>
     {% endif %}
     <tr>
         <th class="text-end" style="{{fuente}}">SubTotal:</th>
-        <td class="col-4" style="{{fuente}}">${{totalCarrito.subtotal}}</td>
+        <td class="col-4" style="{{fuente}}">{{"${:,.2f}".format(totalCarrito.subtotal)}}</td>
     </tr>
     {#@if (!totalCarrito.enviarDomicilio)#}
     {% if not totalCarrito.enviarDomicilio %}
@@ -33,25 +33,25 @@
 
         <tr>
             <th class="text-end" style="{{fuente}}">Costo envio:</th>
-            <td class="col-4" style="{{fuente}}">${{totalCarrito.envio}}</td>
+            <td class="col-4" style="{{fuente}}">{{"${:,.2f}".format(totalCarrito.envio)}}</td>
         </tr>
     {% endif %}
     {#@if (totalCarrito.comision > 0)#}
     {% if totalCarrito.comision > 0 %}
         <tr>
             <th class="text-end" style="{{fuente}}">Comision:</th>
-            <td class="col-4" style="{{fuente}}">${{totalCarrito.comision}}</td>
+            <td class="col-4" style="{{fuente}}">{{"${:,.2f}".format(totalCarrito.comision)}}</td>
         </tr>
     {% endif %}
     <tr>
         <th class="text-end" style="{{fuente}}">Total:</th>
-        <td class="col-4" style="{{fuente}}">${{totalCarrito.total}}</td>
+        <td class="col-4" style="{{fuente}}">{{"${:,.2f}".format(totalCarrito.total) }}</td>
     </tr>
     {#@if (totalCarrito.totalSurtido>=0 && totalCarrito.mostrarTotalSurtido && totalCarrito.total!=totalCarrito.totalSurtido)#}
     {% if(totalCarrito.totalSurtido>=0 and totalCarrito.mostrarTotalSurtido and totalCarrito.total!=totalCarrito.totalSurtido) %}
         <tr>
             <th class="text-end" style="{{fuente}}">Total surtido:</th>
-            <td class="col-4" style="{{fuente}}">${{totalCarrito.totalSurtido}}</td>
+            <td class="col-4" style="{{fuente}}">{{"${:,.2f}".format(totalCarrito.totalSurtido)}}</td>
         </tr>
     {% endif %}
 

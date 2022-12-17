@@ -21,7 +21,7 @@ function RetomarPago(idVentaEncriptado) {
     //Pago en MercadoPago
     $.ajax({
         async: false,
-        url: "/ValidacionVenta/RetomarPago/",
+        url: "/RetomarPago/",
         data:
         {
             idVentaEncriptado: idVentaEncriptado

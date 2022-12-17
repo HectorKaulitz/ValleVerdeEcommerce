@@ -6,6 +6,7 @@ from werkzeug.urls import url_encode
 
 from MySqlConexion import MySQL
 from Programacion.Funcionalidad.Encriptacion import Encriptacion
+from Programacion.Funcionalidad.MercadoPagoMetodos import MercadoPagoMetodos
 from Programacion.Funcionalidad.Utileria import Utileria
 from Programacion.getset import getsetUsuarioRegistrado
 from Programacion.getset.getsetBadgeFlotante import getsetBadgeFlotante
@@ -21,12 +22,14 @@ from Programacion.getset.getsetObjetoDetallesVentaHistorial import getsetObjetoD
 from Programacion.getset.getsetObjetoHistorialCompra import getsetObjetoHistorialCompra
 from Programacion.getset.getsetObjetoPaginaInicio import getsetObjetoPaginaInicio
 from Programacion.getset.getsetObjetoPerfilUsuario import getsetObjetoPerfilUsuario
+from Programacion.getset.getsetObjetoProcesoCompra import getsetObjetoProcesoCompra
 from Programacion.getset.getsetObjetoProducto import getsetObjetoProducto
 from Programacion.getset.getsetObjetoProductos import getsetObjetoProductos
 from Programacion.getset.getsetObjetoProductosFavoritos import getsetObjetoProductosFavoritos
 from Programacion.getset.getsetObjetoPromociones import getsetObjetoPromociones
 from Programacion.getset.getsetResultado import getsetResultado
 from Programacion.getset.getsetTotalesCarrito import getsetTotalesCarrito
+from Programacion.getset.getsetVenta import getsetVenta
 
 index = Blueprint('index', __name__, url_prefix='/index', template_folder='Vistas')
 
@@ -68,7 +71,7 @@ def LlenarCabecera(mostrar: bool, busqueda: str = "", mostrarCarrito=True):
             intd = 4
         else:
             productosCarrito = mySql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
-            totalCarrito = mySql.ObtenerTotalesCarritoUsuario(productosCarrito)
+            totalCarrito = mySql.ObtenerTotalesCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
             totalesBadgeFlotantes = mySql.ObtenerTotalesParaBadgeFlotantes(datosUsuario.IDUsuarioRegistrado)
 
         categorias = mySql.ObtenerCategoria()
@@ -208,10 +211,15 @@ def iniciarSesion():
 
 @app.route('/registrar')
 def registrar():
+    mySql = MySQL()
+
+    listaCodigosTelefono = mySql.ObtenerCodigoTelefonoPais()
+
     # cabecera-----------------------------
     informacionCabecera = LlenarCabecera(False, "")
     # ----------------------------
-    return render_template('registrar.html', informacionCabecera=informacionCabecera)
+    return render_template('registrar.html',informacionCabecera=informacionCabecera,
+                           listaCodigosTelefono=listaCodigosTelefono)
 
 
 @app.route('/producto', methods=['POST', 'GET'])
@@ -260,17 +268,15 @@ def carrito(Favoritos=False):
     # ----------------------------
     if datosUsuario is not None:
         productosCarritos = mysql.ObtenerProductosCarritoUsuario(datosUsuario.IDUsuarioRegistrado)
-        totalCarrito = mysql.ObtenerTotalesCarritoUsuario(productosCarritos)
         productosCarousel = mysql.ObtenerProductosCarouselPorCategoria(2)
-        objCarritoUsuario = getsetObjetoCarritoUsuario(None, "", productosCarousel, productosCarritos, datosUsuario,
-                                                       totalCarrito,
+        objCarritoUsuario = getsetObjetoCarritoUsuario(None, "", productosCarousel, productosCarritos, datosUsuario, informacionCabecera.totalCarrito,
                                                        False, None, mysql.ObtenerConfiguracionWeb())
         productosFavoritos = mysql.ObtenerProductosFavoritos(datosUsuario.IDUsuarioRegistrado)
         objFavoritos = getsetObjetoProductosFavoritos(productosFavoritos, datosUsuario)
         objetoCarrito = getsetObjetoCarrito(objCarritoUsuario, objFavoritos, Favoritos)
 
-    return render_template('carritoUsuario.html', objetoCarrito=objetoCarrito, informacionCabecera=informacionCabecera,
-                           EsParaFavoritos=False)
+
+    return render_template('carritoUsuario.html', objetoCarrito=objetoCarrito, informacionCabecera=informacionCabecera, EsParaFavoritos=False)
 
 
 @app.route('/favorito')
@@ -296,7 +302,22 @@ def favorito():
 
 @app.route('/procesoCompra')
 def procesoCompra():
-    return render_template('procesoCompra.html')
+    informacionCabecera = LlenarCabecera(False,'',False)
+
+    usuarioActual = Utileria().ObtenerUsuarioDeLaSesionActual(request)
+
+    mysql = MySQL()
+
+    productosCarrito = mysql.ObtenerProductosCarritoUsuario(usuarioActual.IDUsuarioRegistrado);
+    tipoPagos = mysql.ObtenerTipoPagos("-1");
+    paqueteriaHabilitada = False;
+    envioADomicilioPorDefecto = False;
+    totalesCarrito: getsetTotalesCarrito = mysql.ObtenerTotalesCarritoUsuario(usuarioActual.IDUsuarioRegistrado);
+
+    objetoVenta:getsetObjetoProcesoCompra = getsetObjetoProcesoCompra(usuarioActual.IDUsuarioRegistrado,tipoPagos,None,productosCarrito,paqueteriaHabilitada, envioADomicilioPorDefecto, mysql.ObtenerTipoPagoCarrito(usuarioActual.IDUsuarioRegistrado),totalesCarrito);
+
+
+    return render_template('procesoCompra.html',objetoVenta=objetoVenta,informacionCabecera=informacionCabecera)
 
 
 @app.route('/ayuda')
@@ -503,11 +524,9 @@ def cerrarSesionUsuario():
 
     mySql.EliminarSesionUsuario(token);
 
-    return jsonify({"res": "Sesion cerrada"}) \
- \
-           @ app.route('/validarBusqueda/', methods=['POST', 'GET'])
+    return jsonify({"res": "Sesion cerrada"})\
 
-
+@app.route('/validarBusqueda/', methods=['POST', 'GET'])
 def validarBusqueda():
     busqueda = request.form['busqueda'];
 
@@ -759,3 +778,162 @@ def PagoAprobado(external_reference, payment_id="", status="",  comerciante_orde
     rechazada = False;
     enviarADomicilio = False;
     urlCodigoBarras = "";
+
+    return render_template('productosVentaHistorial.html', detalles=detalles,totalesVenta=totalesVenta)
+
+@app.route('/ActualizarTipoEnvio/', methods=['POST', 'GET'])
+def ActualizarTipoEnvio():
+    valor = request.form['valor'];
+
+    mysql = MySQL()
+
+    usuario:getsetUsuarioRegistrado = Utileria().ObtnerUsuarioDeLaSesionActual(request);
+    mysql.ActualizarTipoEnvioCarrito(usuario.IDUsuarioRegistrado,valor);
+
+    return jsonify({"resultado": 1})
+
+@app.route('/RetomarPago/', methods=['POST', 'GET'])
+def RetomarPago():
+    idVentaEncriptado = request.form['idVentaEncriptado'];
+
+    mysql = MySQL()
+    idVenta = idVentaEncriptado;
+
+    venta:getsetVenta = mysql.ObtenerVenta(idVenta);
+
+    if (venta != None and venta.idTipoPago == 2):
+        idPreferencia = "";
+
+        preferencia = MercadoPagoMetodos().CrearPreferencia(venta.idVenta, idVentaEncriptado);
+        return jsonify( { "url" : preferencia['sandbox_init_point'], "estado" : 1, "mensaje" : "" });
+
+    else:
+        return jsonify({ "url" : "", "estado": -1,"mensaje" : "No se pudo generar el cargo" });
+
+
+@app.route('/CrearVenta/', methods=['POST', 'GET'])
+def CrearVenta():
+    idUsuarioEncriptado = request.form['idUsuarioEncriptado'];
+
+    mysql = MySQL()
+    idVenta = idUsuarioEncriptado;
+
+    idUsuario = idUsuarioEncriptado;
+
+    res= mysql.ConvertirCarritoEnVentaUsuario(idUsuario);
+
+    if (res[0]!=-1):
+        venta = mysql.ObtenerVenta(res[0]);
+
+
+        if (venta.idTipoPago == 1):
+            #Pago en tienda
+            url = "/pagoAprobado?external_reference=" + str(venta.idVentaEncriptada);
+
+            return jsonify({"url": url, "estado": 1});
+
+        else:
+            if(venta.idTipoPago == 2 or venta.idTipoPago == 3 or venta.idTipoPago == 4):
+                #Pago en MercadoPago u OpenPay
+
+                preferencia = MercadoPagoMetodos().CrearPreferencia(venta.idVenta);
+
+                if (preferencia != None):
+                    return jsonify( { "url" : preferencia["sandbox_init_point"], "estado" : 1 });
+                else:
+                    return jsonify( { "url" : "", "estado" : -1 });
+
+
+    else:
+        return jsonify({"url": "", "estado": -1});
+
+
+
+@app.route('/ActualizarTipoPagoCarrito/', methods=['POST', 'GET'])
+def ActualizarTipoPagoCarrito():
+    idTipoPago = request.form['idTipoPago'];
+
+    mysql = MySQL()
+
+    usuario = Utileria().ObtenerUsuarioDeLaSesionActual(request);
+
+    mysql.ActualizarTipoPagoCarrito(usuario.IDUsuarioRegistrado, idTipoPago);
+
+    return jsonify( {"actualizado" : 1});
+
+
+
+
+@app.route('/ValidarNombre/', methods=['POST', 'GET'])
+def ValidarNombre():
+    nombre = request.form['nombre']
+    res = Utileria().ValidarNombreApellidosUsuario(nombre)
+    return jsonify({"resultado":res})
+
+
+@app.route('/ValidarApellidos/', methods=['POST', 'GET'])
+def ValidarApellidos():
+    apellidos = request.form['apellidos']
+    res = Utileria().ValidarNombreApellidosUsuario(apellidos)
+    return jsonify({"resultado":res})
+
+@app.route('/ValidarCorreo/', methods=['POST', 'GET'])
+def ValidarCorreo():
+    correo = request.form['correo']
+    res = Utileria().ValidarCorreoUsuario(correo, False, request)
+    return jsonify({"resultado":res})
+
+@app.route('/ValidarTelefono/', methods=['POST', 'GET'])
+def ValidarTelefono():
+    telefono = request.form['telefono']
+    res = Utileria().ValidarTelefonoUsuario(telefono, False, request)
+    return jsonify({"resultado":res})
+
+@app.route('/ValidarUsuario/', methods=['POST', 'GET'])
+def ValidarUsuario():
+    usuario = request.form['usuario']
+    res = Utileria().ValidarUsuario(usuario, False, request)
+    return jsonify({"resultado":res})
+
+@app.route('/ValidarContraseña/', methods=['POST', 'GET'])
+def ValidarContraseña():
+    contrasena = request.form['contraseña']
+    res = Utileria().ValidarContraseñaUsuario(contrasena)
+    return jsonify({"resultado":res})\
+
+@app.route('/ValidarConfirmarContraseña/', methods=['POST', 'GET'])
+def ValidarConfirmarContraseña():
+    contrasena = request.form['contraseña']
+    contrasenaValidad = request.form['contraseñaconfirmar']
+    res = Utileria().ValidarConfirmarContraseñaUsuario(contrasena, contrasenaValidad)
+    return jsonify({"resultado":res})
+
+@app.route('/CrearCuenta/', methods=['POST', 'GET'])
+def CrearCuenta():
+    nombre = request.form['nombre']
+    apellido = request.form['apellido']
+    correo = request.form['correo']
+    telefono = request.form['telefono']
+    usuario = request.form['usuario']
+    contraseña = request.form['contraseña']
+    contraseñaConf = request.form['contraseñaConf']
+    codigoTelefono = request.form['codigoTelefono']
+
+    mySql = MySQL()
+    resB = None
+    sesion = None
+    try:
+        resB = mySql.AgregarUsuario(nombre, apellido, correo, telefono, usuario, contraseña, contraseñaConf,
+                                  codigoTelefono)
+        sesion = mySql.AgregarSesionUsuario(usuario)
+
+    except Exception as e:
+        pass
+
+    if resB == None:
+        resB = ["-1", "Error Desconocido"]
+    if sesion == None:
+        sesion = ["-1", "Desconocido", "Desconocida"]
+
+    return jsonify({ "resultadoC": resB[0], "resultadoM": resB[1], "token": sesion[1],
+                     "fechaExpiracion": sesion[2] })

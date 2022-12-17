@@ -82,9 +82,9 @@
                                     <h3 class="text-danger text-center">Pago pendiente</h3>
                                     {% if(venta.estatusVenta<=1) %}
 
-                                         <button class="btn btn-danger col-12 m-2" type="button" onclick="CancelarVenta('{{venta[idVenta]}}')">Cancelar compra</button>
+                                         <button class="btn btn-danger col-12 m-2" type="button" onclick="CancelarVenta('{{venta.idVenta}}')">Cancelar compra</button>
                                     {% endif %}
-                                    <button class="btn btn-warning col-12 m-2" type="button" onclick="RetomarPago({{venta[idVenta]}}')">Retomar pago</button>
+                                    <button class="btn btn-warning col-12 m-2" type="button" onclick="RetomarPago('{{venta.idVenta}}')">Retomar pago</button>
                                 {% else %}
                                     {% if((venta.idTipoPago == 1) or  ((venta.idTipoPago == 2 and venta.pagada and (venta.idPagoMercadoPago!= null and venta.idPagoMercadoPago|length>0 and venta.idPagoMercadoPago!="")) or (venta.idTipoPago == 3 and venta.pagada and (venta.idCargoOpenpay!= null and venta.idCargoOpenpay|length>0 and venta.idCargoOpenpay!="")))) %}
 
