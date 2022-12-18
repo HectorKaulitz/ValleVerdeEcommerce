@@ -62,7 +62,7 @@
 
 
             <div class="tab-pane fade" id="favoritos" name="favoritos" role="tabpanel" aria-labelledby="favoritos-tab">
-                {@(await Component.InvokeAsync("ProductosFavoritos",@objFavoritos))}
+
                 {{productosFavoritos(objetoCarrito.objFavoritos)}}
             </div>
 
@@ -113,6 +113,10 @@
 <script src="{{ url_for('static', filename='wwwroot/js/ScriptProductoBusqueda.js' ) }}" ></script>
 <script src="{{ url_for('static', filename='wwwroot/js/ScriptCarritoFlotante.js' ) }}" ></script>
 <script src="{{ url_for('static', filename='wwwroot/js/ScriptCarritoUsuario.js' ) }}" ></script>
+<script src="{{ url_for('static', filename='wwwroot/js/ScriptProductoFavorito.js' ) }}" ></script>
+<script src="{{ url_for('static', filename='wwwroot/js/site.js' ) }}" asp-append-version="true"></script>
+<script src="{{ url_for('static', filename='wwwroot/js/ScriptBarraBusqueda.js' ) }}" asp-append-version="true"></script>
+<script src="{{ url_for('static', filename='wwwroot/js/autocomplete.js' ) }}" asp-append-version="true"></script>
 </body>
 
 <footer>

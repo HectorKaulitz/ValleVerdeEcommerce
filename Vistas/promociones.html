@@ -55,7 +55,7 @@
     {% set urlImagen = 5 %}
     {% set productosPromocion = [['Promocion 1','Nombre producto','Descripcion del producto',150,100,"../static/wwwroot/Resources/LOGO.png",1], ['Promocion 1','Nombre producto','Descripcion del producto',150,100,"../static/wwwroot/Resources/LOGO.png",1],['Promocion 1','Nombre producto','Descripcion del producto',150,100,"../static/wwwroot/Resources/LOGO.png",1],['Promocion 1','Nombre producto','Descripcion del producto',150,100,"../static/wwwroot/Resources/LOGO.png",1],['Promocion 1','Nombre producto','Descripcion del producto',150,100,"../static/wwwroot/Resources/LOGO.png",1]] %}
 
-    {% if(productosPromocion!=null and productosPromocion|length>0) %}
+    {% if( objetoPromociones.productosPromocion is not none and objetoPromociones.productosPromocion|length>0) %}
 
       <div class="">
           <div id="carouselExampleControls" class="carousel slide" data-bs-ride="">
@@ -63,11 +63,12 @@
            <div class="contenedor-leyenda-carousel-grid">
 
               {#@foreach(getsetProductoPromocionPorCategoria producto in @productosPromocion)#}
-              {# for producto in productosPromocion #}
+              {% for producto in objetoPromociones.productosPromocion %}
+               {% if loop.index ==1 %}
+                  <h2 class="leyenda-carousel-grid">Promocion en <b>{{producto.nombreDependiendoCategoria}}</b></h2>
+               {% endif %}
 
-                  <h2 class="leyenda-carousel-grid">Promocion en <b>{{productosPromocion[0][nombreDependiendoCategoria]}}</b></h2>
-
-              {# endfor #}
+              {% endfor %}
 
            </div>
 
@@ -77,7 +78,7 @@
           {% set itemAbierto = {'value': false} %}
           {% set active = {'value': 'active'} %}
           {% set productosSlider = 3 %}
-          {% for producto in productosPromocion %}
+          {% for producto in objetoPromociones.productosPromocion %}
               {% if(itemAbierto.value == false) %}
 
                     <div class="carousel-item {{active.value}}">
@@ -88,20 +89,20 @@
               {% endif %}
 
                 <div class="card item-promo">
-                    <img src="{{producto[urlImagen]}}" class="card-img-top img-fluid img" alt="...">
+                    <img src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{producto.codigoBarras}}.png" onerror="this.src='http://bodegavalleverde.ddns.net/Imagenes/icono.png';" class="card-img-top img-fluid img" alt="...">
                     <div class="card-body thumb-content">
-                        <a class="card-title nombre-producto" asp-controller="Inicio" asp-action="Producto" asp-route-idProducto="@productosPromocion[i].IDProductoEncriptado"> <h5 style="color:black;">{{producto[nombreProducto]}}</h5> </a>
-                        <p class="card-text descripcion-promocion">{{producto[descripcion]}}</p>
-                        <p class="item-price precio-pro"><strike> {{"${:,.2f}".format(producto[precio])}} </strike> <b>{{"${:,.2f}".format(producto[precioPromocion])}}</b></p>
+                        <a class="card-title nombre-producto" href="Producto?idProducto={{producto.idProducto}}"> <h5 style="color:black;">{{producto.nombreProducto}}</h5> </a>
+                        <p class="card-text descripcion-promocion">{{producto.descripcion}}</p>
+                        <p class="item-price precio-pro"><strike> ${{producto.precio}} </strike> <b>${{producto.precioPromocion}}</b></p>
                         <div class="contenedor-botone-agregar-carrito-promo">
                             {# if(@objetoPromociones.informacionCarousel.usuario!=null) #}
-                            {% if(false) %}
+                            {% if objetoPromociones.informacionCarousel.usuario is not none %}
 
-                            <button class="btn btn-primary btn-sm " type="button" onclick="AgregarAcarrito(@productosPromocion[i].IDProducto,@objetoPromociones.informacionCarousel.usuario.IDUsuarioRegistrado, '@productosPromocion[i].imagenes[0]','@productosPromocion[i].nombreProducto')">Añadir al carrito</button>
+                            <button class="btn btn-primary btn-sm " type="button" onclick="AgregarAcarrito({{producto.idProducto}},{{objetoPromociones.informacionCarousel.usuario.IDUsuarioRegistrado}}, 'http://bodegavalleverde.ddns.net/Imagenes/Productos/{{producto.codigoBarras}}.png','{{producto.nombreProducto}}')">Añadir al carrito</button>
 
                             {% else %}
 
-                             <button class="btn btn-primary btn-sm " type="button" onclick="AgregarAcarrito(@productosPromocion[i].IDProducto,null, '@productosPromocion[i].imagenes[0]','@productosPromocion[i].nombreProducto')">Añadir al carrito</button>
+                             <button class="btn btn-primary btn-sm " type="button" onclick="AgregarAcarrito({{producto.idProducto}},null, 'http://bodegavalleverde.ddns.net/Imagenes/Productos/{{producto.codigoBarras}}.png','{{producto.nombreProducto}}','{{producto.nombreProducto}}')">Añadir al carrito</button>
                             {% endif %}
                         </div>
                     </div>
@@ -147,7 +148,7 @@
             {% for producto in objetoPromociones.productosPromocionIndividuales %}
 
                  {# @await Component.InvokeAsync("ItemProductoPromocion",new{ producto=@producto,usuario=@objetoPromociones.informacionCarousel.usuario} ) #}
-                {{itemProductoPromocion(producto)}}
+                {{itemProductoPromocion(producto,objetoPromociones.informacionCarousel.usuario)}}
 
             {% endfor %}
 
@@ -227,6 +228,8 @@
 
 </div>
 
+ <div id="alertas" class="toast-container fixed-top top-0 end-0 p-3" style="z-index: 110;left:auto">
+    </div>
 
 <script src="{{ url_for('static', filename='wwwroot/lib/jquery/dist/jquery.min.js' ) }}"></script>
 <script src="{{ url_for('static', filename='wwwroot/js/ScriptFiltrosAcordeon.js' ) }}" asp-append-version="true"></script>
@@ -234,6 +237,9 @@
 <script src="{{ url_for('static', filename='wwwroot/js/site.js' ) }}" asp-append-version="true"></script>
 <script src="{{ url_for('static', filename='wwwroot/js/ScriptBarraBusqueda.js' ) }}" asp-append-version="true"></script>
 <script src="{{ url_for('static', filename='wwwroot/js/autocomplete.js' ) }}" asp-append-version="true"></script>
+
+<script src="{{ url_for('static', filename='wwwroot/js/ScriptCarritoFlotante.js' ) }}" ></script>
+<script src="{{ url_for('static', filename='wwwroot/js/ScriptCarritoUsuario.js' ) }}" ></script>
  <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
 </body>
 

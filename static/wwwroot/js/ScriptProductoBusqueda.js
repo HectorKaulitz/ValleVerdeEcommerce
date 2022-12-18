@@ -15,8 +15,9 @@ function ActualizarNotificacionVisual() {
     //    $('#contenedor-carrito-flotante').html(data.getElementById("contenedor-carrito-flotante"));
     //});
 
-    $('#contenedor-login').load('/Sesion/ContenedorUsuario')
-    $('#contenedor-loginF').load('/Sesion/ContenedorUsuario')
+  /*  $('#contenedor-login').load('/Sesion/ContenedorUsuario')
+    $('#contenedor-loginF').load('/Sesion/ContenedorUsuario')*/
+    window.location.reload();
 
 }
 function AgregarAcarrito(idProd, idUsu,urlImagen, nombre)
@@ -102,7 +103,6 @@ function AgregarAcarrito(idProd, idUsu,urlImagen, nombre)
 }
 
 function AgregarFavoritos(idProduc,idUsua,imagen,nombre) {
-    alert("entro");
     if (idUsua != null) {
         $.ajax({
             async: false,

@@ -290,7 +290,7 @@ def favorito():
         totalCarrito = mysql.ObtenerTotalesCarritoUsuario(productosCarritos)
         productosCarousel = mysql.ObtenerProductosCarouselPorCategoria(2)
         objCarritoUsuario = getsetObjetoCarritoUsuario(None, "", productosCarousel, productosCarritos, datosUsuario,
-                                                       totalCarrito,
+                                                       informacionCabecera.totalCarrito,
                                                        False, None, mysql.ObtenerConfiguracionWeb())
         productosFavoritos = mysql.ObtenerProductosFavoritos(datosUsuario.IDUsuarioRegistrado)
         objFavoritos = getsetObjetoProductosFavoritos(productosFavoritos, datosUsuario)
@@ -937,3 +937,21 @@ def CrearCuenta():
 
     return jsonify({ "resultadoC": resB[0], "resultadoM": resB[1], "token": sesion[1],
                      "fechaExpiracion": sesion[2] })
+
+@app.route('/EliminarProductoDeFavoritos/', methods=['POST', 'GET'])
+def EliminarProductoDeFavoritos():
+    idProductoFavorito = request.form['idProductoFavorito']
+    mySql = MySQL()
+
+    res = mySql.EliminarProductoFavorito(idProductoFavorito)
+
+    return jsonify({"resultado": res})
+
+@app.route('/ConvertirProductoDeFavoritoACarrito/', methods=['POST', 'GET'])
+def ConvertirProductoDeFavoritoACarrito():
+    idProductoFavorito = request.form['idProductoFavorito']
+    mySql = MySQL()
+
+    res = mySql.ConvertirProductoFavoritoAProductoCarrito(idProductoFavorito)
+
+    return jsonify({"resultado": res})

@@ -7,7 +7,6 @@ class getsetProductoFavorito:
                  IDUsuarioRegistrado, FechaAgrego, PrecioAgregado, PrecioPromocion, Precio, Bloqueado, imagenes,
                  IDProductoFavoritoEncriptado, mostrarInteraccion):
         from Programacion.Funcionalidad.Utileria import Utileria
-        from Programacion.Funcionalidad.Encriptacion import Encriptacion
         self.indice = indice
         self.IDProductoFavorito = IDProductoFavorito
         self.IDProducto = IDProducto
@@ -23,5 +22,5 @@ class getsetProductoFavorito:
         self.DiferenciaConPrecioActual = Utileria().RedondeoDouble(PrecioPromocion-PrecioAgregado)
         self.Bloqueado = Bloqueado
         self.imagenes = imagenes
-        self.IDProductoFavoritoEncriptado = Encriptacion().Encrypt(IDProductoFavoritoEncriptado)
+        self.IDProductoFavoritoEncriptado = IDProductoFavoritoEncriptado
         self.mostrarInteraccion = mostrarInteraccion

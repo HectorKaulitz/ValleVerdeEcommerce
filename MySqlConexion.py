@@ -296,12 +296,21 @@ class MySQL:
                 for item in items:
                     interaccionConUsuario = item[15] > 0
                     imagenes = self.ObtenerImagenesProducto(item[0])
+                    if item[15] == "":
+                        precio = 100
+                    else:
+                        precio = item[15]
+
+                    if item[16] == "":
+                        precioP = 70
+                    else:
+                        precioP = item[16];
                     productosPromocion.append(getsetProductoPromocionPorCategoria(item[0], item[1], item[2],
                                                                                   item[3], item[4], item[5], item[6],
                                                                                   item[7], item[8], item[9], item[10]
                                                                                   , item[11], item[12], item[13],
-                                                                                  item[14], imagenes, item[15],
-                                                                                  item[16], 5, False, 0, item[17],
+                                                                                  item[14], imagenes, precio,
+                                                                                  precioP, 5, False, 0, item[17],
                                                                                   interaccionConUsuario))
 
             CURSOR.close()
@@ -1530,5 +1539,54 @@ class MySQL:
             print("Error en el procedimiento AgregarUsuario: ", e)
         except Exception as error:
             print("ERROR AgregarUsuario: ", error)
+
+        return res
+
+    def EliminarProductoFavorito(self, idProductoFavorito):
+        res = -1
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idProductoFavorito]
+            CURSOR.callproc('EliminarProductoFavorito', args)
+            self.CONNECTION.commit()
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = 1
+
+            CURSOR.close()
+            self.desconectar_mysql()
+            res = 1
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento EliminarProductoFavorito: ", e)
+        except Exception as error:
+            print("ERROR EliminarProductoFavorito: ", error)
+
+        return res
+
+    def ConvertirProductoFavoritoAProductoCarrito(self, idProductoFavorito):
+        res = None
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idProductoFavorito]
+            CURSOR.callproc('ConvertirProductoFavoritoAProductoCarrito', args)
+            self.CONNECTION.commit()
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = [str(item[0]), str(item[1])]
+
+            CURSOR.close()
+            self.desconectar_mysql()
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ConvertirProductoFavoritoAProductoCarrito: ", e)
+        except Exception as error:
+            print("ERROR ConvertirProductoFavoritoAProductoCarrito: ", error)
 
         return res

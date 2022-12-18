@@ -58,17 +58,17 @@
 <!--                    {-->
                     <div class="contenedor-item-seleccion">
                         <div class="btn-imagen-seleccion d-flex flex-wrap align-items-center"  value="1" onclick="CambiarImagenPrincipal('../static/wwwroot/Resources/Productos/1.png')">
-                            <img class="img-fluid mx-auto d-block"  src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{ObjetoProducto.productoSeleccionado.codigoBarras}}.png"/>
+                            <img class="img-fluid mx-auto d-block"  src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{ObjetoProducto.productoSeleccionado.codigoBarras}}.png" onerror="this.src='http://bodegavalleverde.ddns.net/Imagenes/icono.png';"/>
                         </div>
                     </div>
                     <div class="contenedor-item-seleccion">
                         <div class="btn-imagen-seleccion d-flex flex-wrap align-items-center"  value="2" onclick="CambiarImagenPrincipal('../static/wwwroot/Resources/Productos/1.png')">
-                            <img class="img-fluid mx-auto d-block"  src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{ObjetoProducto.productoSeleccionado.codigoBarras}}.png"/>
+                            <img class="img-fluid mx-auto d-block"  src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{ObjetoProducto.productoSeleccionado.codigoBarras}}.png" onerror="this.src='http://bodegavalleverde.ddns.net/Imagenes/icono.png';"/>
                         </div>
                     </div>
                     <div class="contenedor-item-seleccion">
                         <div class="btn-imagen-seleccion d-flex flex-wrap align-items-center"  value="3" onclick="CambiarImagenPrincipal('../static/wwwroot/Resources/Productos/1.png')">
-                            <img class="img-fluid mx-auto d-block"  src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{ObjetoProducto.productoSeleccionado.codigoBarras}}.png"/>
+                            <img class="img-fluid mx-auto d-block"  src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{ObjetoProducto.productoSeleccionado.codigoBarras}}.png" onerror="this.src='http://bodegavalleverde.ddns.net/Imagenes/icono.png';"/>
                         </div>
                     </div>
 <!--                    }-->
@@ -78,7 +78,7 @@
 
                     <div class="img-zoom-container mx-auto d-block">
                         <div id="divLente" class="img-zoom-lens"></div>
-                        <img id="imgProductoSeleccionado" class="img-fluid imagen-producto mx-auto d-block" src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{ObjetoProducto.productoSeleccionado.codigoBarras}}.png" alt="">
+                        <img id="imgProductoSeleccionado" class="img-fluid imagen-producto mx-auto d-block" src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{ObjetoProducto.productoSeleccionado.codigoBarras}}.png" alt="" onerror="this.src='http://bodegavalleverde.ddns.net/Imagenes/icono.png';">
                     </div>
                 </div>
             </div>
@@ -161,6 +161,8 @@
 
 </aside>
 
+ <div id="alertas" class="toast-container fixed-top top-0 end-0 p-3" style="z-index: 110;left:auto">
+    </div>
 
 
 <script src="{{ url_for('static', filename='wwwroot/lib/jquery/dist/jquery.min.js' ) }}"></script>

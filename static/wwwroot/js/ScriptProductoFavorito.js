@@ -1,7 +1,7 @@
 ﻿function convertirProductoFavorito(idProductoFav) {
     $.ajax({
         async: false,
-        url: "/ValidacionVenta/ConvertirProductoDeFavoritoACarrito/",
+        url: "/ConvertirProductoDeFavoritoACarrito/",
         data:
         {
             idProductoFavorito: idProductoFav
@@ -29,7 +29,7 @@
 function EliminarProductoFavorito(idProductoFavorit) {
     $.ajax({
         async: false,
-        url: "/ValidacionVenta/EliminarProductoDeFavoritos/",
+        url: "/EliminarProductoDeFavoritos/",
         data:
         {
             idProductoFavorito: idProductoFavorit
@@ -56,8 +56,10 @@ function EliminarProductoFavorito(idProductoFavorit) {
 
 
 function ActualizarCarritoCompletoVisual() {
-    $('#carrito').load('/Venta/ObtenerCarritoUsuario')
+   /* $('#carrito').load('/Venta/ObtenerCarritoUsuario')*/
+     window.location.reload();
 }
 function ActualizarFavoritosVisual() {
-    $('#favoritos').load('/Venta/ObtenerFavoritosUsuario')
+   /* $('#favoritos').load('/Venta/ObtenerFavoritosUsuario')*/
+     window.location.reload();
 }

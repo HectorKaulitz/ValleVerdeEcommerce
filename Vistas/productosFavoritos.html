@@ -5,20 +5,20 @@
         <div class="subdiv-carta-carritoF">
             <div class="div-carta-carrito-itemsF">
                 {#@if (productosFavoritos.Count > 0)#}
-                {%if objFavoritos.productosFavoritos|length %}
+                {%if objFavoritos.productosFavoritos|length>0 %}
                     {#@foreach (getsetProductoFavorito productoFavorito in productosFavoritos)#}
                     {% for productoFavorito in objFavoritos.productosFavoritos %}
                         <div style="" class="div-carta-carrito-itemF row">
 
                             <div class="contenedor-1-itemF col-md-2 col-4">
                                 <div class="contenedor-imagen-itemF">
-                                        <img src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{productoFavorito.codigoBarras}}.png"  class="item-imagen-productoF"/>
+                                        <img src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{productoFavorito.codigoBarras}}.png"  class="item-imagen-productoF" onerror="this.src='http://bodegavalleverde.ddns.net/Imagenes/icono.png';"/>
 
                                 </div>
                             </div>
 
                             <div class="contenedor-2-itemF col-md-7 col-8">
-                                <p class="item-informacion-parrafosF"><strong>Producto favorito {{loop.index + 1}}</strong></p>
+                                <p class="item-informacion-parrafosF"><strong>{{productoFavorito.Nombre}}</strong></p>
 
                                 <div class="contenedor-precion-subio-bajo">
 
@@ -56,7 +56,7 @@
                                 <div class="contenedor-cantidad-input-botonesF">
                                     {#@if (productoFavorito.mostrarInteraccion)#}
                                     {% if productoFavorito.mostrarInteraccion %}
-                                        <button name="btnMoverCarritoCompleto" id="btnMoverCarritoCompleto" type="button" class="btn btn-primary btn-mover-carrito" onclick="convertirProductoFavorito('{{productoFavorito.IDProductoFavoritoEncriptado}})" >Mover a carrito</button>
+                                        <button name="btnMoverCarritoCompleto" id="btnMoverCarritoCompleto" type="button" class="btn btn-primary btn-mover-carrito" onclick="convertirProductoFavorito('{{productoFavorito.IDProductoFavoritoEncriptado}}')" >Mover a carrito</button>
                                     {% endif %}
                                 </div>
 
