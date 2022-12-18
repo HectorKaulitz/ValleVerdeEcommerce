@@ -176,7 +176,7 @@ def historialCompras():
 def promociones():
     mySql = MySQL()
     productosPag = request.args.get('productosPag', 10)
-    numeroPagina: int = int(request.args.get('numeroPagina', 0)) - 1
+    numeroPagina: int = int(request.args.get('numeroPagina', 1))
 
     if (productosPag == -2):
         productosPag = 10
@@ -188,7 +188,7 @@ def promociones():
 
     productosPromocion = mySql.ObtenerProductosDePromocionPorCategoria(2);
 
-    productosPromocionIndividuales = mySql.ObtenerProductosDePromocionPorCategoria(-1, numeroPagina, productosPag);
+    productosPromocionIndividuales = mySql.ObtenerProductosDePromocionPorCategoria(-1, numeroPagina-1, productosPag);
 
     NumeroTotalProductos = mySql.ObtenerNumeroPaginasProductosDePromocionPorCategoria(-1, productosPag);
     datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request);
