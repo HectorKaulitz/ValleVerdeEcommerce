@@ -6,7 +6,7 @@ $(document).ready(function () {
     $("#inputNombre").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarNombre/",
+            url: "/ValidarNombre/",
             data:
             {
                 nombre: $("#inputNombre").val()
@@ -54,7 +54,7 @@ $(document).ready(function () {
     $("#inputApellido").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarApellidos/",
+            url: "/ValidarApellidos/",
             data:
             {
                 apellidos: $("#inputApellido").val()
@@ -101,7 +101,7 @@ $(document).ready(function () {
     $("#inputCorreo").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarCorreo/",
+            url: "/ValidarCorreo/",
             data:
             {
                 correo: $("#inputCorreo").val(),
@@ -137,7 +137,7 @@ $(document).ready(function () {
                             $("#inputCorreo").css("background-color", "#ff3c335c");
                             $("#divAlertCorreo").show("slow");
                             document.getElementById('labelAlertCorreo').textContent = "Correo ya registrado";
-                            breaK;
+                            break;
                     }
 
                 }
@@ -152,7 +152,7 @@ $(document).ready(function () {
     $("#inputTelefono").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarTelefono/",
+            url: "/ValidarTelefono/",
             data:
             {
                 telefono: $("#inputTelefono").val(),
@@ -187,7 +187,7 @@ $(document).ready(function () {
                             $("#inputTelefono").css("background-color", "#ff3c335c");
                             $("#divAlertTelefono").show("slow");
                             document.getElementById('labelAlertTelefono').textContent = "Telefono ya registrado";
-                            breaK;
+                            break;
 
 
                     }
@@ -204,7 +204,7 @@ $(document).ready(function () {
     $("#btnCancelarDatosP").click(function () {
         
         $.ajax({
-            url: "/Validacion/ObtenerDatosOriginalesUsuario/",
+            url: "/ObtenerDatosOriginalesUsuario/",
             data:
             {
 
@@ -222,10 +222,14 @@ $(document).ready(function () {
 
                     $('#inputcodigoTelefono').empty();
 
-                    result.codigos.forEach(function (item) {
+//                    result.codigos.forEach(function (item) {
+//                        //alert(result.direccion.pais);
+//                        LlenarCodigos(item, result.codigo);
+//                    });
+                    for(var item in result.codigos) {
                         //alert(result.direccion.pais);
                         LlenarCodigos(item, result.codigo);
-                    });
+                    };
                     $("#inputNombre").css("background-color", "#ffffff");
                     $("#divAlertNombre").hide("slow");
                     document.getElementById('labelAlertNombre').textContent = "";
@@ -259,7 +263,7 @@ $(document).ready(function () {
     $("#btnGuardarDatosP").click(function () {
         var codigo = document.getElementById("inputcodigoTelefono");
         $.ajax({
-            url: "/Validacion/GuardarDatosPersonales/",
+            url: "/GuardarDatosPersonales/",
             data:
             {
                 nombre: $("#inputNombre").val(),
@@ -306,7 +310,7 @@ $(document).ready(function () {
     $("#inputUsuario").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarUsuario/",
+            url: "/ValidarUsuario/",
             data:
             {
                 usuario: $("#inputUsuario").val(),
@@ -384,7 +388,7 @@ $(document).ready(function () {
     $("#inputContraseñaActual").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarContraseñaActual/",
+            url: "/ValidarContraseñaActual/",
             data:
             {
                 contraseña: $("#inputContraseñaActual").val()
@@ -437,7 +441,7 @@ $(document).ready(function () {
     $("#inputContraseña").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarContraseña/",
+            url: "/ValidarContraseña/",
             data:
             {
                 contraseña: $("#inputContraseña").val()
@@ -503,7 +507,7 @@ $(document).ready(function () {
     $("#inputContraseña").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarConfirmarContraseña/",
+            url: "/ValidarConfirmarContraseña/",
             data:
             {
                 contraseña: $("#inputContraseña").val(),
@@ -549,7 +553,7 @@ $(document).ready(function () {
     $("#inputConfirmarContraseña").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarConfirmarContraseña/",
+            url: "/ValidarConfirmarContraseña/",
             data:
             {
                 contraseña: $("#inputContraseña").val(),
@@ -596,7 +600,7 @@ $(document).ready(function () {
     $("#btnCancelarDatosCC").click(function () {
 
         $.ajax({
-            url: "/Validacion/ObtenerDatosOriginalesUsuario/",
+            url: "/ObtenerDatosOriginalesUsuario/",
             data:
             {
 
@@ -640,7 +644,7 @@ $(document).ready(function () {
     $("#btnGuardarDatosCC").click(function () {
         
         $.ajax({
-            url: "/Validacion/GuardarDatosCuentaC/",
+            url: "/GuardarDatosCuentaC/",
             data:
             {
                 contraseñaActual: $("#inputContraseñaActual").val(),
@@ -676,7 +680,7 @@ $(document).ready(function () {
     $("#btnCancelarDatosCU").click(function () {
 
         $.ajax({
-            url: "/Validacion/ObtenerDatosOriginalesUsuario/",
+            url: "/ObtenerDatosOriginalesUsuario/",
             data:
             {
 
@@ -715,7 +719,7 @@ $(document).ready(function () {
     $("#btnGuardarDatosCU").click(function () {
 
         $.ajax({
-            url: "/Validacion/GuardarDatosCuentaU/",
+            url: "/GuardarDatosCuentaU/",
             data:
             {
                 usuario: $("#inputUsuario").val()

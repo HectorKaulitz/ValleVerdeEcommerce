@@ -332,11 +332,22 @@ def ayuda():
 
 @app.route('/perfilUsuario')
 def perfilUsuario():
+    mySql = MySQL()
     # cabecera-----------------------------
     informacionCabecera = LlenarCabecera(True, "")
-    datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
     # ----------------------------
-    informacionUsuario = getsetObjetoPerfilUsuario(datosUsuario)
+
+    datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
+    listaPaises = mySql.ObtenerPaisesConCodigosIso()
+    pais = next((obj for obj in listaPaises if obj.nombrePais == 'Mexico'), listaPaises[0])
+    listaEstados = mySql.ObtenerEstadosPorPais(pais.nombrePais, pais.iso3)
+    listaCiudades = mySql.ObtenerCiudadesPorEstadoPais(pais.nombrePais, listaEstados[0].nombreEstado)
+    listaCodigosTelefono = mySql.ObtenerCodigoTelefonoPais()
+    listaColonias = mySql.ObtenerColoniaPorCodigoPostal("")
+    identificacion = None
+
+    informacionUsuario = getsetObjetoPerfilUsuario(datosUsuario, "","","", listaPaises, listaEstados, listaCiudades,
+                                                   listaColonias, listaCodigosTelefono, identificacion)
     return render_template('perfilUsuario.html', objetoPerfilUsuario=informacionUsuario,
                            informacionCabecera=informacionCabecera)
 
@@ -587,7 +598,7 @@ def ActualizarCantidadProductoCarrito():
     mySql = MySQL()
 
     res: getsetInformacionProductoCarrito = mySql.ActualizarCantidadProductoCarrito(idProductoCarrito, cantidad, tipo);
-    totalCarrito: getsetTotalesCarrito = mySql.ObtenerTotalesCarritoUsuario([])
+    totalCarrito: getsetTotalesCarrito = mySql.ObtenerTotalesCarritoUsuario(idUsuario)
 
     return jsonify({"resultado": json.dumps(res.__dict__), "total": json.dumps(totalCarrito.__dict__)})
 
@@ -879,26 +890,35 @@ def ValidarApellidos():
 @app.route('/ValidarCorreo/', methods=['POST', 'GET'])
 def ValidarCorreo():
     correo = request.form['correo']
-    res = Utileria().ValidarCorreoUsuario(correo, False, request)
+    modificacion = request.form['modificacion']
+    res = Utileria().ValidarCorreoUsuario(correo, modificacion, request)
     return jsonify({"resultado":res})
 
 @app.route('/ValidarTelefono/', methods=['POST', 'GET'])
 def ValidarTelefono():
     telefono = request.form['telefono']
-    res = Utileria().ValidarTelefonoUsuario(telefono, False, request)
+    modificacion = request.form['modificacion']
+    res = Utileria().ValidarTelefonoUsuario(telefono, modificacion, request)
     return jsonify({"resultado":res})
 
 @app.route('/ValidarUsuario/', methods=['POST', 'GET'])
 def ValidarUsuario():
     usuario = request.form['usuario']
-    res = Utileria().ValidarUsuario(usuario, False, request)
+    modificacion = bool(request.form['modificacion'])
+    res = Utileria().ValidarUsuario(usuario, modificacion, request)
     return jsonify({"resultado":res})
 
 @app.route('/ValidarContraseña/', methods=['POST', 'GET'])
 def ValidarContraseña():
     contrasena = request.form['contraseña']
     res = Utileria().ValidarContraseñaUsuario(contrasena)
-    return jsonify({"resultado":res})\
+    return jsonify({"resultado":res})
+
+@app.route('/ValidarContraseñaActual/', methods=['POST', 'GET'])
+def ValidarContraseñaActual():
+    contrasena = request.form['contraseña']
+    res = Utileria().ValidarContraseñaActualUsuario(contrasena, request, MySQL())
+    return jsonify({"resultado":res})
 
 @app.route('/ValidarConfirmarContraseña/', methods=['POST', 'GET'])
 def ValidarConfirmarContraseña():
@@ -937,6 +957,134 @@ def CrearCuenta():
     return jsonify({ "resultadoC": resB[0], "resultadoM": resB[1], "token": sesion[1],
                      "fechaExpiracion": sesion[2] })
 
+@app.route('/ObtenerDatosOriginalesUsuario/', methods=['POST', 'GET'])
+def ObtenerDatosOriginalesUsuario():
+    token = None
+    idUsuarioRegistrado = "-1"
+    nombre = ""
+    apellido = ""
+    telefono = ""
+    usuario = ""
+    contraseña = ""
+    fechaRegistro = ""
+    correo = ""
+    codigo = ""
+    activo = False
+    Obusuario = Utileria().ObtenerUsuarioDeLaSesionActual(request=request)
+
+    if Obusuario is not None:
+        token = str(Obusuario.token)
+        idUsuarioRegistrado = Obusuario.IDUsuarioRegistrado
+        nombre = Obusuario.Nombre
+        apellido = Obusuario.Apellido
+        telefono = Obusuario.Telefono
+        usuario = Obusuario.Usuario
+        contraseña = Obusuario.Contraseña
+        fechaRegistro = Obusuario.FechaRegistro
+        correo = Obusuario.Correo
+        activo = Obusuario.Activo
+        codigo = Obusuario.idCodigoTelefono
+    listaCodigosTelefono = MySQL().ObtenerCodigoTelefonoPais()
+    telefonos = json.dumps([tel.__dict__ for tel in listaCodigosTelefono])
+    return jsonify({"token":token, "IDUsuarioRegistrado": idUsuarioRegistrado, "nombre": nombre, "apellido": apellido,
+                    "telefono": telefono, "usuario": usuario, "Contraseña": contraseña, "FechaRegistro": fechaRegistro,
+                    "Activo": activo, "correo": correo, "codigo": codigo,
+                    "codigos": telefonos})
+
+@app.route('/GuardarDatosPersonales/', methods=['POST', 'GET'])
+def GuardarDatosPersonales():
+    nombre = request.form['nombre']
+    apellidos = request.form['apellidos']
+    correo = request.form['correo']
+    telefono = request.form['telefono']
+    codigoTelefono = request.form['codigoTelefono']
+    modificacion = bool(request.form['modificacion'])
+    res = -1
+    mensaje = "Error metodo"
+    resAux = -1
+
+    util = Utileria()
+    mySql =MySQL()
+
+    resAux = util.ValidarNombreApellidosUsuario(nombre)
+    if resAux == 1:
+        resAux = util.ValidarNombreApellidosUsuario(apellidos)
+        if resAux == 1:
+            resAux = util.ValidarCorreoUsuario(correo, modificacion, request)
+            if (resAux == 1):
+                if not codigoTelefono == "":
+                    resAux = util.ValidarTelefonoUsuario(telefono, modificacion, request)
+                    if (resAux == 1):
+                        datosUsuario = util.ObtenerUsuarioDeLaSesionActual(request)
+                        if (datosUsuario is not None):
+                            print(datosUsuario.IDUsuarioRegistrado, )
+                            res = mySql.ModificarUsuario(datosUsuario.IDUsuarioRegistrado, nombre, apellidos, telefono, correo, codigoTelefono)
+                            if (res == 1):
+                                mensaje = "Exito al modificar datos personales"
+                        else:
+                            mensaje = "Sesion no valida"
+                    else:
+                         #  1 todo bien
+                         # -1 caracteres invalidos
+                         # -2 vacio
+                         # -3 error metodo
+                         # -4 telefono no disponible
+                        match resAux:
+                            case -1:
+                                mensaje = "Caracteres invalidos en el telefono"
+                            case - 2:
+                                mensaje = "El telefono no puede quedar vacio"
+                            case - 3:
+                                mensaje = "Error al validar el telefono"
+                            case - 4:
+                                mensaje = "Telefono no disponible"
+
+                else:
+                    mensaje = "El codigo de telefono no puede quedar vacio"
+
+            else:
+                # 1 todo bien
+                # -2 vacio
+                # -3 error metodo
+                # -4 correo no disponible
+                match resAux:
+                    case - 1:
+                        mensaje = "Caracteres invalidos en el correo"
+
+                    case - 2:
+                        mensaje = "El correo no puede quedar vacio"
+
+                    case - 3:
+                        mensaje = "Error al validar el correo"
+
+                    case - 4:
+                        mensaje = "Correo no disponible"
+
+        else:
+                # 1 todo bien
+                # -2 vacio
+                # -3 error metodo
+                match resAux:
+                    case -1:
+                        mensaje = "Caracteres invalidos en el apellido"
+                    case -2:
+                        mensaje = "El apellido no puede quedar vacio"
+                    case -3:
+                        mensaje = "Error al validar el apellido"
+    else:
+        # 1 todo bien
+        # -2 vacio
+        # -3 error metodo
+        match resAux:
+            case - 1:
+                mensaje = "Caracteres invalidos en el nombre"
+            case - 2:
+                mensaje = "El nombre no puede quedar vacio"
+            case - 3:
+                mensaje = "Error al validar el nombre"
+
+    return jsonify({"resultado": res, "mensaje": mensaje})
+
 @app.route('/EliminarProductoDeFavoritos/', methods=['POST', 'GET'])
 def EliminarProductoDeFavoritos():
     idProductoFavorito = request.form['idProductoFavorito']
@@ -954,3 +1102,246 @@ def ConvertirProductoDeFavoritoACarrito():
     res = mySql.ConvertirProductoFavoritoAProductoCarrito(idProductoFavorito)
 
     return jsonify({"resultado": res})
+
+@app.route('/GuardarDatosCuentaC/', methods=['POST', 'GET'])
+def GuardarDatosCuentaC():
+    contraseñaActual = request.form['contraseñaActual']
+    contraseñaNueva = request.form['contraseñaNueva']
+    contraseñaNuevaConfirmar = request.form['contraseñaNuevaConfirmar']
+
+    res = -1
+    resAux = -1
+    idUsuario = "-1"
+    mensaje = "Error metodo"
+
+    util = Utileria()
+    mySql =MySQL()
+
+    resAux = util.ValidarContraseñaActualUsuario(contraseñaActual, request, mySql)
+    if resAux == 1:
+        resAux = util.ValidarContraseñaUsuario(contraseñaNueva)
+        if resAux == 1:
+            resAux = util.ValidarConfirmarContraseñaUsuario(contraseñaNueva, contraseñaNuevaConfirmar)
+            if (resAux == 1):
+                if not contraseñaActual == contraseñaNueva:
+                    datosUsuario = util.ObtenerUsuarioDeLaSesionActual(request)
+                    if (datosUsuario is not None):
+                        idUsuario = datosUsuario.IDUsuarioRegistrado
+                    res = mySql.ModificarContrasenaUsuario(contraseñaNueva, idUsuario)
+                    if (res == 1):
+                        mensaje = "Exito al modificar contraseña";
+                else:
+                    mensaje = "La contraseña nueva no puede ser igual a la actual";
+            else:
+                 #  1 todo bien
+                 # -1 caracteres invalidos
+                 # -2 vacio
+                 # -3 error metodo
+                 # -4 telefono no disponible
+                match resAux:
+                    case -1:
+                        mensaje = "La contraseñas no coinciden";
+                    case -2:
+                        mensaje = "Confrimar contraseña no pude quedar vacio";
+                    case -3:
+                        mensaje = "Error al validar contraseña nueva";
+        else:
+            #  1 todo bien
+            # -1 caracteres invalidos
+            # -2 vacio
+            # -3 error metodo
+            # -4 telefono no disponible
+            match resAux:
+                case -1:
+                    mensaje = "La contraseña nueva es incorrecta";
+                case -2:
+                    mensaje = "La contraseña nueva no puede quedar vacia";
+                case -3:
+                    mensaje = "Error al validar contraseña nueva";
+                case -4:
+                    mensaje = "La contraseña nueva no puede ser menor a 8 caracteres";
+                case -5:
+                    mensaje = "La contraseña nueva no puede ser mayor a 25 caracteres";
+                case -6:
+                    mensaje = "La contraseña nueva debe contener letras(s)";
+                case -7:
+                    mensaje = "La contraseña nueva  debe contener numero(s)";
+    else:
+        #  1 todo bien
+        # -1 caracteres invalidos
+        # -2 vacio
+        # -3 error metodo
+        # -4 telefono no disponible
+        match resAux:
+            case -1:
+                mensaje = "La contraseña actual es incorrecta";
+            case -2:
+                mensaje = "La contraseña actual no puede quedar vacia";
+            case -3:
+                mensaje = "Error al validar contraseña actual";
+            case -4:
+                mensaje = "La contraseña actual no puede ser menor a 8 caracteres";
+            case -5:
+                mensaje = "La contraseña actual no puede ser mayor a 25 caracteres";
+
+    return jsonify({"resultado": res, "mensaje":mensaje})
+
+@app.route('/GuardarDatosCuentaU/', methods=['POST', 'GET'])
+def GuardarDatosCuentaU():
+    usuario = request.form['usuario']
+    res = -1
+    resAux = -1
+    idUsuario = "-1"
+    mensaje = "Error metodo"
+
+    util = Utileria()
+    mySql =MySQL()
+
+    resAux = util.ValidarUsuario(usuario, True, request)
+    if (resAux == 1):
+        Obusuario = util.ObtenerUsuarioDeLaSesionActual(request)
+        if (Obusuario is not None):
+            idUsuario = Obusuario.IDUsuarioRegistrado
+            print(idUsuario, usuario)
+        res = mySql.ModificarCampoUsuario(usuario, idUsuario)
+        print(res)
+        if (res == 1):
+            mensaje = "Exito al modificar usuario"
+    else:
+        match resAux:
+            case -1:
+                mensaje = "Caracteres invalidos en el usuario"
+            case -2:
+                mensaje = "El usuario no puede quedar vacio"
+            case -3:
+                mensaje = "Error al validar el usuario"
+            case -4:
+                mensaje = "Usuario no puede ser menor a 8 caracteres"
+            case -5:
+                mensaje = "Usuario no puede ser mayor a 20 caracteres"
+            case -6:
+                mensaje = "Usuario no disponible"
+
+    return jsonify({"resultado": res, "mensaje": mensaje})
+
+
+@app.route('/ObtenerDatosDireccionUsuario/', methods=['POST', 'GET'])
+def ObtenerDatosDireccionUsuario():
+    usuario = request.form['usuario']
+    idDir = request.form['idDir']
+
+    mySql = MySQL()
+
+    listapaises = []
+    listaestados = []
+    listaciudades = []
+    listacolonias = []
+
+    listaDirecciones = mySql.ObtenerDireccionUsuario(usuario, idDir)
+    d = None
+    drop = -1
+
+    if len(listaDirecciones) > 0:
+        d = listaDirecciones[0]
+        listapaises = mySql.ObtenerPaisesConCodigosIso()
+        listaestados = mySql.ObtenerEstadosPorPais(d.pais, d.iso3Pais)
+        listaciudades = mySql.ObtenerCiudadesPorEstadoPais(d.pais, d.estado)
+        listacolonias = mySql.ObtenerColoniaPorCodigoPostal(d.codigoPostal)
+        drop = 1
+
+    return jsonify({"direccion": d, "paises": listapaises, "estados": listaestados, "ciudades": listaciudades,
+                    "colonias": listacolonias, "drop": drop})
+
+@app.route('/ObtenerEstadosPais/', methods=['POST', 'GET'])
+def ObtenerEstadosPais():
+    pais = request.form['pais']
+    iso3 = request.form['iso3']
+
+    mySql = MySQL()
+    listaestados = mySql.ObtenerEstadosPorPais(pais, iso3)
+    estados = json.dumps([estado.__dict__ for estado in listaestados])
+
+    return jsonify({"estados": json.loads(estados)})
+
+@app.route('/ObtenerCiudadesEstadoPais/', methods=['POST', 'GET'])
+def ObtenerCiudadesEstadoPais():
+    pais = request.form['pais']
+    estado = request.form['estado']
+
+    mySql = MySQL()
+    listaCiudades =  mySql.ObtenerCiudadesPorEstadoPais(pais, estado)
+    ciudades = json.dumps([ciudad.__dict__ for ciudad in listaCiudades])
+
+    return jsonify({"ciudades": json.loads(ciudades)})
+
+
+@app.route('/ObtenerColoniaPorCodigoPostal/', methods=['POST', 'GET'])
+def ObtenerColoniaPorCodigoPostal():
+    codigo = request.form['codigo']
+
+    listacolonias = []
+    mostraDrop = -1
+    entro = False
+
+    if (codigo is not None):
+        if len(codigo) > 3:
+            listacolonias = MySQL().ObtenerColoniaPorCodigoPostal(codigo)
+            entro = True
+        if (len(listacolonias) > 0):
+            mostraDrop = 1
+
+    colonias = json.dumps([col.__dict__ for col in listacolonias])
+
+    return jsonify({"colonias": json.loads(colonias), "colonia": "", "codigod": "", "drop": mostraDrop,
+                    "entro": entro})
+
+@app.route('/GuardarDireccion/', methods=['POST', 'GET'])
+def GuardarDireccion():
+    idDir = request.form['idDir']
+    ciudad= request.form['ciudad']
+    colonia= request.form['colonia']
+    calle= request.form['calle']
+    nexterior= request.form['nexterior']
+    ninterior= request.form['ninterior']
+    destinatario= request.form['destinatario']
+    isoPais= request.form['isoPais']
+    pais= request.form['pais']
+    estado= request.form['estado']
+    codigoEstado= request.form['codigoEstado']
+    codigoPostal = request.form['codigoPostal']
+
+    mySql = MySQL()
+    res = -1
+    resAux = 0
+    mensaje = "Error metodo"
+
+    if idDir != "-1":
+        mySql.ModificarDireccionUsuario(idDir, ciudad, colonia, calle, nexterior, ninterior, destinatario, isoPais, pais,
+                                  estado, codigoEstado, codigoPostal)
+        res = 1
+        mensaje = "Exito al modificar"
+    else:
+        datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
+        id = mySql.AgregarDireccionUsuario(datosUsuario.IDUsuarioRegistrado, ciudad, colonia, calle, nexterior, ninterior,
+                                         destinatario, isoPais, pais, estado, codigoEstado, codigoPostal)
+        if (id > 0):
+            res = 1
+            mensaje = "Exito al agregar direccion"
+
+    return jsonify({"resultado": res, "mensaje": mensaje})
+
+
+@app.route('/ObtenerEstadosPaisCiudadDefecto/', methods=['POST', 'GET'])
+def ObtenerEstadosPaisCiudadDefecto():
+    mySql = MySQL()
+    listaPaises = mySql.ObtenerPaisesConCodigosIso()
+    listaestados = mySql.ObtenerEstadosPorPais("Mexico", "MEX")
+    listaciudades = mySql.ObtenerCiudadesPorEstadoPais("Mexico", listaestados[0].nombreEstado)
+
+    paises = json.dumps([pais.__dict__ for pais in listaPaises])
+    estados = json.dumps([estado.__dict__ for estado in listaestados])
+    ciudades = json.dumps([ciudad.__dict__ for ciudad in listaciudades])
+
+    return jsonify({"paises": json.loads(paises), "estados": json.loads(estados), "ciudades": json.loads(ciudades),
+                    "pais": "Mexico", "iso": "MEX", "estado": listaestados[0].nombreEstado})
+

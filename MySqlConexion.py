@@ -29,6 +29,13 @@ from Programacion.getset.getsetTotalesCarrito import getsetTotalesCarrito
 from Programacion.getset.getsetVenta import getsetVenta
 from Programacion.getset.getsetTotalesCarrito import getsetTotalesCarrito
 
+import requests
+
+from Programacion.getsetApi.getsetCiudadesDeEstadoPais import getsetCiudadesDeEstadoPais
+from Programacion.getsetApi.getsetColoniasCodigoPostal import getsetColoniasCodigoPostal
+from Programacion.getsetApi.getsetEstadosDePais import getsetEstadosDePais
+from Programacion.getsetApi.getsetPaisIso import getsetPaisIso
+
 
 class MySQL:
 
@@ -1542,6 +1549,64 @@ class MySQL:
 
         return res
 
+    def ObtenerPaisesConCodigosIso(self):
+        res = []
+        try:
+            url = "https://countriesnow.space/api/v0.1/countries/iso"
+            response = requests.get(url)
+            if str(response.status_code).startswith("2"):
+                for pais in response.json()["data"]:
+                    res.append(getsetPaisIso(pais["name"], pais["Iso2"], pais["Iso3"]))
+        except Exception as e:
+            print("Error ObtenerPaisesConCodigosIso: ", e)
+
+        return res
+
+    def ObtenerEstadosPorPais(self, pais, iso3=""):
+        res = []
+        try:
+            url = "https://countriesnow.space/api/v0.1/countries/states"
+            parameters = {
+                "country": pais
+            }
+            response = requests.post(url, json=parameters)
+            if str(response.status_code).startswith("2"):
+                for estado in response.json()["data"]["states"]:
+                    res.append(getsetEstadosDePais(pais, iso3, estado["name"], estado["state_code"]))
+        except Exception as e:
+            print("Error ObtenerEstadosPorPais: ", e)
+
+        return res
+
+    def ObtenerCiudadesPorEstadoPais(self, pais, estado):
+        res = []
+        try:
+            url = "https://countriesnow.space/api/v0.1/countries/state/cities"
+            parameters = {
+                "country": pais, "state": estado
+            }
+            response = requests.post(url, json=parameters)
+            if str(response.status_code).startswith("2"):
+                for ciudad in response.json()["data"]:
+                    res.append(getsetCiudadesDeEstadoPais(pais, estado, ciudad))
+        except Exception as e:
+            print("Error ObtenerCiudadesPorEstadoPais: ", e)
+
+        return res
+
+    def ObtenerColoniaPorCodigoPostal(self, codigo):
+        res = []
+        try:
+            url = "https://apis.forcsec.com/api/codigos-postales/20220625-c71fdfa9be39aa02/" + codigo
+            response = requests.get(url)
+            if str(response.status_code).startswith("2"):
+                for colonia in response.json()["data"]["asentamientos"]:
+                    res.append(getsetColoniasCodigoPostal(codigo, "", colonia["ciudad"], colonia["nombre"], colonia["tipo"]))
+        except Exception as e:
+            print("Error ObtenerColoniaPorCodigoPostal: ", e)
+
+        return res
+
     def EliminarProductoFavorito(self, idProductoFavorito):
         res = -1
         if self.CONNECTION is None:
@@ -1588,5 +1653,149 @@ class MySQL:
             print("Error en el procedimiento ConvertirProductoFavoritoAProductoCarrito: ", e)
         except Exception as error:
             print("ERROR ConvertirProductoFavoritoAProductoCarrito: ", error)
+
+        return res
+
+    def ModificarUsuario(self, IDUsuarioRegistrado, nombre, apellidos, telefono, correo, codigoTelefono):
+        res = None
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [IDUsuarioRegistrado, nombre, apellidos, telefono, correo, codigoTelefono]
+            CURSOR.callproc('ModificarUsuario', args)
+            self.CONNECTION.commit()
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = int(item[0])
+
+            CURSOR.close()
+            self.desconectar_mysql()
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ModificarUsuario: ", e)
+        except Exception as error:
+            print("ERROR ModificarUsuario: ", error)
+
+        return res
+
+    def CoincideContraseñaActualUsuario(self, contraseña, idUsuario):
+        res = None
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [contraseña, idUsuario]
+            CURSOR.callproc('CoincideContraseñaActualUsuario', args)
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = int(item[0])
+
+            CURSOR.close()
+            self.desconectar_mysql()
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento CoincideContraseñaActualUsuario: ", e)
+        except Exception as error:
+            print("ERROR CoincideContraseñaActualUsuario: ", error)
+
+        return res
+
+    def ModificarContrasenaUsuario(self, contraseñaNueva, idUsuario):
+        res = None
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idUsuario, contraseñaNueva]
+            CURSOR.callproc('ModificarContrasenaUsuario', args)
+            self.CONNECTION.commit()
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = int(item[0])
+
+            CURSOR.close()
+            self.desconectar_mysql()
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ModificarContrasenaUsuario: ", e)
+        except Exception as error:
+            print("ERROR ModificarContrasenaUsuario: ", error)
+
+        return res
+
+    def ModificarCampoUsuario(self, usuario, idUsuario):
+        res = None
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idUsuario, usuario]
+            CURSOR.callproc('ModificarCampoUsuario', args)
+            self.CONNECTION.commit()
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = int(item[0])
+
+            CURSOR.close()
+            self.desconectar_mysql()
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ModificarCampoUsuario: ", e)
+        except Exception as error:
+            print("ERROR ModificarCampoUsuario: ", error)
+
+        return res
+
+    def ModificarDireccionUsuario(self, idDir, ciudad, colonia, calle, nexterior, ninterior, destinatario, isoPais,
+                                  pais, estado, codigoEstado, codigoPostal):
+        res = None
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [idDir, ciudad, colonia, calle, nexterior, ninterior, destinatario, isoPais,
+                                  pais, estado, codigoEstado, codigoPostal]
+            CURSOR.callproc('ModificarDireccionUsuario', args)
+            self.CONNECTION.commit()
+
+            for row in CURSOR.stored_results():
+                items = row.fetchall()
+                for item in items:
+                    res = int(item[0])
+
+            CURSOR.close()
+            self.desconectar_mysql()
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento ModificarDireccionUsuario: ", e)
+        except Exception as error:
+            print("ERROR ModificarDireccionUsuario: ", error)
+
+        return res
+
+    def AgregarDireccionUsuario(self, IDUsuarioRegistrado, ciudad, colonia, calle, nexterior, ninterior, destinatario,
+                                isoPais, pais, estado, codigoEstado, codigoPostal):
+        res = -5
+        if self.CONNECTION is None:
+            self.conectar_mysql()
+        try:
+            CURSOR = self.CONNECTION.cursor()
+            args = [IDUsuarioRegistrado, ciudad, colonia, calle, nexterior, ninterior, destinatario,
+                                isoPais, pais, estado, codigoEstado, codigoPostal]
+            CURSOR.callproc('AgregarDireccionUsuario', args)
+            self.CONNECTION.commit()
+
+            res = 1
+
+            CURSOR.close()
+            self.desconectar_mysql()
+        except mysql.connector.errors.ProgrammingError as e:
+            print("Error en el procedimiento AgregarDireccionUsuario: ", e)
+        except Exception as error:
+            print("ERROR AgregarDireccionUsuario: ", error)
 
         return res
