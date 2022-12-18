@@ -230,8 +230,7 @@ def producto(tipo=-1, busqueda="", idProducto=""):
 
     productosCarousel = mySql.ObtenerProductosCarouselPorCategoria(3, idProducto);
     productoSeleccionado = mySql.ObtenerProducto(idProducto);
-    token = Utileria().VerificarCookie("SesionUsuario");
-    datosUsuario = mySql.ObtenerUsuarioPorToken(token);
+    datosUsuario = Utileria().ObtenerUsuarioDeLaSesionActual(request)
     # cabecera-----------------------------
     informacionCabecera = LlenarCabecera(True, busqueda)
     # ----------------------------
@@ -239,7 +238,7 @@ def producto(tipo=-1, busqueda="", idProducto=""):
     informacion = getsetObjetoProducto(None, busqueda, productosCarousel, productoSeleccionado, None, datosUsuario,
                                        informacionCabecera, informacionCarousel)
     patch.append(productoSeleccionado.nombreProducto)
-    return render_template('Producto.html', ObjetoProducto=informacion, patch=patch)
+    return render_template('Producto.html', ObjetoProducto=informacion, patch=patch, Usuario=datosUsuario)
 
 
 @app.route('/comentarios')
