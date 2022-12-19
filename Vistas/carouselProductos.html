@@ -84,11 +84,11 @@
 										{#@if(@producto.precioOriginal!=@producto.precioDescuento)#}
 										{% if producto.precioOriginal != producto.precioDescuento %}
 											<div class="position-relative">
-												<p class=""><strike>$500</strike></p>
-												<p class="item-price"> <b>$450</b></p>
+												<p class=""><strike>{{"${:,.2f}".format(producto.precioOriginal) }}</strike></p>
+												<p class="item-price"> <b>{{"${:,.2f}".format(producto.precioDescuento) }}</b></p>
 											</div>
 										{%else%}
-											<p class="item-price"><b>$500</b></p>
+											<p class="item-price"><b>{{"${:,.2f}".format(producto.precioOriginal) }}</b></p>
 										{% endif %}
 										{#@if(@usuario!=null)#}
 										{% if informacionCarousel.usuario is not none %}

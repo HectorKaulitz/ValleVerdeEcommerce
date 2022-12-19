@@ -93,7 +93,7 @@
                     <div class="card-body thumb-content">
                         <a class="card-title nombre-producto" href="producto?idProducto={{producto.idProducto}}"> <h5 style="color:black;">{{producto.nombreProducto}}</h5> </a>
                         <p class="card-text descripcion-promocion">{{producto.descripcion}}</p>
-                        <p class="item-price precio-pro"><strike> ${{producto.precio}} </strike> <b>${{producto.precioPromocion}}</b></p>
+                        <p class="item-price precio-pro"><strike> {{"${:,.2f}".format(producto.precio) }}</strike> <b>{{"${:,.2f}".format(producto.PrecioPromocion) }}</b></p>
                         <div class="contenedor-botone-agregar-carrito-promo">
                             {# if(@objetoPromociones.informacionCarousel.usuario!=null) #}
                             {% if objetoPromociones.informacionCarousel.usuario is not none %}

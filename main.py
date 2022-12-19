@@ -1,5 +1,5 @@
 import json
-
+import qrcode
 from flask import Flask, render_template, Blueprint, request, jsonify
 from flask_cors import CORS
 from werkzeug.urls import url_encode
@@ -30,6 +30,7 @@ from Programacion.getset.getsetObjetoPromociones import getsetObjetoPromociones
 from Programacion.getset.getsetResultado import getsetResultado
 from Programacion.getset.getsetTotalesCarrito import getsetTotalesCarrito
 from Programacion.getset.getsetVenta import getsetVenta
+from Programacion.getset.getsetObjetoPagoAprobado import getsetObjetoPagoAprobado
 
 index = Blueprint('index', __name__, url_prefix='/index', template_folder='Vistas')
 
@@ -582,14 +583,23 @@ def ActualizarCantidadProductoCarrito():
     idProductoCarrito = request.form['idProductoCarrito']
     cantidad = request.form['cantidad']
     tipo = request.form['tipo']
-    idUsuario = request.form['idUsuario']
+
+    usuario = Utileria().ObtenerUsuarioDeLaSesionActual(request);
 
     mySql = MySQL()
 
-    res: getsetInformacionProductoCarrito = mySql.ActualizarCantidadProductoCarrito(idProductoCarrito, cantidad, tipo);
-    totalCarrito: getsetTotalesCarrito = mySql.ObtenerTotalesCarritoUsuario([])
+    if(float(cantidad)>0):
+        res: getsetInformacionProductoCarrito = mySql.ActualizarCantidadProductoCarrito(idProductoCarrito, cantidad, tipo);
+        totalCarrito: getsetTotalesCarrito = mySql.ObtenerTotalesCarritoUsuario(usuario.IDUsuarioRegistrado)
+        return jsonify({"resultado": json.dumps(res.__dict__), "total": json.dumps(totalCarrito.__dict__)})
+    else:
+        res = mySql.EliminarProductoCarrito(idProductoCarrito);
+        totalCarrito: getsetTotalesCarrito = mySql.ObtenerTotalesCarritoUsuario(usuario.IDUsuarioRegistrado)
+        return jsonify({"resultado": res, "total": json.dumps(totalCarrito.__dict__)})
 
-    return jsonify({"resultado": json.dumps(res.__dict__), "total": json.dumps(totalCarrito.__dict__)})
+
+
+
 
 
 @app.route('/EliminarProductoDelCarrito/', methods=['POST', 'GET'])
@@ -766,19 +776,63 @@ def EliminarComentarioUsuario():
     res = 1
     return jsonify({"resultado": res})
 
-def PagoAprobado(external_reference, payment_id="", status="",  comerciante_order_id="",  id =""):
+@app.route('/pagoAprobado/', methods=['POST', 'GET'])
+def PagoAprobado():
     mysql = MySQL()
+
+    external_reference = request.args.get('external_reference',-1);
+    payment_id = request.args.get('payment_id',"");
+    status = request.args.get('status',"");
+    comerciante_order_id = request.args.get('comerciante_order_id',"");
+    id = request.args.get('id',"");
+
     idVenta = external_reference;
     venta = mysql.ObtenerVenta(idVenta);
-    usuarioRegistrado = mysql.ObtenerUsuarioPorID(venta.idUsuario);
+    usuarioRegistrado = Utileria().ObtenerUsuarioDeLaSesionActual(request);
     pagada = False;
     tipoPago = venta.idTipoPago;
     enProceso = False;
     rechazada = False;
     enviarADomicilio = False;
-    urlCodigoBarras = "";
+    urlCodigoBarras = 'static/wwwroot/Temp/QR_' + idVenta + '.png'
+    codigoQR = qrcode.make(idVenta)
+    codigoQR.save(urlCodigoBarras);
 
-    return render_template('productosVentaHistorial.html', detalles=detalles,totalesVenta=totalesVenta)
+    if (tipoPago == 1):
+        enProceso = False;
+        enviarADomicilio = False;
+
+
+        # Saving as an image file
+
+
+    if (tipoPago == 2):
+        #Verificar con mercadolibre que se haya pagado y marcarla pagada
+        if (payment_id != "null" and payment_id != ""):
+            #Programacion.Funcionalidad.MercadoPagoMetodos obm = new Programacion.Funcionalidad.MercadoPagoMetodos();
+            #Payment pago = obm.ObtenerPago(payment_id);
+
+            #if (pago.Status == "approved" and pago.StatusDetail == "accredited" and pago.TransactionAmount >= (decimal)venta.total):
+            pagada = True;
+
+            #enviarADomicilio = venta.enviarADomicilio;
+            #urlCodigoBarras = new Programacion.Funcionalidad.Utileria().GenerarCodigoBarras(Environment, idVenta);
+            #Marcar pagada
+                #if (!venta.pagada):
+                #    string[] res = obv.MarcarVentaPagada(idVenta, payment_id);
+
+        else:
+            #Si llego aqui de una venta de mercado pago pero sin payment_id probablemente usaron el boton volver al sitio
+            pagada = False;
+            enProceso = False;
+            rechazada = True;
+
+    objPagoAprobado = getsetObjetoPagoAprobado(venta, payment_id, tipoPago, pagada, enProceso, rechazada,
+                             usuarioRegistrado, enviarADomicilio, urlCodigoBarras)
+
+    informacionCabecera = LlenarCabecera("",True)
+
+    return render_template('pagoAprobado.html',objPagoAprobado=objPagoAprobado,informacionCabecera=informacionCabecera)
 
 @app.route('/ActualizarTipoEnvio/', methods=['POST', 'GET'])
 def ActualizarTipoEnvio():

@@ -58,7 +58,7 @@ function AgregarAcarrito(idProd, idUsu,urlImagen, nombre)
 
                         contenedor.innerHTML += `<div id='toast` + numeroToast + `' class='toast' role='alert' aria-live='assertive' aria-atomic='true'>
                                                 <div class='toast-header' >
-                                                  <img src='` + urlImagen + `' class='rounded me-2 img-fluid' alt='` + nombre + `'>
+                                                  <img src='` + urlImagen + `' class='rounded me-2 img-fluid' alt='` + nombre + `' onerror="this.src='../static/wwwroot/Resources/icono.png';">
                                                   <strong class='me-auto'> ` + nombre + `</strong>
                                                   <small class='text-muted'>Justo ahora</small>
                                                   <button type='button' class='btn-close' data-bs-dismiss='toast' aria-label='Close'></button>

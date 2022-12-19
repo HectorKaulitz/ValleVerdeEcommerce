@@ -93,7 +93,7 @@
 
                                              <button class="btn btn-danger col-12 m-2" type="button" onclick="CancelarVenta('{{venta[idVenta]}}')">Cancelar compra</button>
                                          {% endif %}
-                                        <a class="btn btn-primary col-12 m-2" type="button" asp-controller="Venta" asp-action="PagoAprobado" asp-route-external_reference="{{venta.idVenta}}" asp-route-payment_id="{{venta.idPagoMercadoPago}}">Obtener comprobante</a>
+                                        <a class="btn btn-primary col-12 m-2" type="button" asp-controller="Venta" href="pagoAprobado?external_reference={{venta.idVenta}}&payment_id={{venta.idPagoMercadoPago}}">Obtener comprobante</a>
                                     {% else %}
                                          {% if(venta.idTipoPago == 4 and venta.pagada==false and (venta.idCargoOpenpay!= none and venta.idCargoOpenpay|length>0 and venta.idCargoOpenpay!="")) %}
 

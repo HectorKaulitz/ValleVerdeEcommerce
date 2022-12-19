@@ -6,7 +6,7 @@
     <div style="" class="row">
        {# @*INFORMACION DEL PRODUCTO*@ #}
         <div class="col-12 row">
-            <a class="col-md-9 col-12 row" asp-controller="Inicio" href="/producto?idProducto={{productoVenta.idProductoEncriptado}}">
+            <a class="col-md-9 col-12 row" asp-controller="Inicio" href="/producto?idProducto={{productoVenta.idProducto}}">
                {# @*IMAGEN ITEM PRODUCTO*@ #}
                 <div class="col-md-3 col-4 d-flex flex-wrap align-items-center mx-auto d-block imagen-producto-venta-historial">
                     <img src="http://bodegavalleverde.ddns.net/Imagenes/Productos/{{productoVenta.idProducto}}.png"  onerror="this.src='../static/wwwroot/Resources/icono.png';"  class="img-fluid"/>

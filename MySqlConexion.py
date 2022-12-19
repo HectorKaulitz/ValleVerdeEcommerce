@@ -1040,6 +1040,7 @@ class MySQL:
 
             res = 1
 
+            self.CONNECTION.commit()
             CURSOR.close()
             self.desconectar_mysql()
 
