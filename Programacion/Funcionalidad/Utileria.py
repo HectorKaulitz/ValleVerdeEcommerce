@@ -134,6 +134,7 @@ class Utileria:
                             else:
                                 if ord(caracter) >= 48 and ord(caracter) <= 57:
                                     continuar = True
+                                else:
                                     if caracter=="-" or caracter=="_":
                                         continuar = True
                                     else:
@@ -153,10 +154,6 @@ class Utileria:
                     res = -5
             else:
                 res = -4
-        #   1 todo bien
-        #   -1 caracteres invalidos
-        #   -2 vacio
-        #   -3 error metodos
         return res
 
     def ValidarContraseñaUsuario(self, contraseña):
@@ -206,11 +203,32 @@ class Utileria:
 
     def ValidarConfirmarContraseñaUsuario(self, contraseña, contraseñaConfirmar):
         res = -3
-        if contraseña is None or contraseñaConfirmar == "":
+        if contraseña is None or contraseñaConfirmar is None or contraseña  == "" or contraseñaConfirmar == "":
             res = -2
         else:
             if contraseña == contraseñaConfirmar:
                 res = 1
             else:
                 res = -1
+        return res
+
+    def ValidarContraseñaActualUsuario(self, contraseña, request, mySql):
+
+        longitudMinima = 8
+        longitudMaxima = 25
+        res = -3
+        if contraseña is None or contraseña == "":
+            res = -2
+        else:
+            if len(contraseña) >= longitudMinima:
+                if len(contraseña) <= longitudMaxima:
+                    idUsuario = "-1"
+                    datosUsuario = self.ObtenerUsuarioDeLaSesionActual(request)
+                    if datosUsuario is not None:
+                        idUsuario = datosUsuario.IDUsuarioRegistrado
+                    res = mySql.CoincideContraseñaActualUsuario(contraseña, idUsuario)
+                else:
+                    res = -5
+            else:
+                res = -4
         return res

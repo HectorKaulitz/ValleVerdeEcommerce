@@ -7,18 +7,17 @@
     <title>Perfil usuario</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/site.css' ) }}">
-     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosBarraSuperior.css' ) }}">
-     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloCartaCarrito.css' ) }}">
-     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloSubMenuFlotante.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/site.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosBarraSuperior.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloCartaCarrito.css' ) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloSubMenuFlotante.css' ) }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estilosPerfilUsuario.css' ) }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='wwwroot/css/estiloRegistro.css' ) }}">
 
     <script src="https://kit.fontawesome.com/1e636cb0f6.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
-     <style>
-
+    <style>
         :root {
             --colorOscuro: rgb(116,196,102);
             --colorMasOscuro: rgb(35, 61, 31);
@@ -26,7 +25,7 @@
             --colorExtraClaro: rgb(243,250,242));
             --colorBlanco: white;
         }
-   </style>
+    </style>
 </head>
 <header>
     {{cabecera(informacionCabecera)}}
@@ -34,478 +33,397 @@
 <body>
 
 
- <div class="container">
-    <div class="main-body">
-
-
-          <div class="row gutters-sm">
-
-            <div class="col-md-3 mb-3 col-12">
-
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex flex-column align-items-center text-center">
-
-                  <div class="row color-oscuro col-sm-12">
-
-                    <div class="col-sm-3 div-titulo-apartado">
-                      <h6 class="mb-0">Identificación</h6>
-                    </div>
-
-                  </div>
-
-                  <hr>
-
-                  {#@if(identificacion==null)#}
-                  {% if(true)%}
-                    <div class="row" style="display:block">
-                        <div class="col-sm-12 text-secondary">
-                            <h6>sin identificacion  <i class="fa-solid fa-person-circle-question"></i> </h6>
-                        </div>
-                     </div>
-
-                  {% else%}
-                            if (identificacion.AprobadoFrontal && identificacion.AprobadoPosterior)
-                            { @*si estan aprobados ambos lados de la identificacion*@
-                                <div class="row" style="display:block">
-
-                                   @* <div class="col-sm-12">
-                                        <h6 class="mb-0">Identificacion</h6>
-                                    </div>*@
-                                    <div class="col-sm-12 text-secondary">
-                                        <h6>Aprobada <i class="fa-regular fa-circle-check" style="color: lawngreen;"></i>@*aprobado*@</h6>
+    <div class="container">
+        <div class="main-body">
+            <div class="row gutters-sm">
+                <div class="col-md-3 mb-3 col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column align-items-center text-center">
+                                <div class="row color-oscuro col-sm-12">
+                                    <div class="col-sm-3 div-titulo-apartado">
+                                        <h6 class="mb-0">Identificación</h6>
                                     </div>
                                 </div>
-                            }
-                            else
-                            { @*no se han aprobado ,entonces checamos si alguno o ninguno esta aprobado*@
-                                if (identificacion.AprobadoFrontal)
-                                { @*el lado frontal si esta aprobado,y el posterior no*@
-
-                                    @*FRONTAL*@
+                                <hr>
+                                {#@if(identificacion==null)#}
+                                {% if objetoPerfilUsuario.identificacion is none %}
                                     <div class="row" style="display:block">
-
-                                        <div class="col-sm-12">
-                                            <h6 class="mb-0">Identificacion frontal</h6>
-                                        </div>
                                         <div class="col-sm-12 text-secondary">
-                                            <h6>Aprobada <i class="fa-regular fa-circle-check" style="color: lawngreen;"></i>@*aprobado*@</h6>
-                                        </div>
-                                     </div>
-
-                                     @*POSTERIOR*@
-                                      <div class="row" style="display:block">
-
-                                        <div class="col-sm-12">
-                                            <h6 class="mb-0">Identificacion posterior</h6>
-                                        </div>
-                                        <div class="col-sm-12 text-secondary">
-                                            <h6>Sin aprobar  <i class="fa-regular fa-circle-xmark" style="color: red;"></i> </h6>
-                                        </div>
-                                     </div>
-                                }
-                                else
-                                {
-                                    if (identificacion.AprobadoPosterior)
-                                    { @*el lado posterior es el aprobado ,y el frontal no*@
-                                        @*FRONTAL*@
-                                    <div class="row" style="display:block">
-
-                                        <div class="col-sm-12">
-                                            <h6 class="mb-0">Identificacion frontal</h6>
-                                        </div>
-                                        <div class="col-sm-12 text-secondary">
-                                            <h6>Sin aprobar  <i class="fa-regular fa-circle-xmark" style="color: red;"></i> </h6>
-                                        </div>
-                                     </div>
-
-                                     @*POSTERIOR*@
-                                      <div class="row" style="display:block">
-
-                                        <div class="col-sm-12">
-                                            <h6 class="mb-0">Identificacion posterior</h6>
-                                        </div>
-                                        <div class="col-sm-12 text-secondary">
-                                             <h6>Aprobada <i class="fa-regular fa-circle-check" style="color: lawngreen;"></i>@*aprobado*@</h6>
-
-                                        </div>
-                                     </div>
-                                    }
-                                    else
-                                    {
-                                        @*si existe un registro pero ambos lados no se han aprobado*@
+                                            <h6>sin identificacion  <i class="fa-solid fa-person-circle-question"></i> </h6>
+                                         </div>
+                                    </div>
+                                {% else%}
+                                    {% if (objetoPerfilUsuario.identificacion.AprobadoFrontal and objetoPerfilUsuario.identificacion.AprobadoPosterior) %}
+                                    {# si estan aprobados ambos lados de la identificacion #}
                                         <div class="row" style="display:block">
 
 
+                                            {#<div class="col-sm-12">#}
+                                                {#<h6 class="mb-0">Identificacion</h6>#}
+                                            {#</div>#}
+
                                             <div class="col-sm-12 text-secondary">
-                                                <h6>Sin aprobar <i class="fa-regular fa-circle-xmark" style="color: red;"></i> @*desaprobado*@</h6>
+                                                <h6>Aprobada <i class="fa-regular fa-circle-check" style="color: lawngreen;"></i>aprobado</h6>
                                             </div>
                                         </div>
-                                    }
-                                }
-                            }
-                        }
-                         @if(identificacion==null)
-                         {
-                             <div class="row col-sm-12">
-                                <div class="col-sm-12 div-opcion-editar" style="display:flex;justify-content:end;">
-                                  <a class="btn color-oscuro"  asp-controller="Sesion" asp-action="Identidad"><i class="fa-solid fa-pen-to-square"></i></a>
-                                </div>
-                              </div>
+                                    {% else %}
+                                        {# no se han aprobado ,entonces checamos si alguno o ninguno esta aprobado #}
+                                        {% if (objetoPerfilUsuario.identificacion.AprobadoFrontal) %}
+                                        {# el lado frontal si esta aprobado,y el posterior no #}
 
-                              <hr>
-                         }
-                         else
-                         {
-                            @if ((!identificacion.AprobadoFrontal && !identificacion.AprobadoPosterior) || (identificacion.AprobadoFrontal && !identificacion.AprobadoPosterior) ||(!identificacion.AprobadoFrontal && identificacion.AprobadoPosterior))
-                            {@* en cualquiera de los demas casod ebe poder editar,exepto cuando ya se aprobo la identidad*@
-                               @*BOTON EDITAR*@
-                              <div class="row col-sm-12" style="display:block">
-                                <div class="col-sm-12 div-opcion-editar" style="display:flex;justify-content:end;">
-                                  <a class="btn color-oscuro"  asp-controller="Sesion" asp-action="Identidad"><i class="fa-solid fa-pen-to-square"></i></a>
-                                </div>
-                              </div>
+                                            {# FRONTAL #}
+                                            <div class="row" style="display:block">
+                                                <div class="col-sm-12">
+                                                    <h6 class="mb-0">Identificacion frontal</h6>
+                                                </div>
+                                                <div class="col-sm-12 text-secondary">
+                                                    <h6>Aprobada <i class="fa-regular fa-circle-check" style="color: lawngreen;"></i>aprobado</h6>
+                                                </div>
+                                            </div>
+                                            {# POSTERIOR #}
+                                            <div class="row" style="display:block">
+                                                <div class="col-sm-12">
+                                                    <h6 class="mb-0">Identificacion posterior</h6>
+                                                </div>
+                                                <div class="col-sm-12 text-secondary">
+                                                    <h6>Sin aprobar  <i class="fa-regular fa-circle-xmark" style="color: red;"></i> </h6>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            {% if (objetoPerfilUsuario.identificacion.AprobadoPosterior) %}
+                                            {# el lado posterior es el aprobado ,y el frontal no #}
+                                            {# FRONTAL #}
+                                                <div class="row" style="display:block">
+                                                    <div class="col-sm-12">
+                                                        <h6 class="mb-0">Identificacion frontal</h6>
+                                                    </div>
+                                                    <div class="col-sm-12 text-secondary">
+                                                        <h6>Sin aprobar  <i class="fa-regular fa-circle-xmark" style="color: red;"></i> </h6>
+                                                    </div>
+                                                </div>
 
-                                <hr>
-                            }
-                            else
-                            {
+                                                {# POSTERIOR #}
+                                                <div class="row" style="display:block">
 
-                              <div class="row col-sm-12" style="display:block">
-                                <div class="col-sm-12 div-opcion-editar" style="display:flex;justify-content:end;">
-                                  <a class="btn color-oscuro"  asp-controller="Sesion" asp-action="Identidad"> <i class="fa-solid fa-eye"></i> </a>
+                                                    <div class="col-sm-12">
+                                                        <h6 class="mb-0">Identificacion posterior</h6>
+                                                    </div>
+                                                    <div class="col-sm-12 text-secondary">
+                                                        <h6>Aprobada <i class="fa-regular fa-circle-check" style="color: lawngreen;"></i>aprobado</h6>
+                                                    </div>
+                                                </div>
+                                            {% else %}
+
+                                                {# si existe un registro pero ambos lados no se han aprobado #}
+                                                <div class="row" style="display:block">
+                                                    <div class="col-sm-12 text-secondary">
+                                                        <h6>Sin aprobar <i class="fa-regular fa-circle-xmark" style="color: red;"></i>desaprobado</h6>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                                {% if objetoPerfilUsuario.identificacion is none %}
+
+                                    <div class="row col-sm-12">
+                                        <div class="col-sm-12 div-opcion-editar" style="display:flex;justify-content:end;">
+                                            <a class="btn color-oscuro"  asp-controller="Sesion" asp-action="Identidad"><i class="fa-solid fa-pen-to-square"></i></a>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                {% else %}
+                                    {% if (not objetoPerfilUsuario.identificacion.AprobadoFrontal and not objetoPerfilUsuario.identificacion.AprobadoPosterior) or (objetoPerfilUsuario.identificacion.AprobadoFrontal and not objetoPerfilUsuario.identificacion.AprobadoPosterior) or (not objetoPerfilUsuario.identificacion.AprobadoFrontal and objetoPerfilUsuario.identificacion.AprobadoPosterior) %}
+
+                                        {# en cualquiera de los demas casod ebe poder editar,exepto cuando ya se aprobo la identidad #}
+                                        {# BOTON EDITAR #}
+                                        <div class="row col-sm-12" style="display:block">
+                                            <div class="col-sm-12 div-opcion-editar" style="display:flex;justify-content:end;">
+                                                <a class="btn color-oscuro"  asp-controller="Sesion" asp-action="Identidad"><i class="fa-solid fa-pen-to-square"></i></a>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    {% else %}
+                                        <div class="row col-sm-12" style="display:block">
+                                            <div class="col-sm-12 div-opcion-editar" style="display:flex;justify-content:end;">
+                                                <a class="btn color-oscuro"  asp-controller="Sesion" asp-action="Identidad"> <i class="fa-solid fa-eye"></i> </a>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 col-12">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row color-oscuro">
+                                <div class="col-sm-3 div-titulo-apartado">
+                                    <h6 class="mb-0">Datos personales</h6>
                                 </div>
-                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Nombre completo</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <h6>{{objetoPerfilUsuario.datosUsuario.Nombre}} {{objetoPerfilUsuario.datosUsuario.Apellido}}</h6>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Codigo area</h6>
+                                </div>
+                            <div class="col-sm-9 text-secondary">
+                                <h6>{{objetoPerfilUsuario.datosUsuario.codigoArea}}</h6>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Telefono</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <h6>{{objetoPerfilUsuario.datosUsuario.Telefono}}</h6>
+                            </div>
+                        </div>
+                        <hr>
+
+    <div class="row">
+
+    <div class="col-sm-3">
+    <h6 class="mb-0">Correo</h6>
+    </div>
+    <div class="col-sm-9 text-secondary">
+    <h6>{{objetoPerfilUsuario.datosUsuario.Correo}}</h6>
+    </div>
+
+    </div>
+
+
+    <div class="row">
+    <div class="col-sm-12 div-opcion-editar">
+    <a class="btn color-oscuro"  data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa-solid fa-pen-to-square" ></i></a>
+    </div>
+    </div>
+
+    <hr>
+
+    <div class="row color-oscuro">
+
+    <div class="col-sm-3 div-titulo-apartado">
+    <h6 class="mb-0">Datos Cuenta</h6>
+    </div>
+
+    </div>
+
+    <hr>
+
+    <div class="row">
+
+    <div class="col-sm-3">
+    <h6 class="mb-0">Usuario</h6>
+    </div>
+    <div class="col-sm-7 text-secondary">
+    <h6>{{objetoPerfilUsuario.datosUsuario.Usuario}}</h6>
+    </div>
+    <div class="col-sm-2 div-opcion-editar">
+    <a class="btn color-oscuro"  data-bs-toggle="modal" data-bs-target="#staticBackdropPU"><i class="fa-solid fa-pen-to-square"></i></a>
+    </div>
+
+    </div>
+
+    <hr>
+
+    <div class="row">
+
+    <div class="col-sm-3">
+    <h6 class="mb-0">Contraseña</h6>
+    </div>
+    <div class="col-sm-7 text-secondary">
+    <h6>**********</h6>
+    </div>
+    <div class="col-sm-2 div-opcion-editar">
+    <a class="btn color-oscuro"  data-bs-toggle="modal" data-bs-target="#staticBackdropPC"><i class="fa-solid fa-pen-to-square"></i></a>
+    </div>
+
+    </div>
 
                             <hr>
-                         }
-                  {%endif%}
+                             <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Fecha registro</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    <h6>{{objetoPerfilUsuario.datosUsuario.FechaRegistro}}</h6>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row color-oscuro">
+                                <div class="col-sm-3 div-titulo-apartado">
+                                    <h6 class="mb-0">Direcciones de envios</h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                {# @if (@Model.detectionService.Device.Type == Device.Mobile)#}
+                                {% if(true==false) %}
 
-                  </div>
-                </div>
-              </div>
-            </div>
+                                    <div class="container h-100">
+                                        <div class="row d-flex justify-content-center align-items-center h-100">
+                                            {% for direccion in objetoPerfilUsuario.datosUsuario.Direcciones  %}
+                                                <div class="card col-12 py-2 my-2" style="border-radius: 16px;">
+                                                    <div class="card-stepper text-black row">
 
+                                                        <div class="row">
 
-            <div class="col-md-9 col-12">
+                                                            <div class="col-sm-3">
+                                                                <h6 class="mb-0">Destinatario</h6>
+                                                            </div>
+                                                            <div class="col-sm-9 text-secondary">
+                                                                <h6>{{direccion.destinatario}}</h6>
+                                                            </div>
 
-              <div class="card mb-3">
-
-                <div class="card-body">
-
-
-                  <div class="row color-oscuro">
-
-                    <div class="col-sm-3 div-titulo-apartado">
-                      <h6 class="mb-0">Datos personales</h6>
-                    </div>
-
-                  </div>
-
-                  <hr>
-
-                  <div class="row">
-
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Nombre completo</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      <h6>{{objetoPerfilUsuario.usuario.Nombre}} {{objetoPerfilUsuario.usuario.Apellido}}</h6>
-                    </div>
-
-                  </div>
-
-                  <hr>
-
-                  <div class="row">
-
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Codigo area</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      <h6>{{objetoPerfilUsuario.usuario.codigoArea}}</h6>
-                    </div>
-
-                  </div>
-
-                  <hr>
-
-                  <div class="row">
-
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Telefono</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      <h6>3541033212</h6>
-                    </div>
-
-                  </div>
-
-                  <hr>
-
-                  <div class="row">
-
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Correo</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      <h6>{{objetoPerfilUsuario.usuario.Correo}}</h6>
-                    </div>
-
-                  </div>
-
-
-                  <div class="row">
-                    <div class="col-sm-12 div-opcion-editar">
-                      <a class="btn color-oscuro"  data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa-solid fa-pen-to-square" ></i></a>
-                    </div>
-                  </div>
-
-                  <hr>
-
-                  <div class="row color-oscuro">
-
-                    <div class="col-sm-3 div-titulo-apartado">
-                      <h6 class="mb-0">Datos Cuenta</h6>
-                    </div>
-
-                  </div>
-
-                  <hr>
-
-                  <div class="row">
-
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Usuario</h6>
-                    </div>
-                    <div class="col-sm-7 text-secondary">
-                      <h6>{{objetoPerfilUsuario.usuario.Usuario}}</h6>
-                    </div>
-                     <div class="col-sm-2 div-opcion-editar">
-                      <a class="btn color-oscuro"  data-bs-toggle="modal" data-bs-target="#staticBackdropPU"><i class="fa-solid fa-pen-to-square"></i></a>
-                    </div>
-
-                  </div>
-
-                  <hr>
-
-                  <div class="row">
-
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Contraseña</h6>
-                    </div>
-                    <div class="col-sm-7 text-secondary">
-                      <h6>**********</h6>
-                    </div>
-                     <div class="col-sm-2 div-opcion-editar">
-                      <a class="btn color-oscuro"  data-bs-toggle="modal" data-bs-target="#staticBackdropPC"><i class="fa-solid fa-pen-to-square"></i></a>
-                    </div>
-
-                  </div>
-
-                  <hr>
-
-                   <div class="row">
-
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Fecha registro</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      <h6>{{objetoPerfilUsuario.usuario.FechaRegistro}}</h6>
-                    </div>
-
-                  </div>
-
-                  <hr />
-
-
-                  <div class="row color-oscuro">
-                        <div class="col-sm-3 div-titulo-apartado">
-                            <h6 class="mb-0">Direcciones de envios</h6>
-                        </div>
-                  </div>
-
-
-                        <div class="row">
-
-                           {# @if (@Model.detectionService.Device.Type == Device.Mobile)#}
-                            {% if(true==false) %}
-
-                               <div class="container h-100">
-                                    <div class="row d-flex justify-content-center align-items-center h-100">
-                                        {#@foreach (getsetDireccion direccion in @usuario.Direcciones)#}
-                                        {%if(true)%}
-                                            <div class="card col-12 py-2 my-2" style="border-radius: 16px;">
-                                                <div class="card-stepper text-black row">
-
-                                                    <div class="row">
-
-                                                        <div class="col-sm-3">
-                                                            <h6 class="mb-0">Destinatario</h6>
-                                                        </div>
-                                                        <div class="col-sm-9 text-secondary">
-                                                            <h6>Usuario1</h6>
-                                                        </div>
-
-                                                        <div class="col-sm-3">
-                                                            <h6 class="mb-0">Direccion</h6>
-                                                        </div>
-                                                        <div class="col-sm-9 text-secondary">
-                                                            <h6>Guillermo prieto #338-A, Cotija, Los lotes, Michoacan, Mexico - C.P. 59940</h6>
-                                                        </div>
-                                                        <div class="col-12 d-flex">
-                                                            <a class="btn color-oscuro margin-btn col-6"  data-bs-toggle="modal" data-bs-target="#staticBackdropAD" onclick="Editar(@direccion.idDireccion)"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                            <a class="btn color-oscuro margin-btn col-6"  data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa-solid fa-trash-can"></i></a>
+                                                            <div class="col-sm-3">
+                                                                <h6 class="mb-0">Direccion</h6>
+                                                            </div>
+                                                            <div class="col-sm-9 text-secondary">
+                                                                <h6>{{destinatario.direccion}}</h6>
+                                                            </div>
+                                                            <div class="col-12 d-flex">
+                                                                <a class="btn color-oscuro margin-btn col-6"  data-bs-toggle="modal" data-bs-target="#staticBackdropAD" onclick="Editar({{direccion.idDireccion}})"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                                <a class="btn color-oscuro margin-btn col-6"  data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa-solid fa-trash-can"></i></a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        {% endif %}
+                                            {% endfor %}
+                                        </div>
                                     </div>
-                               </div>
+                                {%else%}
 
-                            {%else%}
-
-                                 <div class="div-tabla-direccion">
-                                    <table class="table">
-                                        <thead>
-                                            <tr class="color-extra-claro">
-                                                <th class="texto-titulo-tabla-p">
+                                    <div class="div-tabla-direccion">
+                                        <table class="table">
+                                            <thead>
+                                                <tr class="color-extra-claro">
+                                                    <th class="texto-titulo-tabla-p">
                                                     País
-                                                </th>
-                                                <th class="texto-titulo-tabla-p">
+                                                    </th>
+                                                    <th class="texto-titulo-tabla-p">
                                                     Estado
-                                                </th>
-                                                <th class="texto-titulo-tabla-p">
+                                                    </th>
+                                                    <th class="texto-titulo-tabla-p">
                                                     Ciudad
-                                                </th>
-                                                <th class="texto-titulo-tabla-p">
+                                                    </th>
+                                                    <th class="texto-titulo-tabla-p">
                                                     Colonia
-                                                </th>
-                                                <th class="texto-titulo-tabla-p">
+                                                    </th>
+                                                    <th class="texto-titulo-tabla-p">
                                                     Calle
-                                                </th>
-                                                <th class="texto-titulo-tabla-p">
+                                                    </th>
+                                                    <th class="texto-titulo-tabla-p">
                                                     Numero Exterior
-                                                </th>
-                                                <th class="texto-titulo-tabla-p">
+                                                    </th>
+                                                    <th class="texto-titulo-tabla-p">
                                                     Numero Interior
-                                                </th>
-                                                <th class="texto-titulo-tabla-p">
+                                                    </th>
+                                                    <th class="texto-titulo-tabla-p">
                                                     Destinatario
-                                                </th>
-                                                <th class="texto-titulo-tabla-p">
-
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {#@if (@usuario.Direcciones != null)#}
-                                            {% if(true)%}
-                                                {#@foreach (getsetDireccion dir in @usuario.Direcciones)#}
-                                                {%if(true)%}
-                                                    <tr>
-                                                        <td class="columna-tabla">
-                                                            <div class="div-texto-tabla-p">
-                                                                <h6 class="texto-tabla-p">
-                                                                    Mexico
-                                                                </h6>
-                                                            </div>
-
-                                                        </td>
-                                                        <td class="columna-tabla">
-                                                            <div class="div-texto-tabla-p">
-                                                                <h6 class="texto-tabla-p">
-                                                                   Michoacan
-                                                                </h6>
-                                                            </div>
-
-                                                        </td>
-                                                        <td class="columna-tabla">
-                                                            <div class="div-texto-tabla-p">
-                                                                <h6 class="texto-tabla-p">
-                                                                    Cotija
-                                                                </h6>
-                                                            </div>
-
-                                                        </td>
-                                                        <td class="columna-tabla">
-                                                            <div class="div-texto-tabla-p">
-                                                                <h6 class="texto-tabla-p">
-                                                                    Los lotes
-                                                                </h6>
-                                                            </div>
-
-                                                        </td>
-                                                        <td class="columna-tabla">
-                                                            <div class="div-texto-tabla-p">
-                                                                <h6 class="texto-tabla-p">
-                                                                    Guillermo prieto
-                                                                </h6>
-                                                            </div>
-
-                                                        </td>
-                                                        <td class="columna-tabla">
-                                                            <div class="div-texto-tabla-p">
-                                                                <h6 class="texto-tabla-p">
-                                                                    #338
-                                                                </h6>
-                                                            </div>
-
-                                                        </td>
-                                                        <td class="columna-tabla">
-                                                            <div class="div-texto-tabla-p">
-                                                                <h6 class="texto-tabla-p">
-                                                                   A
-                                                                </h6>
-                                                            </div>
-
-                                                        </td>
-                                                        <td class="columna-tabla">
-                                                            <div class="div-texto-tabla-p">
-                                                                <h6 class="texto-tabla-p">
-                                                                    Usuario1
-                                                                </h6>
-                                                            </div>
-
-                                                        </td>
-                                                        <td class="columna-tabla">
-
-                                                            <div class="row">
-                                                                <div class="col-sm-12 div-botones-tabla">
-                                                                    <a class="btn color-oscuro margin-btn"  data-bs-toggle="modal" data-bs-target="#staticBackdropAD" onclick="Editar(@dir.idDireccion)"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                                    <a class="btn color-oscuro margin-btn"  data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa-solid fa-trash-can"></i></a>
+                                                    </th>
+                                                    <th class="texto-titulo-tabla-p">
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% if objetoPerfilUsuario.datosUsuario.Direcciones is not none%}
+                                                    {% for dir in objetoPerfilUsuario.datosUsuario.Direcciones %}
+                                                        <tr>
+                                                            <td class="columna-tabla">
+                                                                <div class="div-texto-tabla-p">
+                                                                    <h6 class="texto-tabla-p">
+                                                                        {{dir.pais}}
+                                                                    </h6>
                                                                 </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                {%endif%}
-                                            {% endif%}
-                                        </tbody>
-                                    </table>
+                                                            </td>
+                                                            <td class="columna-tabla">
+                                                                <div class="div-texto-tabla-p">
+                                                                    <h6 class="texto-tabla-p">
+                                                                        {{dir.estado}}
+                                                                    </h6>
+                                                                </div>
+                                                            </td>
+                                                            <td class="columna-tabla">
+                                                                <div class="div-texto-tabla-p">
+                                                                    <h6 class="texto-tabla-p">
+                                                                        {{dir.ciudad}}
+                                                                    </h6>
+                                                                </div>
+                                                            </td>
+                                                            <td class="columna-tabla">
+                                                                <div class="div-texto-tabla-p">
+                                                                    <h6 class="texto-tabla-p">
+                                                                        {{dir.colonia}}
+                                                                    </h6>
+                                                                </div>
+                                                            </td>
+                                                            <td class="columna-tabla">
+                                                                <div class="div-texto-tabla-p">
+                                                                    <h6 class="texto-tabla-p">
+                                                                        {{dir.calle}}
+                                                                    </h6>
+                                                                </div>
+                                                            </td>
+                                                            <td class="columna-tabla">
+                                                                <div class="div-texto-tabla-p">
+                                                                    <h6 class="texto-tabla-p">
+                                                                        {{dir.numeroExterior}}
+                                                                    </h6>
+                                                                </div>
+                                                            </td>
+                                                            <td class="columna-tabla">
+                                                                <div class="div-texto-tabla-p">
+                                                                    <h6 class="texto-tabla-p">
+                                                                       {{dir.numeroInterior}}
+                                                                    </h6>
+                                                                </div>
+                                                            </td>
+                                                            <td class="columna-tabla">
+                                                                <div class="div-texto-tabla-p">
+                                                                    <h6 class="texto-tabla-p">
+                                                                        {{dir.destinatario}}
+                                                                    </h6>
+                                                                </div>
+                                                            </td>
+                                                            <td class="columna-tabla">
+                                                                <div class="row">
+                                                                    <div class="col-sm-12 div-botones-tabla">
+                                                                        <a class="btn color-oscuro margin-btn"  data-bs-toggle="modal" data-bs-target="#staticBackdropAD" onclick="Editar({{dir.idDireccion}})"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                                        <a class="btn color-oscuro margin-btn"  data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa-solid fa-trash-can"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    {%endfor%}
+                                                {% endif%}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 div-opcion-agregar">
+                                    <a class="btn color-oscuro"  data-bs-toggle="modal" data-bs-target="#staticBackdropAD" onclick="AsignarId(-1)"><i class="fa-solid fa-plus"></i></a>
                                 </div>
-                            {% endif %}
+                            </div>
                         </div>
-
-                  <div class="row">
-                    <div class="col-sm-12 div-opcion-agregar">
-                      <a class="btn color-oscuro"  data-bs-toggle="modal" data-bs-target="#staticBackdropAD" onclick="AsignarId(-1)"><i class="fa-solid fa-plus"></i></a>
                     </div>
-                  </div>
-
-
-
-
                 </div>
-
-              </div>
-
-
             </div>
-
-
-          </div>
-
         </div>
     </div>
 
@@ -533,7 +451,7 @@
                                 </div>
 
                                 <div class="div-contenido-input-item">
-                                    <input value="{{objetoPerfilUsuario.usuario.Nombre}}" name="inputNombre" id="inputNombre" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                    <input value="{{objetoPerfilUsuario.datosUsuario.Nombre}}" name="inputNombre" id="inputNombre" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
                                 </div>
                            </div>
                         </div>
@@ -553,7 +471,7 @@
                                 </div>
 
                                 <div class="div-contenido-input-item">
-                                    <input value="{{objetoPerfilUsuario.usuario.Apellido}}" name="inputApellido" id="inputApellido" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                    <input value="{{objetoPerfilUsuario.datosUsuario.Apellido}}" name="inputApellido" id="inputApellido" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
                                 </div>
 
                             </div>
@@ -573,7 +491,7 @@
                                 </div>
 
                                 <div class="div-contenido-input-item">
-                                    <input value="{{objetoPerfilUsuario.usuario.Correo}}" name="inputCorreo" id="inputCorreo" type="email" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                    <input value="{{objetoPerfilUsuario.datosUsuario.Correo}}" name="inputCorreo" id="inputCorreo" type="email" class="input-txt-item" placeholder="Campo obligatorio" required/>
                                 </div>
 
                             </div>
@@ -593,8 +511,15 @@
                                 </div>
 
                                 <div class="div-contenido-input-item">
-                                    <select id="inputcodigoTelefono" name="inputcodigoTelefono" class="form form-control input-txt-item form-select" asp-items="@listaCodigosTelefono" required style="text-align: center; ">
-                                         <i class="fa-solid fa-caret-down"></i>
+                                    <select id="inputcodigoTelefono" name="inputcodigoTelefono" class="form form-control input-txt-item form-select" required style="text-align: center; ">
+                                        {% for item in objetoPerfilUsuario.listaCodigosTelefono %}
+                                            {% if (item.CodigoTelefono == "52") %}
+                                                <option value="{{item.IDCodigoTelefonoPais}}" selected>{{item.PaisEspañol ~ ' ' ~ item.CodigoTelefono}}</option>
+                                            {% else %}
+                                                <option value="{{item.IDCodigoTelefonoPais}}">{{item.PaisEspañol ~ ' ' ~ item.CodigoTelefono}}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <i class="fa-solid fa-caret-down"></i>
                                      </select>
                                 </div>
 
@@ -616,7 +541,7 @@
                                 </div>
 
                                 <div class="div-contenido-input-item">
-                                    <input value="3541033212" name="inputTelefono" id="inputTelefono" type="tel" class="input-txt-item" placeholder="Campo opcional"/>
+                                    <input value="{{objetoPerfilUsuario.datosUsuario.Telefono}}" name="inputTelefono" id="inputTelefono" type="tel" class="input-txt-item" placeholder="Campo opcional"/>
                                 </div>
 
                             </div>
@@ -750,7 +675,7 @@
                                 </div>
 
                                 <div class="div-contenido-input-item">
-                                    <input value="{{objetoPerfilUsuario.usuario.Usuario}}" id="inputUsuario" name="inputUsuario" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
+                                    <input value="{{objetoPerfilUsuario.datosUsuario.Usuario}}" id="inputUsuario" name="inputUsuario" type="text" class="input-txt-item" placeholder="Campo obligatorio" required/>
                                 </div>
 
                             </div>
@@ -799,7 +724,16 @@
 
                                 <div class="div-contenido-input-item">
 
-                                     <select id="inputPais" name="inputPais" class="form form-control input-txt-item form-select" asp-items="@listaPaises" required style="text-align: center;"> </select>
+                                     <select id="inputPais" name="inputPais" class="form form-control input-txt-item form-select" required style="text-align: center;">
+                                        {% for item in objetoPerfilUsuario.listaPaises %}
+                                            {% if (item.nombrePais == "Mexico") %}
+                                                <option value="{{item.iso3}}" selected>{{item.nombrePais}}</option>
+                                            {% else %}
+                                                <option value="{{item.iso3}}">{{item.nombrePais}}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                         <i class="fa-solid fa-caret-down"></i>
+                                     </select>
                                 </div>
 
                             </div>
@@ -820,7 +754,10 @@
 
                                 <div class="div-contenido-input-item">
 
-                                     <select id="inputEstado" name="inputEstado" class="form form-control input-txt-item form-select" asp-items="@listaEstados" required style="text-align: center; ">
+                                     <select id="inputEstado" name="inputEstado" class="form form-control input-txt-item form-select" required style="text-align: center; ">
+                                         {% for item in objetoPerfilUsuario.listaEstados %}
+                                            <option value="{{item.codigoEstado}}">{{item.nombreEstado}}</option>
+                                         {% endfor %}
                                          <i class="fa-solid fa-caret-down"></i>
                                      </select>
                                 </div>
@@ -843,7 +780,12 @@
 
                                  <div class="div-contenido-input-item">
 
-                                     <select id="inputCiudad" name="inputCiudad" class="form form-control input-txt-item form-select" asp-items="@listaCiudades" required style="text-align: center;"> </select>
+                                     <select id="inputCiudad" name="inputCiudad" class="form form-control input-txt-item form-select" required style="text-align: center;">
+                                        {% for item in objetoPerfilUsuario.listaCiudades %}
+                                            <option value="{{item.nombreCiudad}}">{{item.nombreCiudad}}</option>
+                                         {% endfor %}
+                                         <i class="fa-solid fa-caret-down"></i>
+                                     </select>
                                 </div>
 
                             </div>
@@ -884,7 +826,12 @@
 
                                 <div class="div-contenido-input-item" id="div-contenido-input-item-colonia" name="div-contenido-input-item-colonia">
 
-                                      <select id="inputColonia" name="inputColonia" class="form form-control input-txt-item form-select" asp-items="@listaColonias" required style="text-align: center;"> </select>
+                                      <select id="inputColonia" name="inputColonia" class="form form-control input-txt-item form-select" required style="text-align: center;">
+                                          {% for item in objetoPerfilUsuario.listaColonias %}
+                                            <option value="{{item.codigoPostal}}">{{item.nombreColonia}}</option>
+                                         {% endfor %}
+                                         <i class="fa-solid fa-caret-down"></i>
+                                      </select>
 
                                 </div>
 
@@ -993,14 +940,15 @@
 
 
 <script src="{{ url_for('static', filename='wwwroot/lib/jquery/dist/jquery.min.js' ) }}"></script>
- <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
+<script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js" integrity="sha384-xBXmu0dk1bEoiwd71wOonQLyH+VpgR1XcDH3rtxrLww5ajNTuMvBdL5SOiFZnNdp" crossorigin="anonymous"></script>
 <script src="{{ url_for('static', filename='wwwroot/js/ScriptModalCambioDatosPersonales.js' ) }}"></script>
 <script src="{{ url_for('static', filename='wwwroot/js/ScriptModalDireccion.js' ) }}"></script>
+<script src="{{ url_for('static', filename='wwwroot/js/site.js' ) }}" asp-append-version="true"></script>
 
 </body>
 
 <footer>
     {#@(await Component.InvokeAsync("PieInformacion"))#}
-{{pieInformacion()}}
+    {{pieInformacion()}}
 </footer>
 </html>

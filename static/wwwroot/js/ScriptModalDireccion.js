@@ -7,7 +7,7 @@ function Editar(idDir) {
     //alert(this.idDireccion);
     $.ajax({
         async: false,
-        url: "/Validacion/ObtenerDatosDireccionUsuario/",
+        url: "/ObtenerDatosDireccionUsuario/",
         data:
         {
             usuario: "-1",
@@ -110,7 +110,7 @@ $(document).ready(function () {
         
         var text = sel.options[sel.selectedIndex].text;
         $.ajax({
-            url: "/Validacion/ObtenerEstadosPais/",
+            url: "/ObtenerEstadosPais/",
             data:
             {
                 pais: text,
@@ -133,7 +133,7 @@ $(document).ready(function () {
 
 
                     $.ajax({
-                        url: "/Validacion/ObtenerCiudadesEstadoPais/",
+                        url: "/ObtenerCiudadesEstadoPais/",
                         data:
                         {
                             pais: text,
@@ -182,7 +182,7 @@ $(document).ready(function () {
         var text = sel.options[sel.selectedIndex].text;
         var textE = selE.options[selE.selectedIndex].text;
         $.ajax({
-            url: "/Validacion/ObtenerCiudadesEstadoPais/",
+            url: "/ObtenerCiudadesEstadoPais/",
             data:
             {
                 pais: text,
@@ -219,7 +219,7 @@ $(document).ready(function () {
         var text = sel.options[sel.selectedIndex].text;
         $.ajax({
             async: false,
-            url: "/Validacion/ObtenerEstadosPaisCiudadDefecto/",
+            url: "/ObtenerEstadosPaisCiudadDefecto/",
             data:
             {
             },
@@ -277,7 +277,7 @@ $(document).ready(function () {
         //alert(getDireccion());
        
         $.ajax({
-            url: "/Validacion/GuardarDireccion/",
+            url: "/GuardarDireccion/",
             data:
             {
                 idDir: getDireccion(),
@@ -322,7 +322,7 @@ $(document).ready(function () {
     $("#inputCalle").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarCalleDireccion/",
+            url: "/ValidarCalleDireccion/",
             data:
             {
                 calle: $("#inputCalle").val()
@@ -370,7 +370,7 @@ $(document).ready(function () {
     $("#inputNumeroExterior").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarNumeroExterior/",
+            url: "/ValidarNumeroExterior/",
             data:
             {
                 numero: $("#inputNumeroExterior").val()
@@ -419,7 +419,7 @@ $(document).ready(function () {
     $("#inputNumeroInterior").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarNumeroInterior/",
+            url: "/ValidarNumeroInterior/",
             data:
             {
                 numero: $("#inputNumeroInterior").val()
@@ -468,7 +468,7 @@ $(document).ready(function () {
     $("#inputDestinatario").keyup(function () {
 
         $.ajax({
-            url: "/Validacion/ValidarDestinatario/",
+            url: "/ValidarDestinatario/",
             data:
             {
                 destinatario: $("#inputDestinatario").val()
@@ -529,7 +529,7 @@ function doSearch(text) {
 
 function ObtenerColonias(codigo) {
     $.ajax({
-        url: "/Validacion/ObtenerColoniaPorCodigoPostal/",
+        url: "/ObtenerColoniaPorCodigoPostal/",
         data:
         {
             codigo: codigo
@@ -567,36 +567,36 @@ function ObtenerColonias(codigo) {
 
 function LlenarColonias(item, coloniaSeleccionada) {
     //alert("metodo");
-    if (item["text"] == coloniaSeleccionada)
-        document.querySelector('#inputColonia').add(new Option(item["text"], item["value"], true, true));
+    if (item["nombreColonia"] == coloniaSeleccionada)
+        document.querySelector('#inputColonia').add(new Option(item["nombreColonia"], item["nombreColonia"], true, true));
     else
-        document.querySelector('#inputColonia').add(new Option(item["text"], item["value"]));
+        document.querySelector('#inputColonia').add(new Option(item["nombreColonia"], item["nombreColonia"]));
 }
 
 function LlenarPaises(item, paisSeleccionado) {
     //alert("metodo");
-    if (item["text"] == paisSeleccionado)
-        document.querySelector('#inputPais').add(new Option(item["text"], item["value"], true, true));
+    if (item["nombrePais"] == paisSeleccionado)
+        document.querySelector('#inputPais').add(new Option(item["nombrePais"], item["iso3"], true, true));
     else
-        document.querySelector('#inputPais').add(new Option(item["text"], item["value"]));
+        document.querySelector('#inputPais').add(new Option(item["nombrePais"], item["iso3"]));
 }
 
 function LlenarEstados(item, estadoSeleccionado) {
 
-    if (item["text"] == estadoSeleccionado) {
+    if (item["nombreEstado"] == estadoSeleccionado) {
         //alert(result.estado + "-" + item["text"])
-        document.querySelector('#inputEstado').add(new Option(item["text"], item["value"], true, true));
+        document.querySelector('#inputEstado').add(new Option(item["nombreEstado"], item["codigoEstado"], true, true));
     }
     else
-        document.querySelector('#inputEstado').add(new Option(item["text"], item["value"]));
+        document.querySelector('#inputEstado').add(new Option(item["nombreEstado"], item["codigoEstado"]));
 }
 
 function LlenarCiudades(item, ciudadSeleccionada) {
 
-    if (item["text"]== ciudadSeleccionada) {
+    if (item["nombreCiudad"]== ciudadSeleccionada) {
         //alert(result.estado + "-" + item["text"])
-        document.querySelector('#inputCiudad').add(new Option(item["text"], item["value"], true, true));
+        document.querySelector('#inputCiudad').add(new Option(item["nombreCiudad"], item["nombreCiudad"], true, true));
     }
     else
-        document.querySelector('#inputCiudad').add(new Option(item["text"], item["value"]));
+        document.querySelector('#inputCiudad').add(new Option(item["nombreCiudad"], item["nombreCiudad"]));
 }
